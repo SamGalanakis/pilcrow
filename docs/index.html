@@ -117,7 +117,7 @@ pilcrow critique drafts/post.md | llm -m gpt-5</code></pre>
       <section class="chapter" id="commands">
         <p class="chapter-mark">Chapter IV</p>
         <h2 class="chapter-title">Commands</h2>
-        <p>Pilcrow exposes fifteen commands today. Five run the engine; six load an interpretive lens; four act on the project as a whole. The engine is the <em>what</em> &mdash; deterministic findings, milliseconds per file. The lens is the <em>how</em> &mdash; a reference file anchored in a classical style guide that tells the model which findings matter under that lens and what rewrite shape to propose. Lenses are not rule filters; each has its own methodology, its own output, its own anti-patterns.</p>
+        <p>Pilcrow exposes seventeen commands today. Five run the engine; eight load an interpretive lens; four act on the project as a whole. The engine is the <em>what</em> &mdash; deterministic findings, milliseconds per file. The lens is the <em>how</em> &mdash; a reference file anchored in a classical style guide that tells the model which findings matter under that lens and what rewrite shape to propose. Lenses are not rule filters; each has its own methodology, its own output, its own anti-patterns.</p>
 
         <h3>Utility &mdash; run the engine</h3>
         <table>
@@ -141,6 +141,8 @@ pilcrow critique drafts/post.md | llm -m gpt-5</code></pre>
             <tr><td><code>clarify</code></td><td>Pinker <em>Sense of Style</em>, Orwell</td><td>reduce reader&rsquo;s working-memory load; per-passage rewrites with mental-model commentary</td></tr>
             <tr><td><code>pace</code></td><td>King <em>On Writing</em>, Strunk</td><td>restore rhythm; cadence histogram plus split/merge proposals</td></tr>
             <tr><td><code>lead</code></td><td>Zinsser on leads</td><td>sharpen openings; finds the buried lede, proposes three alternative first sentences</td></tr>
+            <tr><td><code>verify</code></td><td>journalism fact-check tradition</td><td>surface load-bearing claims; classify each as unsupported, vague, hedged, or unchecked</td></tr>
+            <tr><td><code>aloud</code></td><td>aural reading tradition</td><td>play the prose back via OpenAI TTS in an interactive session; gates on writer response</td></tr>
           </tbody>
         </table>
         <p>Lenses don&rsquo;t prescribe what to run next. Most writers run one lens at a time, on one piece at a time. <code>polish</code> is the meta-lens for a final pre-ship sweep; the others stand alone.</p>
@@ -193,7 +195,7 @@ pilcrow critique drafts/post.md | llm -m gpt-5</code></pre>
       <section class="chapter" id="llm">
         <p class="chapter-mark">Chapter VI</p>
         <h2 class="chapter-title">What critique catches</h2>
-        <p>Nineteen higher-level patterns regex can&rsquo;t catch. These rules describe shapes of argument and rhetoric, not strings of characters. The engine ships them as a catalog plus a prompt builder; the model reads the prose against the catalog and returns structured JSON findings the CLI can consume.</p>
+        <p>Twenty higher-level patterns regex can&rsquo;t catch. These rules describe shapes of argument and rhetoric, not strings of characters. The engine ships them as a catalog plus a prompt builder; the model reads the prose against the catalog and returns structured JSON findings the CLI can consume.</p>
 
         <table>
           <thead><tr><th>Rule</th><th>What it watches for</th></tr></thead>
@@ -217,6 +219,7 @@ pilcrow critique drafts/post.md | llm -m gpt-5</code></pre>
             <tr><td>invented-concept-label</td><td>Capitalized Compound treated as established term without definition</td></tr>
             <tr><td>listicle-disguise</td><td>numbered list flowed into parallel paragraphs as prose</td></tr>
             <tr><td>one-point-dilution</td><td>single idea restated under five framings, no new argument</td></tr>
+            <tr><td>unsupported-claim</td><td>a load-bearing number, date, comparative, or attribution with no citation the reader can audit (the lens behind <code>verify</code>)</td></tr>
           </tbody>
         </table>
 

@@ -58,6 +58,8 @@ Six interpretive lenses sit on top of the engine. Each loads its own reference f
 | `clarify` | Pinker *Sense of Style*, Orwell | Reduce reader's working-memory load; per-passage rewrites with mental-model commentary |
 | `pace` | King *On Writing*, Strunk | Restore rhythm; cadence histogram plus split/merge proposals |
 | `lead` | Zinsser on leads | Sharpen openings; finds the buried lede, proposes three alternative first sentences |
+| `verify` | journalism fact-check tradition | Surface load-bearing claims; classify each as unsupported / vague / hedged / unchecked |
+| `aloud` | aural reading tradition | Play the prose back via OpenAI TTS in an interactive session; gates on writer response |
 
 A lens is not a rule filter — each defines its own procedure, rubric, and output. See `skill/reference/<lens>.md` for the playbooks.
 
@@ -100,6 +102,22 @@ node skill/scripts/pin.mjs unpin polish
 ```
 
 The script writes a redirect skill into every harness directory where pilcrow is installed. Pinned shortcuts carry a marker comment, so `unpin` only deletes shortcuts it created — never user-owned skills with the same name.
+
+## aloud and TTS
+
+`aloud` plays prose back to you via OpenAI TTS in an interactive session — walkthrough, full read, targeted (only the paragraphs `pace` flagged), or compare two passages. It depends on the [OpenAI speech skill](https://github.com/openai/skills/tree/main/skills/.curated/speech) (Apache 2.0).
+
+Set up:
+
+```
+export OPENAI_API_KEY=...
+# python3 + the openai package — install once
+python3 -m pip install openai
+```
+
+The lens auto-resolves the speech skill — if it's installed in your harness (`.claude/skills/speech/`, `.cursor/skills/speech/`, etc.) it uses that; otherwise it fetches a pinned snapshot into `/tmp/pilcrow/skills/speech/`.
+
+Audio is cached in `/tmp/pilcrow/aloud/<sha256>.mp3`. Replays across sessions are free. A 14-day mtime GC sweep runs on every `aloud` invocation. Per-piece voice and speed live in `VOICE.md` (`aloud-voice:`, `aloud-speed:`, `default-aloud-mode:`).
 
 ## Rules
 

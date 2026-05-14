@@ -16,6 +16,16 @@ Specifically, the following structural patterns are adapted from impeccable:
 
 The substance of pilcrow's commands — the 49 deterministic rules, the 19 LLM-judged rules, the six interpretive lenses (`polish`, `humanize`, `tighten`, `clarify`, `pace`, `lead`), and the four project commands (`teach`, `document`, `extract`, `craft`) — is original to pilcrow and anchored in classical style guides (Strunk & White, Zinsser, Williams, Pinker, Orwell, King).
 
+## OpenAI speech skill (used by `aloud`)
+
+The `aloud` lens depends on the [OpenAI speech skill](https://github.com/openai/skills/tree/main/skills/.curated/speech) (Apache 2.0) for text-to-speech generation. Pilcrow does not redistribute the skill; it detects an installed copy in the project's harness directories, and if absent, fetches a pinned snapshot into `/tmp/pilcrow/skills/speech/`.
+
+- Repository: `github.com/openai/skills`
+- Pinned SHA: `c25113bf4c64c8dba6bfe61acf06051d79aa43f6` (recorded 2026-05-12)
+- License: Apache License 2.0
+
+The pinned SHA is bumped deliberately in `skill/scripts/resolve-speech.mjs` and re-recorded here on each bump.
+
 ## Style-guide anchors
 
 The interpretive lenses cite specific style guides as their theoretical anchor. Those works are not redistributed; pilcrow's references summarize and apply principles from:

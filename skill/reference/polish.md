@@ -21,7 +21,7 @@ Polish is the meta-lens. It runs everything and ranks.
 ## Procedure
 
 1. Run `pilcrow lint <target> --ignore-quoted` and capture JSON.
-2. Run `pilcrow critique <target>` and ask the conversation model to evaluate against the 19 LLM rules. Capture the findings.
+2. Run `pilcrow critique <target>` and ask the conversation model to evaluate against the 20 LLM rules. Capture the findings.
 3. Merge both finding sets, sort by `range.start`, dedupe overlapping ranges.
 4. Triage each finding into one of three buckets (below).
 5. Emit one report. Do NOT propose edits for stylistic taste-calls — surface them and let the writer decide.

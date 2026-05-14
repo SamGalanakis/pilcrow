@@ -219,6 +219,17 @@ export const llmRules: LlmRule[] = [
     negativeExample:
       "Five paragraphs that each say 'X is important' with different metaphors and no new fact.",
   },
+  {
+    id: "unsupported-claim",
+    name: "Unsupported load-bearing claim",
+    severity: "error",
+    description:
+      "A specific number, date, comparative, or named attribution that the argument relies on, with no citation and no way for the reader to audit it. Stricter than claim-without-support, which flags any unsupported claim; this fires only on claims the piece's argument actually depends on.",
+    positiveExample:
+      "Read latency dropped 42% (Grafana dashboard, week of March 12); the cache rewrite shipped April 3.",
+    negativeExample:
+      "Read latency dropped 42% after the cache rewrite. (No source, no date — the number carries the paragraph.)",
+  },
 ];
 
 export function buildCritiquePrompt(text: string, ruleIds?: string[]): string {
