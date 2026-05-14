@@ -1,6 +1,6 @@
 {
   "name": "pilcrow-ink",
-  "version": "0.11.0",
+  "version": "0.11.1",
   "description": "Make your clanker your editor. A prose linter plus nine interpretive lenses anchored in classical style guides plus four project commands for voice capture and drafting. Catches AI tells as one feature among many.",
   "license": "MIT",
   "author": "Samuel Galanakis",
