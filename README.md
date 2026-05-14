@@ -74,6 +74,33 @@ Four commands act on the repo, not on a single passage. They capture the writer'
 
 Each writes to disk only after explicit confirmation. Once `VOICE.md` or `PILCROW.md` exist, every lens reads them on invocation and weights findings accordingly.
 
+`teach` captures four axes the lenses use: **genre** (essay / explainer / report / marketing / memo / fiction), **audience** (a concrete reader, optionally mapped to one of the built-in personas), **stance** (claim / explain / persuade / narrate), and **method** (outliner / discovery / iterative / model-drafter). `craft` reads `method:` and runs one of four phase-2 variants — outliners get an outline-first draft, discovery writers get a free first pass, iterative writers get paragraph-by-paragraph gates, and model-drafter users get the model's draft as raw material to rewrite.
+
+## Cross-cutting references
+
+The skill's `reference/` folder also contains five underscore-prefixed files loaded by multiple commands:
+
+| File | Content |
+|---|---|
+| `_style-laws.md` | Universal writing laws (voice trumps rule, propose-don't-edit, ship-blockers ≠ taste calls) |
+| `_ai-tell-catalog.md` | Exhaustive AI-tell catalog organized by class (vocabulary, cadence, template, fossil) |
+| `_readers.md` | Reader personas (skeptical engineer, busy executive, casual blog reader, fellow expert, undergraduate) |
+| `_cadence-theory.md` | King and Strunk on rhythm: sentence-length variation, fragment use, parallel triplets in moderation |
+| `_genres.md` | Per-genre conventions: what each demands, forbids, tolerates |
+
+These aren't commands; they're content the lens references name explicitly when they need it.
+
+## Pin / unpin
+
+Turn `/pilcrow polish` into `/polish` (and back) for lenses you repeat on every piece:
+
+```
+node skill/scripts/pin.mjs pin polish
+node skill/scripts/pin.mjs unpin polish
+```
+
+The script writes a redirect skill into every harness directory where pilcrow is installed. Pinned shortcuts carry a marker comment, so `unpin` only deletes shortcuts it created — never user-owned skills with the same name.
+
 ## Rules
 
 **49 deterministic** (regex + fuzzy stem matching, no LLM):

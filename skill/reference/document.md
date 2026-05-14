@@ -1,35 +1,37 @@
 # document
 
-Infer the writer's voice from existing prose in the repo and write `VOICE.md` without an interview. Use when the writer has a substantial body of published work and would rather skip the questions.
+Stats describe surface. Intent has to be confirmed.
 
-`document` is the empirical counterpart to `teach`. `teach` asks; `document` reads.
+`document` reads the writer's existing prose, computes what it can measure mechanically, and produces a *draft* `VOICE.md` with citations and explicit open questions. The output is honest: claims about surface features are confident; claims about intent are flagged for the writer to lock in via `teach`.
 
----
+Where `teach` asks, `document` reads. Neither replaces the other — they're paired.
 
 ## Source
 
-The voice-from-corpus inference pattern: large language models can characterize style from a sample. We're not training a model; we're producing a short summary file the lenses can read.
+The stylometric tradition: sentence-length distribution, function-word ratios, punctuation patterns, lexical density. Same features used to *detect* model output (e.g. [PMC ChatGPT-detection paper](https://pmc.ncbi.nlm.nih.gov/articles/PMC11231544/)), used here to *describe* a human voice.
 
-Anchors: the same stylometric features that the [PMC ChatGPT-detection paper](https://pmc.ncbi.nlm.nih.gov/articles/PMC11231544/) measures (sentence-length distribution, function-word ratios, punctuation patterns), but used to describe a *human* voice rather than detect a model.
+The honest caveat: stats can tell you what a writer does. They cannot tell you why or whether the writer would do it again.
 
----
+## Load before running
+
+- [_genres.md](_genres.md) — to map observed conventions back to a likely genre.
+- [_readers.md](_readers.md) — to propose an audience persona for the writer to confirm.
 
 ## Procedure
 
 ### Step 1 — find the corpus
 
-Search the repo for prose files in these candidate directories, in order:
-
+Search candidate directories in order:
 1. `posts/`, `blog/`, `essays/`, `writing/`
 2. `drafts/`, `notes/`
 3. `docs/` (skipping autogen / api-reference content)
 4. `README.md` and root-level `*.md` files
 
-Filter to substantive prose — skip code blocks, tables of contents, headings-only files, and machine-generated content. The corpus must total **at least 2,000 words**. If less, exit with: "Not enough prose to infer voice. Run `/pilcrow teach` instead."
+Filter to substantive prose — skip code blocks, tables of contents, headings-only files, machine-generated content. Corpus must total **at least 2,000 words**. If less, exit: "Not enough prose to infer voice. Run `/pilcrow teach` instead."
 
-Sample the corpus: if it exceeds 20,000 words, take 5–8 representative files spanning the date range (oldest, middle, newest). Bias toward recent.
+If the corpus exceeds 20,000 words, sample 5–8 representative files spanning the date range. Bias toward recent.
 
-### Step 2 — run the engine on the corpus
+### Step 2 — run the engine
 
 ```
 pilcrow lint <corpus-files> --ignore-quoted
@@ -54,23 +56,27 @@ Beyond stats, read three random paragraphs from each sampled file. Describe:
 - Where the writer hedges and where they commit.
 - Whether the writer addresses the reader directly.
 
-### Step 4 — infer signatures and taboos
+### Step 4 — separate surface from intent
 
-From the data:
+| Confident from stats | Needs writer to confirm |
+|---|---|
+| Sentence-length distribution | Audience |
+| Punctuation tics | Stance |
+| Lexical avoidance (zero `delve`) | Method |
+| Recurring transition words | Genre, when ambiguous |
+| Voice signatures (constructions at 60%+ consistency) | Whether a signature is voice or tic |
 
-- **Signatures** are constructions the writer uses *more than baseline*. If stats show em-dashes at 2x typical density but the writer uses them consistently across files, that's a signature. If parallel-triplet density is 3x typical, that's a signature.
-- **Taboos** are constructions the writer uses *less than baseline*. If `delve` / `tapestry` / `crucial` are zero across the corpus, the writer's avoiding them; mark as taboo.
-- **Voice rules** appear from contrasts: if all `however` shows up in transitions but `nevertheless` is absent, the writer prefers one and avoids the other.
+The surface column populates VOICE.md confidently. The intent column populates the **Open questions** section.
 
 ### Step 5 — write VOICE.md
-
-Same schema as `teach`'s output, but every claim cites a file path:
 
 ```markdown
 ---
 name: VOICE
-audience: <inferred — note "inferred from <file>'s framing"; mark as best-guess>
-stance: <inferred — same caveat>
+genre: <best-guess from _genres.md mapping, flagged if uncertain>
+audience: <inferred from framing — flagged as best-guess>
+stance: <inferred — flagged as best-guess>
+method: <unset — open question for teach>
 updated: YYYY-MM-DD
 source: document
 corpus: <N files, M words sampled>
@@ -79,67 +85,66 @@ corpus: <N files, M words sampled>
 # Voice (inferred)
 
 ## Register
-<2-3 sentences. Cite specifics, e.g. "Sentences run long (mean 22, stdev 8) with a steady cadence. The writer prefers a semicolon to a period (see posts/cache-rewrite.md L42).">
+<2-3 sentences. Cite specifics: "Sentences run long (mean 22, stdev 8) with a steady cadence. The writer prefers a semicolon to a period (posts/cache-rewrite.md L42).">
 
 ## Signatures
-- <habit 1 — with a 1-2 word file citation, e.g. "Em-dash interruptions for asides (posts/teamwork.md L18, L24, L51)">
+- <habit 1 — with file:line citation, e.g. "Em-dash interruptions for asides (posts/teamwork.md L18, L24, L51)">
 - <habit 2>
 - <habit 3>
 
 ## Taboos
-- <word or move 1 — with "0 occurrences in corpus" note>
-- <word or move 2>
+- <word or move — "0 occurrences in corpus" note>
+- <word or move>
 
 ## Open questions
-- <audience inference uncertain? note it>
-- <stance ambiguous? note it>
+
+These are the fields stats cannot answer. Run `/pilcrow teach` to lock them — or answer them in conversation and I'll update the file.
+
+1. **Audience.** Stats show <observation>. My best-guess: <persona>. Is that right?
+2. **Stance.** Stats show <observation>. My best-guess: <claim | explain | persuade | narrate>. Is that right?
+3. **Method.** Stats can't see this. How do you draft — outliner, discovery, iterative, model-drafter?
+4. **Signature vs tic.** I see <pattern> in <N> files. Is that your voice, or a habit you'd want flagged?
 ```
 
-The **Open questions** section is the key difference from `teach`'s output. `document` can describe form but rarely intent; flag the gaps explicitly so the writer can fill them with a follow-up `/pilcrow teach` if they want.
+The **Open questions** section is the headline output, not a footnote. The writer is meant to read it.
 
 ### Step 6 — show and confirm
 
 Show the file. Ask:
-> "I read N files (M words). This is what I heard. Anything wrong, or should I leave the open questions for you to answer?"
+> "Here's what the prose tells me. The Open questions are what I can't see from stats — want to answer them now, or run `/pilcrow teach` later?"
 
-If wrong, ask which inference; correct only that field.
-
----
+If they answer in conversation, update the file in place. Don't quietly demote answers to "maybe".
 
 ## Output
 
 ```
 # Voice inferred from corpus
 
-Wrote: VOICE.md (<line count> lines)
-Source: document
+Wrote: VOICE.md (<line count> lines, source: document)
 Corpus: <N files, <words> words sampled from <date range>
 
-Inferred:
-  Audience: <field> (open question: <yes/no>)
-  Stance:   <field> (open question: <yes/no>)
-  Signatures: <count>
-  Taboos:    <count>
-  Open questions: <count>
+Confident from stats:
+  Register notes:     <count>
+  Signatures:         <count>
+  Taboos:             <count>
+
+Open for the writer:
+  Audience            (best-guess: <persona>)
+  Stance              (best-guess: <stance>)
+  Method              (unset)
+  <N> signature-vs-tic calls
 
 Next:
-  - Run `/pilcrow teach` to lock the open questions, or
-  - Try `/pilcrow polish <recent draft>` — lenses will use this profile.
+  - Answer the open questions now (I'll update the file), or
+  - Run `/pilcrow teach` later to lock them, or
+  - Try `/pilcrow polish <recent draft>` — lenses use the inferred profile.
 ```
-
----
 
 ## Anti-patterns
 
 - **Inferring voice from too small a sample.** Below 2,000 words, statistical patterns are noise. Don't pretend to extract a voice from one essay.
-- **Citing every claim with a noisy file:line list.** Cite one or two locations per signature; more is bureaucracy.
-- **Inferring intent.** You can describe what the writer does, not why. Audience and stance are best-guesses with caveats; don't assert.
+- **Burying the Open questions.** They are the headline. A writer who reads only the first half of VOICE.md should still see what `document` couldn't answer.
+- **Asserting intent.** "The writer is persuading skeptical engineers" is a claim about intent. Mark as best-guess and put it in Open questions, not Register.
+- **Citing every claim with a noisy file:line list.** One or two locations per signature; more is bureaucracy.
 - **Skipping the engine pass.** The stats are the point. A document call that doesn't run `pilcrow lint` is just freeform impression — that belongs in `teach`.
 - **Over-claiming signatures.** A move that appears in 30% of paragraphs isn't a signature; it's an average tic. Flag at 60%+ consistency.
-
----
-
-## Handoff
-
-- After `document`, the writer can run `/pilcrow teach` to lock the open questions and turn inferences into commitments.
-- The output of `document` is sufficient for lenses to start applying voice — `teach` is upgrade, not requirement.

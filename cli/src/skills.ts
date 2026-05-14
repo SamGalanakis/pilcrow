@@ -30,6 +30,51 @@ const PROVIDER_DIRS = [
 
 const SKILL_FOLDER = "pilcrow";
 
+const SUBSTITUTABLE_EXTENSIONS = new Set([".md"]);
+
+interface CommandMetaEntry {
+  description: string;
+  argumentHint: string;
+  category: string;
+}
+
+function loadCommandMetadata(): Record<string, CommandMetaEntry> | null {
+  const metaPath = join(SKILL_SRC, "scripts", "command-metadata.json");
+  if (!existsSync(metaPath)) return null;
+  try {
+    return JSON.parse(readFileSync(metaPath, "utf8"));
+  } catch {
+    return null;
+  }
+}
+
+function buildCommandHint(meta: Record<string, CommandMetaEntry> | null): string {
+  if (!meta) return "audit|polish|humanize|tighten|clarify|pace|lead|teach|document|extract|craft";
+  return Object.keys(meta).join("|");
+}
+
+function buildSubstitutions(): Record<string, string> {
+  const meta = loadCommandMetadata();
+  return {
+    "{{command_hint}}": buildCommandHint(meta),
+    "{{command_prefix}}": "/",
+    "{{scripts_path}}": "scripts",
+  };
+}
+
+function applySubstitutions(content: string, subs: Record<string, string>): string {
+  let out = content;
+  for (const [token, value] of Object.entries(subs)) {
+    out = out.split(token).join(value);
+  }
+  return out;
+}
+
+function fileExtension(name: string): string {
+  const i = name.lastIndexOf(".");
+  return i >= 0 ? name.slice(i).toLowerCase() : "";
+}
+
 function findProjectRoot(): string {
   let dir = process.cwd();
   for (let depth = 0; depth < 12; depth++) {
@@ -45,13 +90,21 @@ function findExistingProviders(root: string): string[] {
   return PROVIDER_DIRS.filter((d) => existsSync(join(root, d)));
 }
 
-function copyDir(src: string, dest: string): void {
+function copyDir(src: string, dest: string, subs: Record<string, string>): void {
   mkdirSync(dest, { recursive: true });
   for (const entry of readdirSync(src, { withFileTypes: true })) {
     const s = join(src, entry.name);
     const d = join(dest, entry.name);
-    if (entry.isDirectory()) copyDir(s, d);
-    else if (entry.isFile()) writeFileSync(d, readFileSync(s));
+    if (entry.isDirectory()) {
+      copyDir(s, d, subs);
+    } else if (entry.isFile()) {
+      if (SUBSTITUTABLE_EXTENSIONS.has(fileExtension(entry.name))) {
+        const text = readFileSync(s, "utf8");
+        writeFileSync(d, applySubstitutions(text, subs));
+      } else {
+        writeFileSync(d, readFileSync(s));
+      }
+    }
   }
 }
 
@@ -108,10 +161,11 @@ export function cmdInstall(args: string[]): number {
     targets = [".claude"];
   }
 
+  const subs = buildSubstitutions();
   for (const provider of targets) {
     const dest = join(root, provider, "skills", SKILL_FOLDER);
     if (existsSync(dest)) rmSync(dest, { recursive: true, force: true });
-    copyDir(SKILL_SRC, dest);
+    copyDir(SKILL_SRC, dest, subs);
     console.log(`installed → ${provider}/skills/${SKILL_FOLDER}  (v${pkgVersion()})`);
   }
   return 0;

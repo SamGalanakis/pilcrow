@@ -117,7 +117,7 @@ pilcrow critique drafts/post.md | llm -m gpt-5</code></pre>
       <section class="chapter" id="commands">
         <p class="chapter-mark">Chapter IV</p>
         <h2 class="chapter-title">Commands</h2>
-        <p>Pilcrow exposes eleven commands today. Five run the engine; six load an interpretive lens. The engine is the <em>what</em> &mdash; deterministic findings, milliseconds per file. The lens is the <em>how</em> &mdash; a reference file anchored in a classical style guide that tells the model which findings matter under that lens and what rewrite shape to propose. Lenses are not rule filters; each has its own methodology, its own output, its own anti-patterns.</p>
+        <p>Pilcrow exposes fifteen commands today. Five run the engine; six load an interpretive lens; four act on the project as a whole. The engine is the <em>what</em> &mdash; deterministic findings, milliseconds per file. The lens is the <em>how</em> &mdash; a reference file anchored in a classical style guide that tells the model which findings matter under that lens and what rewrite shape to propose. Lenses are not rule filters; each has its own methodology, its own output, its own anti-patterns.</p>
 
         <h3>Utility &mdash; run the engine</h3>
         <table>
@@ -143,7 +143,9 @@ pilcrow critique drafts/post.md | llm -m gpt-5</code></pre>
             <tr><td><code>lead</code></td><td>Zinsser on leads</td><td>sharpen openings; finds the buried lede, proposes three alternative first sentences</td></tr>
           </tbody>
         </table>
-        <p>Each lens recommends a handoff to another lens when its own job is done &mdash; <code>humanize</code> hands off to <code>polish</code>; <code>tighten</code> can hand off to <code>clarify</code> or <code>pace</code>; <code>lead</code> hands off to <code>polish</code>. Chains are the writer&rsquo;s call.</p>
+        <p>Lenses don&rsquo;t prescribe what to run next. Most writers run one lens at a time, on one piece at a time. <code>polish</code> is the meta-lens for a final pre-ship sweep; the others stand alone.</p>
+
+        <p>Lens references share five cross-cutting files (the underscore-prefixed entries in <code>skill/reference/</code>): <code>_style-laws.md</code>, <code>_ai-tell-catalog.md</code>, <code>_readers.md</code>, <code>_cadence-theory.md</code>, <code>_genres.md</code>. Each lens loads the shared files it actually needs, so the per-lens reference stays short.</p>
 
         <h3>Project &mdash; voice context and drafting</h3>
         <p>Four commands act on the repo, not on a single passage. They capture or apply the writer&rsquo;s voice so lens proposals sound like the writer, not like a generic editor.</p>
@@ -153,10 +155,12 @@ pilcrow critique drafts/post.md | llm -m gpt-5</code></pre>
             <tr><td><code>teach</code></td><td>multi-round interview to capture the writer&rsquo;s voice; writes <code>VOICE.md</code></td></tr>
             <tr><td><code>document</code></td><td>infer voice from existing prose in the repo; writes <code>VOICE.md</code> with citations and open questions</td></tr>
             <tr><td><code>extract</code></td><td>mine the corpus for recurring AI tells and personal tics; writes <code>PILCROW.md</code></td></tr>
-            <tr><td><code>craft</code></td><td>end-to-end essay writing with gates: shape &rarr; draft &rarr; critique &rarr; polish</td></tr>
+            <tr><td><code>craft</code></td><td>method-aware end-to-end essay writing (outliner / discovery / iterative / model-drafter); shape &rarr; draft &rarr; critique &rarr; polish</td></tr>
           </tbody>
         </table>
         <p>Each project command writes to disk only after explicit confirmation. The flow is gated, not autonomous. Once <code>VOICE.md</code> or <code>PILCROW.md</code> exist, every lens reads them on invocation and weights findings accordingly.</p>
+        <p><code>teach</code> captures four axes: <strong>genre</strong>, <strong>audience</strong>, <strong>stance</strong>, <strong>method</strong>. <code>craft</code> reads <code>method:</code> and runs one of four phase-2 variants — outliners outline first, discovery writers draft freely, iterative writers gate paragraph by paragraph, and model-drafter users get the model&rsquo;s draft as raw material to rewrite. Different writers draft differently; the flow respects that rather than forcing one shape.</p>
+        <p>Pin a lens you repeat &mdash; <code>node skill/scripts/pin.mjs pin polish</code> turns <code>/pilcrow polish</code> into <code>/polish</code>. The pinned shortcut carries a marker comment, so <code>unpin polish</code> only removes shortcuts pilcrow created.</p>
       </section>
 
       <section class="chapter" id="deterministic">

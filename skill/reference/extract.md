@@ -1,20 +1,21 @@
 # extract
 
-Mine the writer's own corpus for *recurring* AI tells, phrase-bank-style cliches, and personal verbal tics. Produces `PILCROW.md`: a personal anti-pattern catalog the lenses cross-reference so the writer's *specific* habits get flagged with extra weight on future runs.
+Mine the writer's corpus for recurring patterns *to flag*. Not a style guide. Not assets to reuse. A descriptive map of the phrases, cadences, and tics that show up often enough to be either voice or a habit worth interrogating.
 
-Where `document` answers "what's your voice?", `extract` answers "what do you reach for that you wish you didn't?"
+Where `document` answers "what's your voice?", `extract` answers "what do you reach for that you might want me to notice?"
 
----
+The output is `PILCROW.md`: a working document the lenses cross-reference. Findings that match a recurring pattern get extra weight. The writer turns descriptions into prescriptions via a follow-up `teach`.
 
 ## Source
 
 The diagnostic move from `humanize` (catalog AI tells) plus the diagnostic move from `document` (read across a corpus), narrowed to one question: which findings repeat?
 
-Anchored in:
-- The "personal tics" tradition: every writer has them. Hemingway had his short sentences; Pinker has his em-dashes; AI-assisted writers tend to have `delve into`, `tapestry`, `not just X but Y`.
-- Tropes.fyi: AI tells are *patterns*, not single hits. Personal tells are patterns too — they just belong to one person.
+Every writer has tics. Hemingway had his short sentences. AI-assisted writers tend to have `delve into`, `tapestry`, `not just X but Y`. `extract` surfaces them; it does not judge them.
 
----
+## Load before running
+
+- [_ai-tell-catalog.md](_ai-tell-catalog.md) — to recognize which recurring phrases are AI fossils vs writer's voice.
+- [_style-laws.md](_style-laws.md) — for the "describe, don't prescribe" discipline.
 
 ## Procedure
 
@@ -34,44 +35,46 @@ pilcrow lint <corpus-files> --ignore-quoted
 Aggregate findings by `ruleId`. For each rule:
 - Total hits across the corpus.
 - Number of files the rule fires in (presence, not just frequency).
-- The specific phrases or constructions that triggered the rule, sorted by frequency.
+- Specific phrases or constructions that triggered the rule, sorted by frequency.
 
 ### Step 3 — surface the patterns
 
 A rule firing once across the corpus is noise. A rule firing **3+ times across 2+ files** is a pattern. Mine for:
 
-- **Repeat phrases** — specific n-grams the writer reaches for. If `ai-tell-phrasebank` fires on `navigate the complexities` four times, that's a pattern; if it fires once each on four different phrases, that's just AI vocabulary spread.
-- **Repeat tics** — `em-dash-density` firing across 5 files = the writer leans on em-dashes. Could be voice (keep) or AI tell (cut). Flag for the writer to decide.
+- **Repeat phrases** — specific n-grams the writer reaches for. If `ai-tell-phrasebank` fires on `navigate the complexities` four times, that's a pattern; four different phrases each once is just AI vocabulary spread.
+- **Repeat tics** — `em-dash-density` firing across 5 files. Could be voice (keep) or AI accent (cut). Don't decide.
 - **Repeat constructions** — `antithesis-cadence` firing in every other essay's opener = a structural habit.
 - **Personal closers** — `cliche-closers` recurring tells you what move the writer reaches for at the end.
 
-### Step 4 — write PILCROW.md
+### Step 4 — write PILCROW.md (descriptive, not prescriptive)
 
 ```markdown
 ---
 name: PILCROW
-purpose: Personal anti-pattern catalog. Future audits will weight these findings higher.
+purpose: Descriptive map of recurring patterns. Lenses weight matching findings higher; the writer decides via teach which are voice and which are tic.
 corpus: <N files, <M> words>
 updated: YYYY-MM-DD
 ---
 
-# Personal anti-patterns
+# Recurring patterns
+
+This file describes what the corpus shows. It does not prescribe what to keep or cut. To convert any of these into a rule, run `/pilcrow teach` and add to VOICE.md's `Signatures` (keep) or `Taboos` (cut).
 
 ## Repeat phrases (N)
-The writer reaches for these phrases across multiple pieces. Each one is fine once; in aggregate they form an accent.
+The writer reaches for these phrases across multiple pieces. Once each is fine; in aggregate they form an accent.
 
-- **`<phrase>`** — N hits across M files. (Examples: posts/X.md L12, posts/Y.md L34, posts/Z.md L8.)
+- **`<phrase>`** — N hits across M files. Examples: posts/X.md L12, posts/Y.md L34, posts/Z.md L8.
 - **`<phrase>`** — …
 
 ## Repeat constructions (N)
 Cadences and patterns the writer uses more than baseline.
 
-- **<construction name>** — N hits across M files. <One sentence: when it's the writer's voice, when it's AI rhythm.>
+- **<construction name>** — N hits across M files. One sentence describing when it appears.
 
-## Possible voice signatures (N)
-Patterns that show up enough to be a tic. Could be intentional voice; the writer should decide.
+## High-frequency, uncertain (N)
+Patterns that show up enough to be a tic. Could be intentional voice; could be habit. The writer decides via `teach`.
 
-- **<pattern>** — N hits across M files. **Keep** or **cut**? (Flag for `teach` follow-up.)
+- **<pattern>** — N hits across M files. (Not a recommendation either way.)
 
 ## Once-per-piece tells (N)
 Rules that fire exactly once in every piece. Probably habits the writer is unaware of.
@@ -79,61 +82,53 @@ Rules that fire exactly once in every piece. Probably habits the writer is unawa
 - **<rule>** — fires once in N/N files. <Example.>
 ```
 
-The **Possible voice signatures** section is critical. Don't decide for the writer whether `em-dash-density` at 1.8/100 words is voice or AI tic — surface it and ask.
+**Discipline:** every section in PILCROW.md describes; none prescribes. No "keep" or "cut" recommendations. No "you should". The writer turns description into prescription through `teach`.
 
 ### Step 5 — link to the lenses
 
-Append to `PILCROW.md`:
+Append:
 
 ```markdown
 ## How the lenses use this file
 
 When `polish`, `humanize`, `tighten`, `clarify`, `pace`, or `lead` runs:
-- Findings that match a **repeat phrase** here get promoted one severity level.
-- **Repeat constructions** get a "you reach for this often — is this one of the times?" note.
-- **Possible voice signatures** get demoted to `info` unless the writer says otherwise via VOICE.md exceptions.
+- Findings that match a **repeat phrase** here get promoted one severity level (the writer is repeating themselves).
+- **Repeat constructions** get a "you reach for this often — is this one of the times?" note attached.
+- **High-frequency uncertain** patterns are listed but not auto-promoted. They wait for VOICE.md to commit.
+
+This file does not change lens severity for **non-matching** findings.
 ```
 
-### Step 6 — present and confirm
+### Step 6 — present and propose teach
 
-> "I read N pieces (M words). These are the patterns that repeat. The big question: which are your voice (keep), and which are habits you'd like flagged in future?"
+> "I read N pieces (M words). These are the patterns that repeat. The big question for each High-frequency uncertain item: is it your voice (keep), or a habit you'd like flagged in future? Run `/pilcrow teach` to commit your answers to VOICE.md."
 
-Walk the writer through "Possible voice signatures" one at a time. Their answer for each goes into VOICE.md's `Signatures` or `Taboos` field (run a quick `teach` flow if VOICE.md doesn't exist yet).
-
----
+Do *not* walk the writer through the uncertain items in extract. Extract's job is to map. Teach's job is to commit.
 
 ## Output
 
 ```
-# Personal patterns extracted
+# Recurring patterns extracted
 
 Wrote: PILCROW.md (<line count> lines)
 Corpus: <N files, <M> words>
 
-Patterns found:
-  Repeat phrases:      <count>
-  Repeat constructions: <count>
-  Possible signatures:  <count>  ← need your call
-  Once-per-piece tells: <count>
+Patterns mapped (descriptive only):
+  Repeat phrases:        <count>
+  Repeat constructions:  <count>
+  High-frequency uncertain: <count>  ← needs your call via teach
+  Once-per-piece tells:  <count>
 
 Next:
-  - Walk through "Possible signatures" with me to mark keep/cut.
-  - Run `/pilcrow audit <draft>` — recurring phrases here will now show up bolder.
+  - Run `/pilcrow teach` to commit which uncertain patterns are voice (Signatures) or tic (Taboos).
+  - Run `/pilcrow audit <draft>` — recurring patterns here will now show up bolder in findings.
 ```
-
----
 
 ## Anti-patterns
 
-- **Flagging single hits.** One `delve into` in a corpus of 12 essays is not a pattern. The whole point of this lens is *repetition*.
-- **Pretending to know whether a pattern is voice or tic.** Three em-dashes per 100 words *could* be the writer's signature or *could* be an AI accent. Surface both readings; let the writer decide.
+- **Prescribing.** PILCROW.md describes. It never says "keep" or "cut". That's `teach`'s job.
+- **Walking the writer through uncertain items inside extract.** Extract maps; teach decides. Keep them separate so the writer can come back to teach when they have time.
+- **Flagging single hits.** One `delve into` in 12 essays is not a pattern. The whole point is *repetition*.
 - **Outputting a long file.** PILCROW.md is a working document, not a manifesto. Each pattern is one line. If the writer has 80 patterns, the corpus is unusual; investigate before listing them all.
-- **Skipping the corpus read.** Stats without paragraphs read for context are blind. Always quote 1-2 example phrases per pattern.
+- **Skipping the corpus read.** Stats without paragraphs read for context are blind. Always quote 1–2 example phrases per pattern.
 - **Auto-applying to VOICE.md.** PILCROW.md is descriptive; VOICE.md is prescriptive. Don't write voice rules from extract — surface them, then run `teach` to commit.
-
----
-
-## Handoff
-
-- After `extract`, propose: "Want to walk through the possible signatures now?" If yes, run a focused `/pilcrow teach` covering just those.
-- The next `/pilcrow audit` will read `PILCROW.md` if present and weight findings accordingly.
