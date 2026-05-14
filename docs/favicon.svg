@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="10" fill="#f5f0e0"/>
+  <g fill="#937138">
+    <!-- bulb: filled half-disc on the left of the inner stem -->
+    <path d="M 30 11 A 11 11 0 0 0 30 33 Z"/>
+    <!-- inner stem -->
+    <rect x="30" y="11" width="4" height="44" rx="0.5"/>
+    <!-- outer stem -->
+    <rect x="38" y="11" width="4" height="44" rx="0.5"/>
+  </g>
+</svg>

@@ -1,0 +1,77 @@
+import { fuzzyFindAny } from "../fuzzy.js";
+import { makeFinding } from "../helpers.js";
+import type { Rule } from "../types.js";
+
+const WORDS = [
+  "transformative",
+  "groundbreaking",
+  "revolutionary",
+  "unleash",
+  "harness",
+  "elevate",
+  "demystify",
+  "myriad",
+  "plethora",
+  "seamless",
+  "cutting-edge",
+  "scalable",
+  "underscore",
+  "foster",
+  "ignite",
+  "empower",
+  "uncover",
+  "vibrant",
+  "beacon",
+  "symphony",
+  "showcase",
+  "boast",
+  "garner",
+  "meticulous",
+  "nuanced",
+  "enduring",
+  "bolster",
+  "streamline",
+  "encompass",
+  "renowned",
+  "robust",
+  "future-ready",
+  "future-proof",
+  "best-in-class",
+  "world-class",
+  "highlight",
+  "enhance",
+  "emphasize",
+  "cultivate",
+  "align",
+  "pivotal",
+  "vital",
+  "crucial",
+  "realm",
+  "ecosystem",
+  "paradigm",
+  "landscape",
+  "tapestry",
+  "mosaic",
+  "endeavor",
+  "labyrinth",
+  "kaleidoscope",
+];
+
+export const rule: Rule = {
+  id: "overused-words",
+  name: "Overused AI words",
+  severity: "info",
+  description:
+    "Single words that show up disproportionately in AI prose. Any one may be defensible in context, but in aggregate they form a recognizable AI accent. Matched via stem, so morphological variants (e.g., 'unleashes', 'fostering') are caught.",
+  phrases: WORDS,
+  check(ctx) {
+    return fuzzyFindAny(ctx.prose, ctx.tokens, WORDS, { allowInserts: 0 }).map((m) =>
+      makeFinding(
+        ctx,
+        m.start,
+        m.end,
+        `Overused AI word: "${m.text}". In aggregate, these form an AI accent.`,
+      ),
+    );
+  },
+};

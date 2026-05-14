@@ -1,0 +1,1 @@
+The migration ran for six hours on Saturday morning, draining the old cluster while the new one warmed up. By the time traffic returned at noon, every shard was already serving production reads and writes. No customer noticed.

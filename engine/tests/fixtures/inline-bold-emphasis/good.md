@@ -1,0 +1,1 @@
+The cache rewrite landed Tuesday. Read latency dropped 42% in the first week. Tail latency followed a few days later. Support tickets fell sharply and the on-call rotation slept through the weekend for the first time in months.

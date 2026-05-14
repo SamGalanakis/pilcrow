@@ -1,0 +1,1 @@
+When the team finally shipped the migration, after months of careful testing and three failed rollouts and one accidental data loss that nearly caused the CEO to fire everyone, the cache started behaving as expected and the latency numbers dropped surprisingly fast.

@@ -1,0 +1,54 @@
+{
+  "name": "pilcrow-ink",
+  "version": "0.4.0",
+  "description": "Prose linter that flags AI tells and writing-quality issues. 49 deterministic rules plus 19 LLM-judged ones. Detection-only.",
+  "license": "MIT",
+  "author": "Samuel Galanakis",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SamGalanakis/pilcrow.git"
+  },
+  "homepage": "https://pilcrow.ink",
+  "keywords": [
+    "writing",
+    "prose",
+    "ai",
+    "ai-slop",
+    "skills",
+    "anti-patterns",
+    "lint",
+    "ci-cd",
+    "editor"
+  ],
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "bin": {
+    "pilcrow": "cli/dist/index.js"
+  },
+  "main": "engine/dist/index.js",
+  "exports": {
+    ".": "./engine/dist/index.js"
+  },
+  "files": [
+    "cli/dist",
+    "engine/dist",
+    "skill",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build:engine": "tsc -p engine",
+    "build:cli": "tsc -p cli",
+    "build": "npm run build:engine && npm run build:cli",
+    "test": "vitest run",
+    "prepack": "npm run build",
+    "release": "node scripts/release.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}

@@ -1,0 +1,1 @@
+The **most important** thing to remember is that **scalability** is **non-negotiable**. Our system is **fast**, **secure**, and **reliable** by design. Every feature was built with **performance** in mind.

@@ -1,0 +1,1 @@
+Yes. The team gathered to discuss the proposal, weighing costs and benefits. Briefly. Then they voted, and the result, after considerable debate over the marketing impact, was a slim majority in favor of moving ahead. Done.
