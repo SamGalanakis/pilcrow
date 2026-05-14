@@ -32,6 +32,8 @@ pilcrow skills check              # show installed vs package version
 
 ## CLI
 
+Five engine commands:
+
 ```
 pilcrow audit [paths...] [--ignore-quoted]   Human-readable findings (default)
 pilcrow lint  [paths...] [--ignore-quoted]   JSON output for LLM consumption
@@ -43,6 +45,21 @@ pilcrow skills <subcommand>                  Install or update the skill in your
 Reads stdin if no paths. Recurses directories, scanning `.md`, `.mdx`, `.markdown`, `.txt`, `.html`, `.htm`.
 
 HTML support strips `<script>`, `<style>`, `<pre>`, and `<code>` content; decodes common entities; treats closing block tags as sentence breaks. Pass `--ignore-quoted` to skip phrases inside straight or curly double quotes — useful when prose discusses AI tells without quoting them in backticks.
+
+## Lenses
+
+Six interpretive lenses sit on top of the engine. Each loads its own reference file with a methodology drawn from a classical style guide. Lenses are invoked through the skill, not the CLI binary: `/pilcrow <lens> <target>` in any AI harness with the skill installed.
+
+| Lens | Anchor | What it does |
+|---|---|---|
+| `polish` | Strunk & White, Zinsser | Final pre-ship pass; triages findings into ship-blockers, worth-fixing, taste-calls |
+| `humanize` | Wikipedia *Signs of AI writing* | Strip AI tells while preserving voice; classifies findings into vocabulary, cadence, template, fossil |
+| `tighten` | Williams *Style* | Cut zombie nouns and weak verbs; per-sentence rewrites with the buried action surfaced |
+| `clarify` | Pinker *Sense of Style*, Orwell | Reduce reader's working-memory load; per-passage rewrites with mental-model commentary |
+| `pace` | King *On Writing*, Strunk | Restore rhythm; cadence histogram plus split/merge proposals |
+| `lead` | Zinsser on leads | Sharpen openings; finds the buried lede, proposes three alternative first sentences |
+
+A lens is not a rule filter — each defines its own procedure, rubric, and output. See `skill/reference/<lens>.md` for the playbooks.
 
 ## Rules
 

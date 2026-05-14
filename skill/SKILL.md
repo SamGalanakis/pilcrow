@@ -1,9 +1,9 @@
 ---
 name: pilcrow
-description: Detect AI tells and writing-quality issues in prose. Use when reviewing, polishing, or auditing markdown, HTML, or plain-text prose. Wraps the `pilcrow` CLI for invocation from inside an AI harness.
+description: Detect AI tells and writing-quality issues in prose. Use when reviewing, polishing, or auditing markdown, HTML, or plain-text prose. Wraps the `pilcrow` CLI plus six interpretive lenses (polish, humanize, tighten, clarify, pace, lead).
 version: 0.5.2
 user-invocable: true
-argument-hint: "[audit|lint|critique|rules|skills] [paths...]"
+argument-hint: "[audit|lint|critique · polish|humanize|tighten|clarify|pace|lead · rules|skills] [paths...]"
 allowed-tools:
   - Bash(pilcrow *)
   - Bash(npx pilcrow-ink *)
@@ -12,27 +12,34 @@ license: MIT
 
 # pilcrow ¶
 
-A prose linter that flags AI tells and writing-quality issues. 49 deterministic rules plus 19 LLM-judged ones. Detection-only — the engine never edits.
+A prose linter that flags AI tells and writing-quality issues. 49 deterministic rules plus 19 LLM-judged ones, plus six interpretive lenses anchored in classical style guides. Detection-only — the engine never edits.
 
 ## Routing rules
 
 Process the argument string `$ARG` (everything after `/pilcrow`) like this:
 
 1. **`$ARG` is empty, or its first word is `help`, `?`, `-h`, or `--help`**: render the command table below and ask which subcommand the user wants. Don't run anything.
-2. **First word of `$ARG` matches a subcommand** (`audit`, `lint`, `critique`, `rules`, `skills`):
+2. **First word is a CLI subcommand** (`audit`, `lint`, `critique`, `rules`, `skills`):
    - If a target/path follows, shell out: `pilcrow <subcommand> <rest>` via Bash.
    - If nothing follows AND no recent prose is in conversation, ask "what should I `<subcommand>`? (a file path, a directory, or text I should pipe to stdin)". Do not shell out with no input.
    - If nothing follows BUT a recent draft/quote/paragraph is in the conversation, pipe that text via `printf '%s' "..." | pilcrow <subcommand>` and report findings.
-3. **First word doesn't match any subcommand** — disambiguate by content:
-   - If `$ARG` resolves to an existing path on disk (file or directory): treat as a path and run `pilcrow audit $ARG`.
+3. **First word is a lens** (`polish`, `humanize`, `tighten`, `clarify`, `pace`, `lead`):
+   - Load `reference/<lens>.md` from this skill's directory.
+   - Follow that file's playbook end-to-end. Each lens defines its own procedure, rubric, and output shape.
+   - Use `pilcrow lint <target>` (and `pilcrow critique <target>` where applicable) to gather raw findings; the lens interprets them.
+   - Do not produce raw audit output for a lens command — that's what `audit` is for. A lens that returns the same output as `audit` has failed.
+4. **First word doesn't match anything** — disambiguate by content:
+   - If `$ARG` resolves to an existing path on disk: treat as a path and run `pilcrow audit $ARG`.
    - Otherwise: treat the entire `$ARG` as prose and pipe it: `printf '%s' "$ARG" | pilcrow audit`.
-4. **Typos**: if the first word looks like a misspelled subcommand (≤2 char edit distance), confirm the intended subcommand before running.
+5. **Typos**: if the first word looks like a misspelled subcommand or lens (≤2 char edit distance), confirm before running.
 
-Subcommands map 1:1 to the CLI binary. Don't re-implement them inline; always shell out. Pass flags through verbatim (`--ignore-quoted`, `--json`, `--rules=id,id`, `--all`, `--provider=.x`).
+Subcommands map 1:1 to the CLI binary. Pass flags through verbatim (`--ignore-quoted`, `--json`, `--rules=id,id`, `--all`, `--provider=.x`).
 
 ## Commands
 
-| Subcommand | What it does | Hint |
+### Utility (run the engine)
+
+| Command | What it does | Common flags |
 |---|---|---|
 | `audit [paths...]` | Run the 49-rule deterministic catalog, human-readable | `--ignore-quoted` |
 | `lint [paths...]` | Same scan, JSON output for piping | `--ignore-quoted` |
@@ -40,32 +47,35 @@ Subcommands map 1:1 to the CLI binary. Don't re-implement them inline; always sh
 | `rules` | List every rule with id, severity, description | `--json` |
 | `skills <install\|update\|check>` | Install or refresh the skill in `.claude/`, `.cursor/`, etc. | `--all`, `--provider=.x` |
 
+### Lenses (interpret findings through a tradition)
+
+Each lens loads its own reference file with a distinct methodology — not a rule filter. The output shape differs per lens.
+
+| Lens | Anchor | What it does | Reference |
+|---|---|---|---|
+| `polish` | Strunk & White, Zinsser | Final pre-ship pass: bundles audit + critique, triages into ship-blockers, worth-fixing, taste-calls | [reference/polish.md](reference/polish.md) |
+| `humanize` | Wikipedia *Signs of AI writing* | Strip AI tells while preserving voice; classifies findings into vocabulary, cadence, template, fossil | [reference/humanize.md](reference/humanize.md) |
+| `tighten` | Williams *Style* | Cut zombie nouns and weak verbs; per-sentence rewrites with the buried action surfaced | [reference/tighten.md](reference/tighten.md) |
+| `clarify` | Pinker *Sense of Style*, Orwell | Reduce reader's working-memory load; per-passage rewrites with mental-model commentary | [reference/clarify.md](reference/clarify.md) |
+| `pace` | King *On Writing*, Strunk | Restore rhythm; emits a cadence histogram plus split/merge proposals | [reference/pace.md](reference/pace.md) |
+| `lead` | Zinsser on leads | Sharpen openings; finds the buried lede and proposes three alternative first sentences | [reference/lead.md](reference/lead.md) |
+
 The CLI scans `.md`, `.mdx`, `.markdown`, `.txt`, `.html`, `.htm`. Stdin works when no path is given. `--ignore-quoted` masks content inside double quotes so prose discussing AI tells doesn't trigger its own rules.
 
 Install once: `npm install -g pilcrow-ink` (the binary is `pilcrow`). Or use `npx pilcrow-ink ...`.
 
-## How I use this
+## How a lens works
 
-1. Run `pilcrow audit <file>` and read the findings.
-2. For higher-level critique (buried lede, voice drift, marketing-template cadence, stakes inflation, listicle-in-prose, …) run `pilcrow critique <file>` to get the prompt, then evaluate the prose against it.
-3. Propose edits. Re-run audit after.
+The pattern is the same for every lens:
 
-## What audit catches
+1. Load `reference/<lens>.md` for the playbook.
+2. Run `pilcrow lint <target> --ignore-quoted` to get JSON findings.
+3. For LLM-judged rules where the lens cares, also run `pilcrow critique <target>` and evaluate.
+4. Apply the lens's interpretation rubric: which findings matter most under this lens, how to read them, what rewrite shape to propose.
+5. Emit the lens-specific output shape (defined in each reference file).
+6. Suggest the next lens if the playbook recommends a handoff.
 
-Deterministic rules in five families:
-
-- **AI phrasebank**: `ai-tell-phrasebank`, `overused-words`, `antithesis-cadence`, `throat-clearing-openers`, `cliche-closers`, `meta-discourse`, `copula-dodge`, `corporate-cliche`, `cliche-list`, `wordy-phrases`, `redundant-pairs`, `weasel-hedges`, `vague-quantifiers`
-- **AI fossils (delete on sight)**: `signoff-chatbot`, `sycophant-opener`, `disclaimer-tail`, `citation-artifact`
-- **Density and cadence**: `em-dash-density`, `adverb-density`, `nominalization-density`, `boosters`, `passive-voice`, `pronoun-density-low`, `parenthetical-aside-density`, `inline-bold-emphasis`, `sentence-length-monotony`, `sentence-too-long`, `paragraph-monotony`, `parallel-triplet-density`, `transition-stacking`, `repeated-words-window`, `noun-stacking`, `anaphora-cadence`, `fragment-cadence`, `hero-tagline-imperative`, `from-x-to-y`, `present-participle-tail`
-- **Consistency and weak constructions**: `dash-style-inconsistency`, `quote-style-inconsistency`, `oxford-comma-inconsistency`, `there-is-there-are`, `expletives`, `negation-of-negation`, `pronoun-it-vague`
-- **Markdown shape**: `bullet-bold-lead`, `title-case-headers`, `colon-headline`, `decorative-emoji`, `false-precision-headline`
-
-## What critique catches
-
-LLM-judged rules — semantic and rhetorical judgments regex can't make:
-`buried-lede`, `voice-consistency`, `mixed-metaphor`, `claim-without-support`, `missing-stakes`, `distinctive-vs-generic`, `abstract-without-concrete`, `showing-vs-telling`, `transition-coherence`, `register-mismatch`, `excessive-balance`, `redundant-thesis`, `marketing-template-cadence`, `sycophantic-tone`, `stakes-inflation`, `false-reframe`, `invented-concept-label`, `listicle-disguise`, `one-point-dilution`.
-
-For the complete catalog with every phrase, run `pilcrow rules` or visit the docs.
+A lens is the **how**; the engine is the **what**. Never skip the reference file — the rule subset is incidental; the methodology is the substance.
 
 ## Output shape (for piping)
 
@@ -98,4 +108,4 @@ For the complete catalog with every phrase, run `pilcrow rules` or visit the doc
 
 ## Don't auto-apply suggestions
 
-The `suggestion` field is informational. The engine never modifies prose. When fixing a finding, propose a rewrite to the user and wait for confirmation before editing the file — voice and intent override the rule.
+The `suggestion` field is informational. The engine never modifies prose. When a lens proposes rewrites, present them to the user and wait for confirmation before editing the file — voice and intent override the rule.

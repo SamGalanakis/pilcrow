@@ -117,68 +117,33 @@ pilcrow critique drafts/post.md | llm -m gpt-5</code></pre>
       <section class="chapter" id="commands">
         <p class="chapter-mark">Chapter IV</p>
         <h2 class="chapter-title">Commands</h2>
-        <p>Pilcrow exposes twenty-one commands grouped by what they do. The CLI ships <code>audit</code>, <code>lint</code>, <code>critique</code>, and <code>rules</code> today; the rest live in the skill and run inside an agent harness. All commands are detection-only at the deterministic layer; the LLM decides what to change.</p>
+        <p>Pilcrow exposes eleven commands today. Five run the engine; six load an interpretive lens. The engine is the <em>what</em> &mdash; deterministic findings, milliseconds per file. The lens is the <em>how</em> &mdash; a reference file anchored in a classical style guide that tells the model which findings matter under that lens and what rewrite shape to propose. Lenses are not rule filters; each has its own methodology, its own output, its own anti-patterns.</p>
 
-        <h3>Detect &amp; report</h3>
+        <h3>Utility &mdash; run the engine</h3>
         <table>
           <tbody>
-            <tr><td>audit</td><td>run the deterministic catalog and report findings</td></tr>
-            <tr><td>critique</td><td>run the LLM pass against the higher-level catalog</td></tr>
-            <tr><td>polish</td><td>final pre-publish pass; surfaces both layers in one report</td></tr>
+            <tr><td><code>audit</code></td><td>run the deterministic catalog; human-readable findings</td></tr>
+            <tr><td><code>lint</code></td><td>same scan; JSON output for piping</td></tr>
+            <tr><td><code>critique</code></td><td>emit the LLM-critique prompt for the 19 higher-level rules</td></tr>
+            <tr><td><code>rules</code></td><td>list every rule with id, severity, description</td></tr>
+            <tr><td><code>skills</code></td><td>install or refresh the skill in your harness</td></tr>
           </tbody>
         </table>
 
-        <h3>One-axis edits</h3>
-        <p>Each pushes the prose along a single dimension of the seven references.</p>
+        <h3>Lenses &mdash; interpret findings through a tradition</h3>
+        <p>Each lens loads a reference file (<code>skill/reference/&lt;name&gt;.md</code>) when invoked. The reference encodes a methodology drawn from a named style guide, plus rewrite patterns, an output shape, and anti-patterns. None of them is a subset of <code>audit</code>; each produces a different report.</p>
         <table>
+          <thead><tr><th>Lens</th><th>Anchor</th><th>What it does</th></tr></thead>
           <tbody>
-            <tr><td>clarify</td><td>untangle unclear writing</td></tr>
-            <tr><td>tighten</td><td>line-edit-level cuts; reduce word count</td></tr>
-            <tr><td>pace</td><td>modulate sentence-length variation and rhythm</td></tr>
-            <tr><td>vivid</td><td>add concrete imagery and specificity</td></tr>
-            <tr><td>voice</td><td>adjust voice and register</td></tr>
-            <tr><td>lead</td><td>sharpen openings, leads, hooks</td></tr>
-            <tr><td>humanize</td><td>strip AI tells, restore an authentic cadence</td></tr>
+            <tr><td><code>polish</code></td><td>Strunk &amp; White, Zinsser</td><td>final pre-ship pass; triages findings into ship-blockers, worth-fixing, taste-calls</td></tr>
+            <tr><td><code>humanize</code></td><td>Wikipedia <em>Signs of AI writing</em></td><td>strip AI tells while preserving voice; classifies into vocabulary, cadence, template, fossil</td></tr>
+            <tr><td><code>tighten</code></td><td>Williams <em>Style</em></td><td>cut zombie nouns and weak verbs; per-sentence rewrites with the buried action surfaced</td></tr>
+            <tr><td><code>clarify</code></td><td>Pinker <em>Sense of Style</em>, Orwell</td><td>reduce reader&rsquo;s working-memory load; per-passage rewrites with mental-model commentary</td></tr>
+            <tr><td><code>pace</code></td><td>King <em>On Writing</em>, Strunk</td><td>restore rhythm; cadence histogram plus split/merge proposals</td></tr>
+            <tr><td><code>lead</code></td><td>Zinsser on leads</td><td>sharpen openings; finds the buried lede, proposes three alternative first sentences</td></tr>
           </tbody>
         </table>
-
-        <h3>Direction modifiers</h3>
-        <p>Push the prose somewhere on purpose.</p>
-        <table>
-          <tbody>
-            <tr><td>sharpen</td><td>make weak or timid prose decisive</td></tr>
-            <tr><td>soften</td><td>tone down strident or aggressive prose</td></tr>
-            <tr><td>distill</td><td>strip to essence; aggressive compression</td></tr>
-            <tr><td>harden</td><td>anticipate counterarguments; add caveats and evidence</td></tr>
-          </tbody>
-        </table>
-
-        <h3>Flow</h3>
-        <p>Multi-step orchestrations that carry context across phases.</p>
-        <table>
-          <tbody>
-            <tr><td>craft</td><td>full plan → draft → critique → revise → polish</td></tr>
-            <tr><td>shape</td><td>outline before drafting</td></tr>
-            <tr><td>live</td><td>generate variants of a passage side-by-side</td></tr>
-          </tbody>
-        </table>
-
-        <h3>Context</h3>
-        <table>
-          <tbody>
-            <tr><td>adapt</td><td>rewrite for a different audience or genre</td></tr>
-          </tbody>
-        </table>
-
-        <h3>Bootstrap</h3>
-        <p>One-time per-project setup.</p>
-        <table>
-          <tbody>
-            <tr><td>teach</td><td>interview the writer; write <code>VOICE.md</code></td></tr>
-            <tr><td>document</td><td>infer <code>VOICE.md</code> from existing prose in the repo</td></tr>
-            <tr><td>extract</td><td>pull recurring phrases and patterns into a personal style guide</td></tr>
-          </tbody>
-        </table>
+        <p>Each lens recommends a handoff to another lens when its own job is done &mdash; <code>humanize</code> hands off to <code>polish</code>; <code>tighten</code> can hand off to <code>clarify</code> or <code>pace</code>; <code>lead</code> hands off to <code>polish</code>. Chains are the writer&rsquo;s call.</p>
       </section>
 
       <section class="chapter" id="deterministic">
