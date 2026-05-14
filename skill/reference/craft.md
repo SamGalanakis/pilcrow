@@ -17,7 +17,6 @@ The four methods are not a hierarchy. They are kinds of writer.
 ## Load before running
 
 - `VOICE.md` if present — load via `scripts/load-context.mjs`. Read `method:` to pick the phase-2 variant. Read `genre`, `audience`, `stance`, `Signatures`, `Taboos` to shape every phase.
-- `PILCROW.md` if present — recurring patterns to avoid in the draft.
 - [_genres.md](_genres.md) — for phase-1 outline conventions.
 - [_readers.md](_readers.md) — for phase-1 audience framing.
 
@@ -83,7 +82,7 @@ If "change", adjust and re-confirm. If "scrap", restart Phase 1 with a new round
 
 The model writes a first draft following the outline. The writer sees it whole.
 
-The model does not run any pilcrow rules yet. The brief and outline are the only context (plus VOICE.md / PILCROW.md if present).
+The model does not run any pilcrow rules yet. The brief and outline are the only context (plus VOICE.md if present).
 
 After the draft, emit it as-is. **Gate:** "Reads broadly right, or pivot the angle?"
 
@@ -196,6 +195,6 @@ drafts/<slug>.md
 - **In model-drafter mode, treating the model draft as the answer.** The model draft is raw material. The writer must rewrite. Skipping that step defeats the method's purpose.
 - **Drafting longer than the brief implies.** A brief for a 600-word post should not produce a 2,500-word draft.
 - **Grinding through more than two polish passes.** Endless polish is its own AI tell — sentences gain a glossy uniformity.
-- **Ignoring VOICE.md / PILCROW.md.** The whole point of those files is to make `craft`'s draft sound like the writer.
+- **Ignoring VOICE.md.** The whole point of the file is to make `craft`'s draft sound like the writer.
 - **Auto-writing to disk.** `craft` never writes a file without explicit confirmation.
 - **Saving `method:` to VOICE.md without asking.** If VOICE.md exists but `method:` is unset, ask once and confirm the answer before writing.

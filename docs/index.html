@@ -74,7 +74,6 @@
           <ol class="spine-sub">
             <li><a href="#project-teach"><code>teach</code></a></li>
             <li><a href="#project-document"><code>document</code></a></li>
-            <li><a href="#project-extract"><code>extract</code></a></li>
             <li><a href="#project-craft"><code>craft</code></a></li>
           </ol>
         </li>
@@ -183,19 +182,15 @@ pilcrow skills check      # show installed vs package version</code></pre>
 
       <section class="chapter" id="project">
         <h2 class="chapter-title">Project</h2>
-        <p>Project commands act on the repo, not on a single passage. They capture the writer&rsquo;s voice so lens proposals sound like the writer, and they shape a new piece end to end. Each writes to disk only after explicit confirmation.</p>
-
-        <h3 id="project-teach">teach</h3>
-        <p>Multi-round interview to capture voice. Asks for genre, audience, stance, drafting method, signatures, taboos, and exceptions. Writes <code>VOICE.md</code>.</p>
-        <pre><code>/pilcrow teach</code></pre>
+        <p>Project commands act on the repo, not on a single passage. They capture the writer&rsquo;s voice so editor proposals sound like the writer, and they shape a new piece end to end. Each writes to disk only after explicit confirmation. Single source of truth: <code>VOICE.md</code>.</p>
 
         <h3 id="project-document">document</h3>
-        <p>Infer voice from existing prose in the repo. Reads a corpus, computes stylometric features it can measure mechanically, and writes a draft <code>VOICE.md</code> with citations and an explicit <strong>Open questions</strong> section for fields the stats can&rsquo;t answer.</p>
+        <p>Scan existing prose in the repo. Computes stylometric features (sentence rhythm, em-dash density, vocabulary profile) and surfaces recurring moves (phrases, cadences, structural habits, punctuation tics). Writes a draft <code>VOICE.md</code> with citations and explicit <strong>Open questions</strong> for fields the stats can&rsquo;t answer (audience, stance, method).</p>
         <pre><code>/pilcrow document</code></pre>
 
-        <h3 id="project-extract">extract</h3>
-        <p>Pull the writer&rsquo;s recurring moves out of their corpus: phrases they reach for, cadences they use, structural habits, punctuation tics. Writes <code>PILCROW.md</code> as a descriptive voice-signature catalog. Overlap with the AI-tell catalog is a side note; the writer decides keep-or-cut via <code>teach</code>.</p>
-        <pre><code>/pilcrow extract</code></pre>
+        <h3 id="project-teach">teach</h3>
+        <p>Interview the writer to refine an existing <code>VOICE.md</code> (answer the Open questions, confirm or correct inferred Signatures, edit Taboos) or create one from scratch if there&rsquo;s no corpus to scan. Use after <code>document</code> for the typical flow, or standalone for new projects.</p>
+        <pre><code>/pilcrow teach</code></pre>
 
         <h3 id="project-craft">craft</h3>
         <p>Method-aware end-to-end writing. Picks <code>outliner</code>, <code>discovery</code>, <code>iterative</code>, or <code>model-drafter</code> at start (or reads <code>method:</code> from <code>VOICE.md</code>). Four phases (shape, draft, critique, polish), each gated by writer confirmation.</p>

@@ -6,7 +6,7 @@ Universal laws every pilcrow command respects. Loaded by all editor commands; do
 
 A rule that fires on the writer's deliberate choice is not a finding — it's a category error. Always check the surrounding context before proposing a cut. The em-dash density rule fires whenever em-dashes exceed a threshold; if the writer uses em-dashes for contrast and interruption *throughout the piece*, that's voice, and the command demotes the finding to `info` or skips it.
 
-`VOICE.md` exceptions override any rule. `PILCROW.md` recurring patterns are surfaced to the writer, not silently rewritten.
+`VOICE.md` exceptions override any rule. Signatures in `VOICE.md` are preserved in proposed rewrites; Taboos are flagged.
 
 ## 2. Command output ≠ raw audit
 

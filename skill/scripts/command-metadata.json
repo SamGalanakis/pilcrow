@@ -15,8 +15,7 @@
   "aloud":    { "description": "Play the prose back via OpenAI TTS in an interactive session. Modes: walkthrough, full, targeted, compare. Requires OPENAI_API_KEY.",                                                "argumentHint": "[paths...] [--mode=walkthrough|full|targeted|compare]", "category": "editor" },
   "argue":    { "description": "Map the piece's argument structure and stress-test it. Four phases: confirm the thesis (multi-choice), map supports/objections/premises, generate the strongest counter, check coverage.", "argumentHint": "[paths...] [--argdown]", "category": "editor" },
 
-  "teach":    { "description": "Multi-round interview to capture the writer's voice (genre, audience, stance, method, signatures, taboos). Writes VOICE.md.",       "argumentHint": "",           "category": "project" },
-  "document": { "description": "Infer the writer's voice from existing prose in the repo. Writes VOICE.md with citations and explicit open questions for the writer.", "argumentHint": "",           "category": "project" },
-  "extract":  { "description": "Pull the writer's recurring moves from their corpus (phrases, cadences, structural habits, punctuation tics). Writes PILCROW.md as a descriptive voice-signature catalog. AI-tell overlap is a side note.", "argumentHint": "", "category": "project" },
+  "teach":    { "description": "Interview the writer to create or refine VOICE.md (genre, audience, stance, method, signatures, taboos). Confirm open questions left by document; lock recurring moves as signatures or taboos.", "argumentHint": "", "category": "project" },
+  "document": { "description": "Scan the writer's existing prose. Compute stylometric features and surface recurring moves (phrases, cadences, structural habits, punctuation tics). Writes a draft VOICE.md with citations and open questions for the writer to refine via teach.", "argumentHint": "", "category": "project" },
   "craft":    { "description": "Method-aware end-to-end essay writing. Picks outliner / discovery / iterative / model-drafter at start; runs the matching flow with critique and polish gates.", "argumentHint": "[topic]", "category": "project" }
 }

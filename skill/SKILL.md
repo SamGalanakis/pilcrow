@@ -30,7 +30,7 @@ Turn the LLM in your harness into the editor it should be. Deterministic checks 
 
 Before any editor or project command runs:
 
-1. Load project context — `VOICE.md` and `PILCROW.md` if present.
+1. Load project context — `VOICE.md` if present.
 2. Apply absolute writing bans (below) regardless of command.
 3. Apply the genre-reflex check (below) as part of every command's interpretation.
 
@@ -42,7 +42,7 @@ Every editor or project command begins by loading shared context:
 node {{scripts_path}}/load-context.mjs
 ```
 
-The script returns JSON with `VOICE.md` (the writer's voice profile) and `PILCROW.md` (the writer's recurring moves extracted from their corpus) if either exists at the project root, in `.pilcrow/`, or in `docs/`. Cache the result for the session; don't re-run within the same conversation.
+The script returns JSON with `VOICE.md` (the writer's voice profile) if it exists at the project root, in `.pilcrow/`, or in `docs/`. Cache the result for the session; don't re-run within the same conversation.
 
 If `VOICE.md` is absent, suggest `{{command_prefix}}pilcrow teach` once per session. Don't block the command; just nudge.
 
@@ -79,13 +79,13 @@ Process the argument string `$ARG` (everything after `{{command_prefix}}pilcrow`
    - If a target/path follows, shell out: `pilcrow <subcommand> <rest>` via Bash.
    - If nothing follows AND no recent prose is in conversation, ask "what should I `<subcommand>`?". Do not shell out with no input.
    - If nothing follows BUT recent prose is in the conversation, pipe that text via `printf '%s' "..." | pilcrow <subcommand>` and report findings.
-3. **First word is an editor or project command** (`polish`, `humanize`, `tighten`, `clarify`, `pace`, `lead`, `verify`, `aloud`, `argue`, `teach`, `document`, `extract`, `craft`):
+3. **First word is an editor or project command** (`polish`, `humanize`, `tighten`, `clarify`, `pace`, `lead`, `verify`, `aloud`, `argue`, `teach`, `document`, `craft`):
    - Load shared context via `node {{scripts_path}}/load-context.mjs` (skip if already cached this session).
    - Load `reference/<command>.md` from this skill's directory.
    - Also load any cross-cutting reference files that command's playbook names (`reference/_*.md`).
    - Follow the playbook end-to-end. Each command defines its own procedure, rubric, and output shape.
    - Editor commands use `pilcrow lint <target>` and `pilcrow critique <target>` for input; the command interprets the findings through the loaded references.
-   - Project commands (teach, document, extract, craft) also read or write project files (`VOICE.md`, `PILCROW.md`, `drafts/`). Follow the reference file's explicit gating; never write to disk without confirmation.
+   - Project commands (teach, document, craft) also read or write project files (`VOICE.md`, `drafts/`). Follow the reference file's explicit gating; never write to disk without confirmation.
    - Do not produce raw audit output for an editor command — that's what `audit` is for. An editor command that returns the same shape as `audit` has failed.
 4. **First word doesn't match anything** — disambiguate by content:
    - If `$ARG` resolves to an existing path on disk: treat as a path and run `pilcrow audit $ARG`.
@@ -124,9 +124,8 @@ Subcommands map 1:1 to the CLI binary. Pass flags through verbatim (`--ignore-qu
 
 | Command | What it does | Reference |
 |---|---|---|
-| `teach` | Multi-round interview to capture the writer's voice; writes `VOICE.md` | [reference/teach.md](reference/teach.md) |
-| `document` | Infer voice from existing prose in the repo; writes `VOICE.md` with citations and open questions | [reference/document.md](reference/document.md) |
-| `extract` | Pull the writer's recurring moves from their corpus (phrases, cadences, structural habits, punctuation tics); writes `PILCROW.md` as a voice-signature catalog | [reference/extract.md](reference/extract.md) |
+| `teach` | Interview the writer to create or refine `VOICE.md`. Used after `document` to lock open questions, or standalone if there's no existing corpus | [reference/teach.md](reference/teach.md) |
+| `document` | Scan existing prose. Computes stylometric features, surfaces recurring moves, drafts `VOICE.md` with citations and open questions for `teach` to resolve | [reference/document.md](reference/document.md) |
 | `craft` | Method-aware end-to-end writing (outliner / discovery / iterative / model-drafter); shape → draft → critique → polish | [reference/craft.md](reference/craft.md) |
 
 ## Pin / unpin

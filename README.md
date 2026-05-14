@@ -74,12 +74,11 @@ Project commands act on the repo, not on a single passage. They capture the writ
 
 | Command | What it does |
 |---|---|
-| `teach` | Multi-round interview to capture the writer's voice; writes `VOICE.md` |
-| `document` | Infer voice from existing prose in the repo; writes `VOICE.md` with citations and open questions |
-| `extract` | Pull the writer's recurring moves from their corpus (phrases, cadences, structural habits, punctuation tics); writes `PILCROW.md` as a voice-signature catalog |
-| `craft` | End-to-end essay writing with gates: shape → draft → critique → polish; respects `VOICE.md` and `PILCROW.md` |
+| `document` | Scan existing prose. Computes stylometric features, surfaces recurring moves (phrases, cadences, structural habits, punctuation tics), drafts `VOICE.md` with citations and open questions |
+| `teach` | Interview the writer to refine an existing `VOICE.md` (answer the open questions, confirm Signatures, edit Taboos) or create one from scratch |
+| `craft` | End-to-end essay writing with gates: shape → draft → critique → polish; respects `VOICE.md` |
 
-Each writes to disk only after explicit confirmation. Once `VOICE.md` or `PILCROW.md` exist, every editor command reads them on invocation and weights findings accordingly.
+Each writes to disk only after explicit confirmation. Once `VOICE.md` exists, every editor command reads it on invocation and weights findings accordingly.
 
 `teach` captures four axes the editor commands use: **genre** (essay / explainer / report / marketing / memo / fiction), **audience** (a concrete reader, optionally mapped to one of the built-in personas), **stance** (claim / explain / persuade / narrate), and **method** (outliner / discovery / iterative / model-drafter). `craft` reads `method:` and runs one of four phase-2 variants — outliners get an outline-first draft, discovery writers get a free first pass, iterative writers get paragraph-by-paragraph gates, and model-drafter users get the model's draft as raw material to rewrite.
 
