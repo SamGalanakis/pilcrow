@@ -42,7 +42,7 @@ Every editor or project command begins by loading shared context:
 node {{scripts_path}}/load-context.mjs
 ```
 
-The script returns JSON with `VOICE.md` (the writer's voice profile) and `PILCROW.md` (their personal anti-pattern catalog) if either exists at the project root, in `.pilcrow/`, or in `docs/`. Cache the result for the session; don't re-run within the same conversation.
+The script returns JSON with `VOICE.md` (the writer's voice profile) and `PILCROW.md` (the writer's recurring moves extracted from their corpus) if either exists at the project root, in `.pilcrow/`, or in `docs/`. Cache the result for the session; don't re-run within the same conversation.
 
 If `VOICE.md` is absent, suggest `{{command_prefix}}pilcrow teach` once per session. Don't block the command; just nudge.
 
