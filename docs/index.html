@@ -46,13 +46,11 @@
         <li><a class="spine-item" href="#start">Start</a></li>
         <li><a class="spine-item" href="#install">Install</a></li>
         <li>
-          <a class="spine-item" href="#cli">CLI</a>
+          <a class="spine-item" href="#project">Project</a>
           <ol class="spine-sub">
-            <li><a href="#cli-audit"><code>audit</code></a></li>
-            <li><a href="#cli-lint"><code>lint</code></a></li>
-            <li><a href="#cli-critique"><code>critique</code></a></li>
-            <li><a href="#cli-rules"><code>rules</code></a></li>
-            <li><a href="#cli-skills"><code>skills</code></a></li>
+            <li><a href="#project-document"><code>document</code></a></li>
+            <li><a href="#project-teach"><code>teach</code></a></li>
+            <li><a href="#project-craft"><code>craft</code></a></li>
           </ol>
         </li>
         <li>
@@ -70,11 +68,13 @@
           </ol>
         </li>
         <li>
-          <a class="spine-item" href="#project">Project</a>
+          <a class="spine-item" href="#cli">CLI</a>
           <ol class="spine-sub">
-            <li><a href="#project-teach"><code>teach</code></a></li>
-            <li><a href="#project-document"><code>document</code></a></li>
-            <li><a href="#project-craft"><code>craft</code></a></li>
+            <li><a href="#cli-audit"><code>audit</code></a></li>
+            <li><a href="#cli-lint"><code>lint</code></a></li>
+            <li><a href="#cli-critique"><code>critique</code></a></li>
+            <li><a href="#cli-rules"><code>rules</code></a></li>
+            <li><a href="#cli-skills"><code>skills</code></a></li>
           </ol>
         </li>
         <li><a class="spine-item" href="#catalog">Catalog</a></li>
@@ -103,37 +103,21 @@ pilcrow skills install</code></pre>
         <p>Auto-detects <code>.claude</code>, <code>.cursor</code>, <code>.gemini</code>, <code>.agents</code>, <code>.opencode</code>, <code>.kiro</code>, <code>.pi</code>, <code>.qoder</code>, <code>.trae</code>, <code>.github</code>. Pass <code>--all</code> for every supported provider, or <code>--provider=.cursor</code> for one specifically.</p>
       </section>
 
-      <section class="chapter" id="cli">
-        <h2 class="chapter-title">CLI</h2>
-        <p>Five commands run directly against prose. Reads stdin if you don&rsquo;t pass a path. Recurses directories, scanning <code>.md</code>, <code>.mdx</code>, <code>.markdown</code>, <code>.txt</code>, <code>.html</code>, <code>.htm</code>.</p>
+      <section class="chapter" id="project">
+        <h2 class="chapter-title">Project</h2>
+        <p>Project commands act on the repo, not on a single passage. They capture the writer&rsquo;s voice so editor proposals sound like the writer, and they shape a new piece end to end. Each writes to disk only after explicit confirmation. Single source of truth: <code>VOICE.md</code>.</p>
 
-        <h3 id="cli-audit">audit</h3>
-        <p>Run the rule catalog. Human-readable findings with line, column, excerpt, and an optional rewrite hint.</p>
-        <pre><code>pilcrow audit drafts/post.md
-pilcrow audit drafts/ --ignore-quoted
-echo "Let me delve into the rich tapestry…" | pilcrow audit</code></pre>
-        <p>Exits non-zero when an <code>error</code>-severity finding fires. The <code>--ignore-quoted</code> flag skips phrases inside straight or curly double quotes, useful for prose that quotes AI tells without backticking them.</p>
+        <h3 id="project-document">document</h3>
+        <p>Scan existing prose in the repo. Computes stylometric features (sentence rhythm, em-dash density, vocabulary profile) and surfaces recurring moves (phrases, cadences, structural habits, punctuation tics). Writes a draft <code>VOICE.md</code> with citations and explicit <strong>Open questions</strong> for fields the stats can&rsquo;t answer (audience, stance, method).</p>
+        <pre><code>/pilcrow document</code></pre>
 
-        <h3 id="cli-lint">lint</h3>
-        <p>Same scan as <code>audit</code>, JSON output for piping into another tool or back to a model.</p>
-        <pre><code>pilcrow lint drafts/post.md | jq '.files[0].findings[] | select(.severity == "error")'</code></pre>
+        <h3 id="project-teach">teach</h3>
+        <p>Interview the writer to refine an existing <code>VOICE.md</code> (answer the Open questions, confirm or correct inferred Signatures, edit Taboos) or create one from scratch if there&rsquo;s no corpus to scan. Use after <code>document</code> for the typical flow, or standalone for new projects.</p>
+        <pre><code>/pilcrow teach</code></pre>
 
-        <h3 id="cli-critique">critique</h3>
-        <p>Emit the LLM-critique prompt. Patterns regex can&rsquo;t reliably catch (buried lede, mixed metaphor, missing stakes, unsupported claims) packaged as a single prompt the model evaluates. The model returns JSON findings in the same shape as <code>lint</code>.</p>
-        <pre><code>pilcrow critique drafts/post.md | claude
-pilcrow critique drafts/post.md --rules=buried-lede,unsupported-claim</code></pre>
-
-        <h3 id="cli-rules">rules</h3>
-        <p>List every rule with id, severity, and one-line description.</p>
-        <pre><code>pilcrow rules
-pilcrow rules --json</code></pre>
-        <p>Full catalog at <a href="rules.html">the catalog page</a>.</p>
-
-        <h3 id="cli-skills">skills</h3>
-        <p>Manage the pilcrow skill inside your AI harness.</p>
-        <pre><code>pilcrow skills install    # auto-detect and install
-pilcrow skills update     # re-sync after `npm update -g pilcrow-ink`
-pilcrow skills check      # show installed vs package version</code></pre>
+        <h3 id="project-craft">craft</h3>
+        <p>Method-aware end-to-end writing. Picks <code>outliner</code>, <code>discovery</code>, <code>iterative</code>, or <code>model-drafter</code> at start (or reads <code>method:</code> from <code>VOICE.md</code>). Four phases (shape, draft, critique, polish), each gated by writer confirmation.</p>
+        <pre><code>/pilcrow craft "topic or assignment"</code></pre>
       </section>
 
       <section class="chapter" id="editor">
@@ -180,21 +164,37 @@ pilcrow skills check      # show installed vs package version</code></pre>
 /pilcrow argue drafts/post.md --argdown   # also emit a .argdown file</code></pre>
       </section>
 
-      <section class="chapter" id="project">
-        <h2 class="chapter-title">Project</h2>
-        <p>Project commands act on the repo, not on a single passage. They capture the writer&rsquo;s voice so editor proposals sound like the writer, and they shape a new piece end to end. Each writes to disk only after explicit confirmation. Single source of truth: <code>VOICE.md</code>.</p>
+      <section class="chapter" id="cli">
+        <h2 class="chapter-title">CLI</h2>
+        <p>Five commands run directly against prose. Reads stdin if you don&rsquo;t pass a path. Recurses directories, scanning <code>.md</code>, <code>.mdx</code>, <code>.markdown</code>, <code>.txt</code>, <code>.html</code>, <code>.htm</code>.</p>
 
-        <h3 id="project-document">document</h3>
-        <p>Scan existing prose in the repo. Computes stylometric features (sentence rhythm, em-dash density, vocabulary profile) and surfaces recurring moves (phrases, cadences, structural habits, punctuation tics). Writes a draft <code>VOICE.md</code> with citations and explicit <strong>Open questions</strong> for fields the stats can&rsquo;t answer (audience, stance, method).</p>
-        <pre><code>/pilcrow document</code></pre>
+        <h3 id="cli-audit">audit</h3>
+        <p>Run the rule catalog. Human-readable findings with line, column, excerpt, and an optional rewrite hint.</p>
+        <pre><code>pilcrow audit drafts/post.md
+pilcrow audit drafts/ --ignore-quoted
+echo "Let me delve into the rich tapestry…" | pilcrow audit</code></pre>
+        <p>Exits non-zero when an <code>error</code>-severity finding fires. The <code>--ignore-quoted</code> flag skips phrases inside straight or curly double quotes, useful for prose that quotes AI tells without backticking them.</p>
 
-        <h3 id="project-teach">teach</h3>
-        <p>Interview the writer to refine an existing <code>VOICE.md</code> (answer the Open questions, confirm or correct inferred Signatures, edit Taboos) or create one from scratch if there&rsquo;s no corpus to scan. Use after <code>document</code> for the typical flow, or standalone for new projects.</p>
-        <pre><code>/pilcrow teach</code></pre>
+        <h3 id="cli-lint">lint</h3>
+        <p>Same scan as <code>audit</code>, JSON output for piping into another tool or back to a model.</p>
+        <pre><code>pilcrow lint drafts/post.md | jq '.files[0].findings[] | select(.severity == "error")'</code></pre>
 
-        <h3 id="project-craft">craft</h3>
-        <p>Method-aware end-to-end writing. Picks <code>outliner</code>, <code>discovery</code>, <code>iterative</code>, or <code>model-drafter</code> at start (or reads <code>method:</code> from <code>VOICE.md</code>). Four phases (shape, draft, critique, polish), each gated by writer confirmation.</p>
-        <pre><code>/pilcrow craft "topic or assignment"</code></pre>
+        <h3 id="cli-critique">critique</h3>
+        <p>Emit the LLM-critique prompt. Patterns regex can&rsquo;t reliably catch (buried lede, mixed metaphor, missing stakes, unsupported claims) packaged as a single prompt the model evaluates. The model returns JSON findings in the same shape as <code>lint</code>.</p>
+        <pre><code>pilcrow critique drafts/post.md | claude
+pilcrow critique drafts/post.md --rules=buried-lede,unsupported-claim</code></pre>
+
+        <h3 id="cli-rules">rules</h3>
+        <p>List every rule with id, severity, and one-line description.</p>
+        <pre><code>pilcrow rules
+pilcrow rules --json</code></pre>
+        <p>Full catalog at <a href="rules.html">the catalog page</a>.</p>
+
+        <h3 id="cli-skills">skills</h3>
+        <p>Manage the pilcrow skill inside your AI harness.</p>
+        <pre><code>pilcrow skills install    # auto-detect and install
+pilcrow skills update     # re-sync after `npm update -g pilcrow-ink`
+pilcrow skills check      # show installed vs package version</code></pre>
       </section>
 
       <section class="chapter" id="catalog">
@@ -204,16 +204,6 @@ pilcrow skills check      # show installed vs package version</code></pre>
 
     </article>
   </main>
-
-  <section class="colophon">
-    <div class="colophon-wrap">
-      <p class="colophon-eyebrow">Colophon</p>
-      <h2>About the book</h2>
-      <p>Set in <strong>ET Book</strong>, Edward Tufte&rsquo;s revival of Bembo. Cream paper, ink text, a single sage band at the colophon, gilt for focus. The layout borrows the sticky margin from Tufte CSS and turns it into a vertical spine.</p>
-      <p>Inspired by <a href="https://impeccable.style/">impeccable.style</a> by Paul Bakaus, the canonical design-language skill. The architecture (a skill, a CLI, a rule catalog, reference files per command) is borrowed directly. Same idea, applied to writing.</p>
-      <p>Source on <a href="https://github.com/SamGalanakis/pilcrow">GitHub</a>. MIT license. Hosted at <a href="https://pilcrow.ink">pilcrow.ink</a>.</p>
-    </div>
-  </section>
 
   <footer class="site-foot">
     <div class="site-foot-wrap">

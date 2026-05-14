@@ -569,48 +569,6 @@ img, svg { display: block; max-width: 100%; }
   margin-right: 8px;
 }
 
-/* ── COLOPHON (sage band) ────────────────────────────────── */
-
-.colophon {
-  background: light-dark(var(--plaster), transparent);
-  border-top: 1px solid light-dark(color-mix(in oklch, var(--plaster) 70%, var(--ink)), var(--rule));
-  padding: clamp(56px, 8vw, 96px) 0;
-}
-.colophon-wrap {
-  max-width: 880px;
-  margin: 0 auto;
-  padding: 0 clamp(20px, 5vw, 40px);
-}
-.colophon-eyebrow {
-  font-variant: small-caps;
-  letter-spacing: 0.08em;
-  font-size: 13px;
-  color: var(--ink-2);
-  margin-bottom: 8px;
-}
-.colophon h2 {
-  font-style: italic;
-  font-weight: 400;
-  font-size: var(--t-h-chap);
-  color: var(--ink);
-  margin-bottom: 20px;
-  line-height: 1.12;
-}
-.colophon p {
-  font-size: var(--t-body-lg);
-  line-height: 1.6;
-  color: var(--ink);
-  max-width: 60ch;
-  margin-bottom: 0.9em;
-}
-.colophon p:last-child { margin-bottom: 0; }
-.colophon a {
-  color: var(--ink);
-  text-decoration: underline;
-  text-decoration-color: var(--ink);
-  text-underline-offset: 3px;
-}
-
 /* ── FOOT ────────────────────────────────────────────────── */
 
 .site-foot {
