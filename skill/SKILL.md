@@ -1,6 +1,6 @@
 ---
 name: pilcrow
-description: Detect AI tells and writing-quality issues in prose. Use when reviewing, polishing, or auditing markdown, HTML, or plain-text prose. Wraps the `pilcrow` CLI plus nine interpretive lenses (polish, humanize, tighten, clarify, pace, lead, verify, aloud, argue) and four project-level commands (teach, document, extract, craft).
+description: Make your clanker your editor. A prose linter plus nine interpretive lenses anchored in classical style guides (Strunk, Williams, Zinsser, Pinker, Orwell, King) plus four project-level commands for voice capture and drafting. Use when reviewing, polishing, drafting, or auditing markdown, HTML, or plain-text prose. AI-tell detection is one feature among many.
 version: 0.10.0
 user-invocable: true
 argument-hint: "[{{command_hint}}] [paths...]"
@@ -24,7 +24,7 @@ license: MIT
 
 # pilcrow ¶
 
-A prose linter that flags AI tells and writing-quality issues. 49 deterministic rules plus 20 LLM-judged ones, plus nine interpretive lenses anchored in classical style guides, plus four project-level commands for voice capture and drafting. Detection-only — the engine never edits.
+Turn the LLM in your harness into the editor it should be. 49 mechanical checks plus 20 LLM-judged ones, plus nine interpretive lenses anchored in classical style guides, plus four project-level commands for voice capture and drafting. Catches AI tells as one feature among many. Detection-only — the engine never edits.
 
 ## Setup
 

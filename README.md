@@ -1,8 +1,12 @@
 # pilcrow ¶
 
-A prose linter that flags AI tells and writing-quality issues. Inspired by [impeccable.style](https://impeccable.style/), applied to writing.
+**Make your clanker your editor.**
 
-Detection-only. Findings carry line, column, excerpt, and an optional suggestion. The engine never edits.
+A prose linter and AI-harness skill that turns the LLM in your harness into the editor it should be. 49 mechanical checks plus 20 LLM-judged ones. Nine interpretive lenses anchored in classical style guides (Strunk, Williams, Zinsser, Pinker, Orwell, King). Four project commands that capture your voice and apply it to new drafts.
+
+Catches AI tells as one feature among many. Works for prose you wrote, prose the model wrote, and everything in between.
+
+Inspired by [impeccable.style](https://impeccable.style/) — same idea, applied to writing. Detection-only. Findings carry line, column, excerpt, and an optional suggestion. The engine never edits.
 
 ## Install
 

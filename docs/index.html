@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pilcrow ¶ — mark up prose before it ships</title>
-  <meta name="description" content="A prose linter that flags AI tells and writing-quality issues. 49 deterministic rules plus 20 LLM-judged ones. Detection-only.">
-  <meta property="og:title" content="Pilcrow ¶">
-  <meta property="og:description" content="A prose linter for AI tells and writing-quality issues.">
+  <title>Pilcrow ¶ — make your clanker your editor</title>
+  <meta name="description" content="Make your clanker your editor. A prose linter plus nine interpretive lenses anchored in classical style guides (Strunk, Williams, Zinsser, Pinker, Orwell, King). AI-tell detection is one feature among many.">
+  <meta property="og:title" content="Pilcrow ¶ — make your clanker your editor">
+  <meta property="og:description" content="Turn the LLM in your harness into the editor it should be. A prose linter, nine interpretive lenses, four project commands.">
   <meta property="og:type" content="website">
   <script>
     (function(){try{var s=localStorage.getItem('theme');var t=(s==='light'||s==='dark')?s:'light';document.documentElement.dataset.theme=t;}catch(e){}document.addEventListener('click',function(e){var b=e.target.closest('.theme-toggle');if(!b)return;var c=document.documentElement.dataset.theme;var n=c==='dark'?'light':'dark';document.documentElement.dataset.theme=n;try{localStorage.setItem('theme',n);}catch(e){}});})();
@@ -34,7 +34,7 @@
     <div class="cover-wrap">
       <p class="cover-eyebrow">pilcrow.ink<span class="sep">·</span>v0.10<span class="sep">·</span>MIT</p>
       <h1 class="cover-title"><span class="cover-mark" aria-hidden="true">¶</span> Pilcrow</h1>
-      <p class="cover-lede">A prose linter for AI tells and writing-quality issues. 49 deterministic rules. 20 LLM-judged ones. The engine never edits your text.</p>
+      <p class="cover-lede"><strong>Make your clanker your editor.</strong> A prose linter and skill that turns the LLM in your harness into the editor it should be. 49 mechanical checks. 20 LLM-judged ones. Nine interpretive lenses anchored in tradition, not fashion. The engine never edits your text.</p>
       <p class="cover-meta">Read straight through. The whole thing fits in five minutes, and the spine on the left will keep your place.</p>
     </div>
   </section>
@@ -58,9 +58,10 @@
       <section class="chapter" id="preface">
         <p class="chapter-mark">Chapter I</p>
         <h2 class="chapter-title">Preface</h2>
-        <p><span class="newthought">One AI tell</span> survives every model jump: writers who all sound like the same writer. Pilcrow is a small toolkit for noticing it before you ship.</p>
-        <p>The deterministic engine catches 49 lexical and structural patterns. The phrasebank handles outright AI vocabulary (<code>delve into</code>, <code>rich tapestry</code>). The antithesis cadence catches the <em>not just X, but Y</em> rhythm. The copula dodge spots <code>serves as</code> and <code>stands as</code> standing in for plain <code>is</code>. The rest of the family covers em-dash density, throat-clearing openers, hero-tagline cadence, AI fossils like chat sign-offs and citation tokens, and the bullet-bold-lead markdown signature.</p>
-        <p>The LLM catalog adds 20 higher-level patterns regex can&rsquo;t catch — buried lede, mixed metaphor, voice drift, missing stakes, marketing-template cadence, stakes inflation, listicle-in-prose, unsupported claims — packaged as a single critique prompt you pipe into any model.</p>
+        <p><span class="newthought">Every harness</span> ships with an LLM that could be the editor sitting next to you when you write. Mostly it isn&rsquo;t. It cheerleads instead of cutting, paraphrases instead of pruning, hallucinates citations instead of flagging missing ones, and quietly produces prose that all sounds the same.</p>
+        <p>Pilcrow turns it into the editor. A small CLI for the mechanical checks Strunk and Williams have been running for sixty years — 49 deterministic rules covering AI vocabulary, antithesis cadence, em-dash density, throat-clearing openers, and the surface patterns regex can pin down. Plus 20 LLM-judged rules for what regex can&rsquo;t catch: buried ledes, mixed metaphors, missing stakes, unsupported claims.</p>
+        <p>On top, nine interpretive lenses anchored in the classical style guides. <code>polish</code> (Strunk, Zinsser). <code>tighten</code> (Williams). <code>clarify</code> (Pinker, Orwell). <code>pace</code> (King). <code>lead</code> (Zinsser). <code>verify</code> (journalism fact-check). <code>aloud</code> (read it aloud). <code>argue</code> (Toulmin, Argdown). And <code>humanize</code> for the AI-specific work. Four project commands — <code>teach</code>, <code>document</code>, <code>extract</code>, <code>craft</code> — capture your voice and apply it to a new draft.</p>
+        <p>Works whether you wrote it, the model wrote it, or you co-wrote it. AI-tell detection is in there because it&rsquo;s one of the things a good editor catches &mdash; alongside the rest.</p>
         <p>Credit to Paul Bakaus&rsquo;s <a href="https://impeccable.style/">impeccable</a>, which does the same job for frontend design. Same idea, applied to prose.</p>
         <p><strong>Detection-only.</strong> The engine never edits your text. Findings carry line, column, excerpt, and an optional suggestion; the LLM (or you) decides what to change.</p>
       </section>
@@ -80,7 +81,7 @@ npx pilcrow-ink skills install</code></pre>
         <p>Works from any project without touching <code>node_modules</code>.</p>
 
         <h3>Add the skill to your AI harness</h3>
-        <p>Once <code>iw</code> is available, drop the skill into the right place for whichever harness you use:</p>
+        <p>Once <code>pilcrow</code> is available, drop the skill into the right place for whichever harness you use:</p>
         <pre><code>cd your-project
 pilcrow skills install              # auto-detects .claude / .cursor / .gemini / .agents / etc.
 pilcrow skills install --all        # install into every supported provider
@@ -92,11 +93,12 @@ pilcrow skills check                # show installed versions vs the package</co
       <section class="chapter" id="cli">
         <p class="chapter-mark">Chapter III</p>
         <h2 class="chapter-title">The CLI</h2>
-        <p>Four commands.</p>
+        <p>Five commands.</p>
         <pre><code>pilcrow audit [paths...]     # human-readable findings (default)
 pilcrow lint  [paths...]     # JSON output for LLM consumption
 pilcrow critique [path]      # print the LLM-critique prompt
-pilcrow rules [--json]       # list every rule</code></pre>
+pilcrow rules [--json]       # list every rule
+pilcrow skills &lt;sub&gt;         # install/update/check the harness skill</code></pre>
         <p>If you pass no paths, the CLI reads stdin. If you pass a directory, it walks the tree and scans every <code>.md</code>, <code>.mdx</code>, <code>.markdown</code>, and <code>.txt</code> file. <code>audit</code> exits non-zero when an <code>error</code>-severity rule fires; <code>lint</code> exits the same way and prints JSON instead of pretty output.</p>
 
         <h3>A first run</h3>
@@ -253,7 +255,7 @@ pilcrow critique drafts/post.md | llm -m gpt-5</code></pre>
       <p class="colophon-eyebrow">Colophon</p>
       <h2>About the book</h2>
       <p>Set in <strong>ET Book</strong>, Edward Tufte&rsquo;s revival of Bembo. Cream paper, ink text, a single sage band at the colophon, gilt for chapter numbers and focus. The layout borrows the sticky margin from Tufte CSS and turns it into a vertical spine.</p>
-      <p>Inspired by <a href="https://impeccable.style/">impeccable.style</a> by Paul Bakaus — the canonical design-language skill. The framing (a skill, a CLI, an anti-pattern catalog, the "AI tells" framing) is borrowed directly.</p>
+      <p>Inspired by <a href="https://impeccable.style/">impeccable.style</a> by Paul Bakaus — the canonical design-language skill. The architecture (a skill, a CLI, an anti-pattern catalog, reference files per lens) is borrowed directly. Same idea, applied to writing instead of frontend.</p>
       <p>Source on <a href="https://github.com/SamGalanakis/pilcrow">GitHub</a>. MIT license. Hosted at <a href="https://pilcrow.ink">pilcrow.ink</a>.</p>
     </div>
   </section>

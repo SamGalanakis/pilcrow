@@ -1,7 +1,7 @@
 {
   "name": "pilcrow-ink",
   "version": "0.10.0",
-  "description": "Prose linter that flags AI tells and writing-quality issues. 49 deterministic rules plus 19 LLM-judged ones. Detection-only.",
+  "description": "Make your clanker your editor. A prose linter plus nine interpretive lenses anchored in classical style guides plus four project commands for voice capture and drafting. Catches AI tells as one feature among many.",
   "license": "MIT",
   "author": "Samuel Galanakis",
   "repository": {
