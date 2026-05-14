@@ -4,7 +4,7 @@ Mine the writer's corpus for recurring patterns *to flag*. Not a style guide. No
 
 Where `document` answers "what's your voice?", `extract` answers "what do you reach for that you might want me to notice?"
 
-The output is `PILCROW.md`: a working document the lenses cross-reference. Findings that match a recurring pattern get extra weight. The writer turns descriptions into prescriptions via a follow-up `teach`.
+The output is `PILCROW.md`: a working document the editor commands cross-reference. Findings that match a recurring pattern get extra weight. The writer turns descriptions into prescriptions via a follow-up `teach`.
 
 ## Source
 
@@ -51,7 +51,7 @@ A rule firing once across the corpus is noise. A rule firing **3+ times across 2
 ```markdown
 ---
 name: PILCROW
-purpose: Descriptive map of recurring patterns. Lenses weight matching findings higher; the writer decides via teach which are voice and which are tic.
+purpose: Descriptive map of recurring patterns. Editor commands weight matching findings higher; the writer decides via teach which are voice and which are tic.
 corpus: <N files, <M> words>
 updated: YYYY-MM-DD
 ---
@@ -84,19 +84,19 @@ Rules that fire exactly once in every piece. Probably habits the writer is unawa
 
 **Discipline:** every section in PILCROW.md describes; none prescribes. No "keep" or "cut" recommendations. No "you should". The writer turns description into prescription through `teach`.
 
-### Step 5 — link to the lenses
+### Step 5 — link to the editor commands
 
 Append:
 
 ```markdown
-## How the lenses use this file
+## How the editor commands use this file
 
 When `polish`, `humanize`, `tighten`, `clarify`, `pace`, or `lead` runs:
 - Findings that match a **repeat phrase** here get promoted one severity level (the writer is repeating themselves).
 - **Repeat constructions** get a "you reach for this often — is this one of the times?" note attached.
 - **High-frequency uncertain** patterns are listed but not auto-promoted. They wait for VOICE.md to commit.
 
-This file does not change lens severity for **non-matching** findings.
+This file does not change command severity for **non-matching** findings.
 ```
 
 ### Step 6 — present and propose teach

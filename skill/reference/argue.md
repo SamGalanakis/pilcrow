@@ -2,9 +2,9 @@
 
 Map the piece's argument structure and stress-test it. Four phases: confirm the thesis with the writer, surface the supports and objections that hang off it, generate the strongest counter, then check whether the piece engages or dodges that counter.
 
-`argue` is for argumentative prose — essays, op-eds, memos, technical posts that take a position. For narrative or descriptive prose, this lens doesn't apply.
+`argue` is for argumentative prose — essays, op-eds, memos, technical posts that take a position. For narrative or descriptive prose, this command doesn't apply.
 
-The session is one round-trip per piece. It's slower than the line-level lenses; run it once the draft has settled, not every revision.
+The session is one round-trip per piece. It's slower than the line-level commands; run it once the draft has settled, not every revision.
 
 ## Source
 
@@ -39,7 +39,7 @@ Present these to the writer using a single-select question. **Prefer the harness
 
 If the writer picks **Other**, take their pasted sentence verbatim and use that as the thesis.
 
-**Why this gate matters:** LLMs misidentify the central claim often enough that inferring it silently produces a confidently wrong map. The whole rest of the lens depends on this answer being right.
+**Why this gate matters:** LLMs misidentify the central claim often enough that inferring it silently produces a confidently wrong map. The whole rest of the command depends on this answer being right.
 
 ### Phase 2 — map the structure
 
@@ -118,7 +118,7 @@ Affected supports/premises:
 - [?] premise at L:12 — <weakened? still holds?>
 ```
 
-If the verdict is `missing`, the lens proposes an action: "Consider addressing the counter in section X, or qualify the thesis to exclude the cases the counter covers."
+If the verdict is `missing`, the command proposes an action: "Consider addressing the counter in section X, or qualify the thesis to exclude the cases the counter covers."
 
 ## Argdown export
 
@@ -178,10 +178,10 @@ Do not propose rewrites for individual sentences — that's `polish` or `clarify
 
 ## Anti-patterns
 
-- **Inferring the thesis silently.** Phase 1's multi-choice gate is non-negotiable. Without it, the rest of the lens is built on a guess.
+- **Inferring the thesis silently.** Phase 1's multi-choice gate is non-negotiable. Without it, the rest of the command is built on a guess.
 - **Generating a weak steelman.** A counter the writer can dismiss in one sentence is not a steelman; it's a strawman. If you can't generate a strong one, flag: "I can't find a strong counter to this thesis — the piece may be unfalsifiable, or I'm missing genre context."
 - **Three medium counters instead of one strong one.** The steelman discipline is *the strongest*, singular. Three counters dilute the test.
 - **Flagging every implicit assumption.** Only load-bearing ones. A trivially-implied assumption ("the reader knows what a database is") is not load-bearing.
 - **Treating rhetorical claims as supports.** "AI is changing everything" is the thesis, not a support for itself.
-- **Running `argue` on every revision.** Once per draft. The lens is slow and the answer doesn't move paragraph-by-paragraph.
+- **Running `argue` on every revision.** Once per draft. The command is slow and the answer doesn't move paragraph-by-paragraph.
 - **Editing the file.** `argue` proposes structural moves — "address the counter in section X" — never line-level rewrites.

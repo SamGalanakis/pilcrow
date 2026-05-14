@@ -1,6 +1,6 @@
 ---
 name: pilcrow
-description: Make your clanker your editor. A prose linter plus nine interpretive lenses anchored in classical style guides (Strunk, Williams, Zinsser, Pinker, Orwell, King) plus four project-level commands for voice capture and drafting. Use when reviewing, polishing, drafting, or auditing markdown, HTML, or plain-text prose. AI-tell detection is one feature among many.
+description: Make your clanker your editor. A prose linter, a set of editor commands anchored in classical style guides (Strunk, Williams, Zinsser, Pinker, Orwell, King), and project commands for voice capture and drafting. Use when reviewing, polishing, drafting, or auditing markdown, HTML, or plain-text prose. AI-tell detection is one feature among many.
 version: 0.11.0
 user-invocable: true
 argument-hint: "[{{command_hint}}] [paths...]"
@@ -24,19 +24,19 @@ license: MIT
 
 # pilcrow ¶
 
-Turn the LLM in your harness into the editor it should be. 49 mechanical checks plus 20 LLM-judged ones, plus nine interpretive lenses anchored in classical style guides, plus four project-level commands for voice capture and drafting. Catches AI tells as one feature among many. Detection-only — the engine never edits.
+Turn the LLM in your harness into the editor it should be. Deterministic checks for the patterns regex can pin down. LLM-judged ones for what regex can't. Editor commands anchored in classical style guides. Project commands that capture your voice and apply it to new drafts. Catches AI tells as one feature among many. Detection-only — the engine never edits.
 
 ## Setup
 
-Before any lens runs:
+Before any editor or project command runs:
 
 1. Load project context — `VOICE.md` and `PILCROW.md` if present.
-2. Apply absolute writing bans (below) regardless of lens.
-3. Apply the genre-reflex check (below) as part of every lens's interpretation.
+2. Apply absolute writing bans (below) regardless of command.
+3. Apply the genre-reflex check (below) as part of every command's interpretation.
 
 ### Context loading
 
-Every lens or project command begins by loading shared context:
+Every editor or project command begins by loading shared context:
 
 ```bash
 node {{scripts_path}}/load-context.mjs
@@ -44,11 +44,11 @@ node {{scripts_path}}/load-context.mjs
 
 The script returns JSON with `VOICE.md` (the writer's voice profile) and `PILCROW.md` (their personal anti-pattern catalog) if either exists at the project root, in `.pilcrow/`, or in `docs/`. Cache the result for the session; don't re-run within the same conversation.
 
-If `VOICE.md` is absent, suggest `{{command_prefix}}pilcrow teach` once per session. Don't block the lens; just nudge.
+If `VOICE.md` is absent, suggest `{{command_prefix}}pilcrow teach` once per session. Don't block the command; just nudge.
 
 ## Absolute writing bans
 
-Match-and-refuse. These never ship, regardless of lens, regardless of voice. Any lens that surfaces these treats them as **ship-blockers**.
+Match-and-refuse. These never ship, regardless of command, regardless of voice. Any command that surfaces these treats them as **ship-blockers**.
 
 - **AI fossils.** "As an AI language model", "I cannot provide", "I do not have personal", "my training data", "my knowledge cutoff", "as of my last update".
 - **Chat sign-offs leaked into prose.** "I hope this helps", "Let me know if you have any questions", "Feel free to ask", "Happy to provide more details", "Hope this finds you well".
@@ -57,7 +57,7 @@ Match-and-refuse. These never ship, regardless of lens, regardless of voice. Any
 - **Marketing-template hero rhythm.** Imperative fragment + tricolon expansion (`Ship faster. Build smarter. Scale forever.`) as the opener. Cannot be redeemed by content specificity.
 - **Bullet bold-label monoculture.** A list where every item leads with `**Bold:**` followed by an explanation.
 
-These appear in [reference/_ai-tell-catalog.md](reference/_ai-tell-catalog.md). They're surfaced here too because no lens may skip them.
+These appear in [reference/_ai-tell-catalog.md](reference/_ai-tell-catalog.md). They're surfaced here too because no command may skip them.
 
 ## Genre-reflex check
 
@@ -68,7 +68,7 @@ If a reader could guess your tone from your topic alone, you've fallen into the 
 - **Fintech post** → confident-and-jargon-heavy, navy-and-gold register. Avoid.
 - **Cache-rewrite postmortem** → "we noticed elevated p99 latency". Avoid the cliché framing; lead with what was surprising.
 
-Every lens applies this as part of its interpretation. A finding aligned with the genre cliché gets promoted in severity.
+Every editor command applies this as part of its interpretation. A finding aligned with the genre cliché gets promoted in severity.
 
 ## Routing rules
 
@@ -79,14 +79,14 @@ Process the argument string `$ARG` (everything after `{{command_prefix}}pilcrow`
    - If a target/path follows, shell out: `pilcrow <subcommand> <rest>` via Bash.
    - If nothing follows AND no recent prose is in conversation, ask "what should I `<subcommand>`?". Do not shell out with no input.
    - If nothing follows BUT recent prose is in the conversation, pipe that text via `printf '%s' "..." | pilcrow <subcommand>` and report findings.
-3. **First word is a lens or project command** (`polish`, `humanize`, `tighten`, `clarify`, `pace`, `lead`, `verify`, `aloud`, `argue`, `teach`, `document`, `extract`, `craft`):
+3. **First word is an editor or project command** (`polish`, `humanize`, `tighten`, `clarify`, `pace`, `lead`, `verify`, `aloud`, `argue`, `teach`, `document`, `extract`, `craft`):
    - Load shared context via `node {{scripts_path}}/load-context.mjs` (skip if already cached this session).
    - Load `reference/<command>.md` from this skill's directory.
    - Also load any cross-cutting reference files that command's playbook names (`reference/_*.md`).
    - Follow the playbook end-to-end. Each command defines its own procedure, rubric, and output shape.
-   - Lenses use `pilcrow lint <target>` and `pilcrow critique <target>` for input; the lens interprets the findings through the loaded references.
+   - Editor commands use `pilcrow lint <target>` and `pilcrow critique <target>` for input; the command interprets the findings through the loaded references.
    - Project commands (teach, document, extract, craft) also read or write project files (`VOICE.md`, `PILCROW.md`, `drafts/`). Follow the reference file's explicit gating; never write to disk without confirmation.
-   - Do not produce raw audit output for a lens command — that's what `audit` is for. A lens that returns the same shape as `audit` has failed.
+   - Do not produce raw audit output for an editor command — that's what `audit` is for. An editor command that returns the same shape as `audit` has failed.
 4. **First word doesn't match anything** — disambiguate by content:
    - If `$ARG` resolves to an existing path on disk: treat as a path and run `pilcrow audit $ARG`.
    - Otherwise: treat the entire `$ARG` as prose and pipe it: `printf '%s' "$ARG" | pilcrow audit`.
@@ -106,9 +106,9 @@ Subcommands map 1:1 to the CLI binary. Pass flags through verbatim (`--ignore-qu
 | `rules` | List every rule with id, severity, description | `--json` |
 | `skills <install\|update\|check>` | Install or refresh the skill in `.claude/`, `.cursor/`, etc. | `--all`, `--provider=.x` |
 
-### Lenses (interpret findings through a tradition)
+### Editor (interpret findings through a tradition)
 
-| Lens | Anchor | What it does | Reference |
+| Command | Anchor | What it does | Reference |
 |---|---|---|---|
 | `polish` | Strunk & White, Zinsser | Final pre-ship pass: triages combined audit + critique findings into ship-blockers, worth-fixing, taste-calls | [reference/polish.md](reference/polish.md) |
 | `humanize` | Wikipedia *Signs of AI writing* | Strip AI tells while preserving voice; classifies findings into vocabulary, cadence, template, fossil | [reference/humanize.md](reference/humanize.md) |
@@ -131,7 +131,7 @@ Subcommands map 1:1 to the CLI binary. Pass flags through verbatim (`--ignore-qu
 
 ## Pin / unpin
 
-Turn `{{command_prefix}}pilcrow polish` into `{{command_prefix}}polish` (and back). Useful for lenses the writer repeats on every piece.
+Turn `{{command_prefix}}pilcrow polish` into `{{command_prefix}}polish` (and back). Useful for commands the writer repeats on every piece.
 
 ```bash
 node {{scripts_path}}/pin.mjs pin polish
@@ -142,17 +142,17 @@ The script writes a redirect skill into every harness directory where `pilcrow` 
 
 ## Cross-cutting references
 
-These shared files live in `reference/` with a leading underscore. They are **not** commands; they are content loaded by multiple lenses.
+These shared files live in `reference/` with a leading underscore. They are **not** commands; they are content loaded by multiple editor commands.
 
 | File | Content | Loaded by |
 |---|---|---|
-| [reference/_style-laws.md](reference/_style-laws.md) | Universal writing laws | every lens |
+| [reference/_style-laws.md](reference/_style-laws.md) | Universal writing laws | every editor command |
 | [reference/_ai-tell-catalog.md](reference/_ai-tell-catalog.md) | Exhaustive AI-tell catalog by class | humanize, polish |
 | [reference/_readers.md](reference/_readers.md) | Reader personas | clarify, lead, polish |
 | [reference/_cadence-theory.md](reference/_cadence-theory.md) | King + Strunk on rhythm | pace, polish |
 | [reference/_genres.md](reference/_genres.md) | Genre conventions | clarify, lead, document, craft |
 
-Lenses that need a cross-cutting file say so explicitly in their own reference; don't load every shared file by default.
+Commands that need a cross-cutting file say so explicitly in their own reference; don't load every shared file by default.
 
 ## External skill dependencies
 
@@ -164,7 +164,7 @@ node {{scripts_path}}/resolve-speech.mjs
 
 It checks `.claude/skills/speech/`, `.cursor/skills/speech/`, etc. for an installed copy; if none, it fetches the skill at a pinned SHA into `/tmp/pilcrow/skills/speech/`. Either path returns the directory where `scripts/text_to_speech.py` lives.
 
-`aloud` requires `OPENAI_API_KEY` to be set in the environment. The lens checks for it at session start and points you at the speech skill's instructions if it's missing.
+`aloud` requires `OPENAI_API_KEY` to be set in the environment. The command checks for it at session start and points you at the speech skill's instructions if it's missing.
 
 ## Output shape (for piping)
 
@@ -197,4 +197,4 @@ It checks `.claude/skills/speech/`, `.cursor/skills/speech/`, etc. for an instal
 
 ## Don't auto-apply suggestions
 
-The engine never modifies prose. When a lens proposes rewrites, present them to the user and wait for confirmation before editing the file — voice and intent override the rule.
+The engine never modifies prose. When a command proposes rewrites, present them to the user and wait for confirmation before editing the file — voice and intent override the rule.

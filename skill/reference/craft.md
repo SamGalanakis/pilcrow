@@ -132,7 +132,7 @@ pilcrow lint /tmp/craft-draft.md --ignore-quoted
 pilcrow critique /tmp/craft-draft.md
 ```
 
-Evaluate against both rule sets. Apply the `polish` lens's triage rubric: ship-blockers, worth-fixing, taste-calls.
+Evaluate against both rule sets. Apply the `polish` command's triage rubric: ship-blockers, worth-fixing, taste-calls.
 
 Emit the polish-style triage report. **Gate:** "These are the issues. Apply suggested fixes, skip some, or reshape the piece?"
 

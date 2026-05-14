@@ -16,7 +16,7 @@ Single words and short phrases an LLM reaches for because they're high-probabili
 
 **Overused single words.** `transformative`, `groundbreaking`, `revolutionary`, `unleash`, `harness`, `elevate`, `demystify`, `myriad`, `plethora`, `seamless`, `cutting-edge`, `scalable`, `underscore`, `foster`, `ignite`, `empower`, `vibrant`, `beacon`, `symphony`, `showcase`, `boast`, `meticulous`, `nuanced`, `enduring`, `bolster`, `streamline`, `encompass`, `robust`, `pivotal`, `vital`, `crucial`, `realm`, `paradigm`, `landscape`, `tapestry`, `endeavor`, `labyrinth`, `kaleidoscope`.
 
-Single hits are fine. Multiple hits in a short piece form an accent. The lens reports density, not isolated matches.
+Single hits are fine. Multiple hits in a short piece form an accent. The command reports density, not isolated matches.
 
 ---
 
@@ -80,11 +80,11 @@ Verbatim output that should never appear in publishable prose. No rewrite — de
 
 ---
 
-## How lenses use this catalog
+## How editor commands use this catalog
 
 - `humanize` reads this file end-to-end. Its job is classifying every finding into one of the four classes, then proposing rewrites accordingly: vocabulary → swap, cadence → break the run, template → restructure, fossil → delete.
 - `polish` reads it to populate the **Ship-blockers** bucket. Class 4 (fossils) is always a ship-blocker. Class 3 (template) in the opener or closer is a ship-blocker. Classes 1–2 in moderation are worth-fixing.
-- Other lenses (`tighten`, `clarify`, `pace`, `lead`) reference it only when a finding overlaps. Most don't need it.
+- Other editor commands (`tighten`, `clarify`, `pace`, `lead`) reference it only when a finding overlaps. Most don't need it.
 
 ---
 

@@ -58,7 +58,7 @@ The AI rhythm comes from *unbroken* parallel structures: every paragraph has its
 
 ## Anaphora — same-opener repetition
 
-Three sentences in a row opening with the same word is a rhetorical device. Used once in a piece, it lands. Used twice, it's a habit. The lens flags anaphora at MIN_RUN = 3 because that's the threshold where the device becomes audible.
+Three sentences in a row opening with the same word is a rhetorical device. Used once in a piece, it lands. Used twice, it's a habit. The command flags anaphora at MIN_RUN = 3 because that's the threshold where the device becomes audible.
 
 Fix: drop the repeated subject in the second sentence (pronoun it); promote the consequence in the third; or recast entirely.
 
@@ -76,13 +76,13 @@ Word count is a proxy. The real measure is sound. Two sentences of 14 words can 
 - **Repeated initial sounds.** Alliteration in moderation is rhythm; in volume it's tongue-twister.
 - **End-of-sentence rhyme.** Unintentional rhyme is distracting; sentences shouldn't rhyme unless the writer means them to.
 
-The `pace` lens runs an aural diagnostic pass for these.
+The `pace` command runs an aural diagnostic pass for these.
 
 ---
 
-## How lenses use this file
+## How editor commands use this file
 
 - `pace` reads it as foundational theory; its rule-prioritization and rewrite-pattern decisions cite back here.
 - `polish` consults it when triaging cadence findings (`sentence-length-monotony`, `paragraph-monotony`, `parallel-triplet-density`, `anaphora-cadence`, `fragment-cadence`).
 
-Other lenses don't load this file. Cadence is `pace`'s job.
+Other editor commands don't load this file. Cadence is `pace`'s job.

@@ -2,7 +2,7 @@
 
 **Make your clanker your editor.**
 
-A prose linter and AI-harness skill that turns the LLM in your harness into the editor it should be. 49 mechanical checks plus 20 LLM-judged ones. Nine interpretive lenses anchored in classical style guides (Strunk, Williams, Zinsser, Pinker, Orwell, King). Four project commands that capture your voice and apply it to new drafts.
+A prose linter and AI-harness skill that turns the LLM in your harness into the editor it should be. Mechanical checks for the patterns regex can pin down. LLM-judged ones for what regex can't. Editor commands anchored in classical style guides (Strunk, Williams, Zinsser, Pinker, Orwell, King). Project commands that capture your voice and apply it to new drafts.
 
 Catches AI tells as one feature among many. Works for prose you wrote, prose the model wrote, and everything in between.
 
@@ -50,11 +50,11 @@ Reads stdin if no paths. Recurses directories, scanning `.md`, `.mdx`, `.markdow
 
 HTML support strips `<script>`, `<style>`, `<pre>`, and `<code>` content; decodes common entities; treats closing block tags as sentence breaks. Pass `--ignore-quoted` to skip phrases inside straight or curly double quotes — useful when prose discusses AI tells without quoting them in backticks.
 
-## Lenses
+## Editor commands
 
-Six interpretive lenses sit on top of the engine. Each loads its own reference file with a methodology drawn from a classical style guide. Lenses are invoked through the skill, not the CLI binary: `/pilcrow <lens> <target>` in any AI harness with the skill installed.
+Editor commands sit on top of the engine. Each loads its own reference file with a methodology drawn from a classical style guide. They're invoked through the skill, not the CLI binary: `/pilcrow <command> <target>` in any AI harness with the skill installed.
 
-| Lens | Anchor | What it does |
+| Command | Anchor | What it does |
 |---|---|---|
 | `polish` | Strunk & White, Zinsser | Final pre-ship pass; triages findings into ship-blockers, worth-fixing, taste-calls |
 | `humanize` | Wikipedia *Signs of AI writing* | Strip AI tells while preserving voice; classifies findings into vocabulary, cadence, template, fossil |
@@ -66,11 +66,11 @@ Six interpretive lenses sit on top of the engine. Each loads its own reference f
 | `aloud` | aural reading tradition | Play the prose back via OpenAI TTS in an interactive session; gates on writer response |
 | `argue` | Toulmin / IBIS / Argdown | Map the argument structure; surface supports, objections, and load-bearing unstated premises; generate the strongest counter and check coverage |
 
-A lens is not a rule filter — each defines its own procedure, rubric, and output. See `skill/reference/<lens>.md` for the playbooks.
+An editor command is not a rule filter. Each defines its own procedure, rubric, and output. See `skill/reference/<command>.md` for the playbooks.
 
 ## Project commands
 
-Four commands act on the repo, not on a single passage. They capture the writer's voice so lens proposals sound like the writer.
+Project commands act on the repo, not on a single passage. They capture the writer's voice so editor proposals sound like the writer.
 
 | Command | What it does |
 |---|---|
@@ -79,9 +79,9 @@ Four commands act on the repo, not on a single passage. They capture the writer'
 | `extract` | Mine the corpus for recurring AI tells and personal tics; writes `PILCROW.md` |
 | `craft` | End-to-end essay writing with gates: shape → draft → critique → polish; respects `VOICE.md` and `PILCROW.md` |
 
-Each writes to disk only after explicit confirmation. Once `VOICE.md` or `PILCROW.md` exist, every lens reads them on invocation and weights findings accordingly.
+Each writes to disk only after explicit confirmation. Once `VOICE.md` or `PILCROW.md` exist, every editor command reads them on invocation and weights findings accordingly.
 
-`teach` captures four axes the lenses use: **genre** (essay / explainer / report / marketing / memo / fiction), **audience** (a concrete reader, optionally mapped to one of the built-in personas), **stance** (claim / explain / persuade / narrate), and **method** (outliner / discovery / iterative / model-drafter). `craft` reads `method:` and runs one of four phase-2 variants — outliners get an outline-first draft, discovery writers get a free first pass, iterative writers get paragraph-by-paragraph gates, and model-drafter users get the model's draft as raw material to rewrite.
+`teach` captures four axes the editor commands use: **genre** (essay / explainer / report / marketing / memo / fiction), **audience** (a concrete reader, optionally mapped to one of the built-in personas), **stance** (claim / explain / persuade / narrate), and **method** (outliner / discovery / iterative / model-drafter). `craft` reads `method:` and runs one of four phase-2 variants — outliners get an outline-first draft, discovery writers get a free first pass, iterative writers get paragraph-by-paragraph gates, and model-drafter users get the model's draft as raw material to rewrite.
 
 ## Cross-cutting references
 
@@ -95,11 +95,11 @@ The skill's `reference/` folder also contains five underscore-prefixed files loa
 | `_cadence-theory.md` | King and Strunk on rhythm: sentence-length variation, fragment use, parallel triplets in moderation |
 | `_genres.md` | Per-genre conventions: what each demands, forbids, tolerates |
 
-These aren't commands; they're content the lens references name explicitly when they need it.
+These aren't commands; they're content the command references name explicitly when they need it.
 
 ## Pin / unpin
 
-Turn `/pilcrow polish` into `/polish` (and back) for lenses you repeat on every piece:
+Turn `/pilcrow polish` into `/polish` (and back) for commands you repeat on every piece:
 
 ```
 node skill/scripts/pin.mjs pin polish

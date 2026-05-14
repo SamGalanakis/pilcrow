@@ -56,17 +56,17 @@
           </ol>
         </li>
         <li>
-          <a class="spine-item" href="#lenses">Lenses</a>
+          <a class="spine-item" href="#editor">Editor</a>
           <ol class="spine-sub">
-            <li><a href="#lens-polish"><code>polish</code></a></li>
-            <li><a href="#lens-humanize"><code>humanize</code></a></li>
-            <li><a href="#lens-tighten"><code>tighten</code></a></li>
-            <li><a href="#lens-clarify"><code>clarify</code></a></li>
-            <li><a href="#lens-pace"><code>pace</code></a></li>
-            <li><a href="#lens-lead"><code>lead</code></a></li>
-            <li><a href="#lens-verify"><code>verify</code></a></li>
-            <li><a href="#lens-aloud"><code>aloud</code></a></li>
-            <li><a href="#lens-argue"><code>argue</code></a></li>
+            <li><a href="#editor-polish"><code>polish</code></a></li>
+            <li><a href="#editor-humanize"><code>humanize</code></a></li>
+            <li><a href="#editor-tighten"><code>tighten</code></a></li>
+            <li><a href="#editor-clarify"><code>clarify</code></a></li>
+            <li><a href="#editor-pace"><code>pace</code></a></li>
+            <li><a href="#editor-lead"><code>lead</code></a></li>
+            <li><a href="#editor-verify"><code>verify</code></a></li>
+            <li><a href="#editor-aloud"><code>aloud</code></a></li>
+            <li><a href="#editor-argue"><code>argue</code></a></li>
           </ol>
         </li>
         <li>
@@ -137,45 +137,45 @@ pilcrow skills update     # re-sync after `npm update -g pilcrow-ink`
 pilcrow skills check      # show installed vs package version</code></pre>
       </section>
 
-      <section class="chapter" id="lenses">
-        <h2 class="chapter-title">Lenses</h2>
-        <p>Lenses interpret findings through a tradition. Each loads its own playbook from <code>skill/reference/&lt;lens&gt;.md</code> with methodology, output shape, and anti-patterns drawn from a named style guide. Lenses are <em>not</em> rule filters; each produces a different kind of report.</p>
-        <p>Invoke through the skill: <code>/pilcrow &lt;lens&gt; &lt;path&gt;</code>.</p>
+      <section class="chapter" id="editor">
+        <h2 class="chapter-title">Editor</h2>
+        <p>Editor commands interpret findings through a tradition. Each loads its own playbook from <code>skill/reference/&lt;name&gt;.md</code> with methodology, output shape, and anti-patterns drawn from a named style guide. They&rsquo;re <em>not</em> rule filters; each produces a different kind of report.</p>
+        <p>Invoke through the skill: <code>/pilcrow &lt;command&gt; &lt;path&gt;</code>.</p>
 
-        <h3 id="lens-polish">polish</h3>
+        <h3 id="editor-polish">polish</h3>
         <p>Final pre-ship lens (Strunk &amp; White, Zinsser). Scores the piece on nine dimensions (one per lens, 0–4 each, 0–36 total) with a five-tier verdict from Excellent to Critical. Then triages findings into ship-blockers (P0), worth-fixing (P1–P2), and taste-calls (P3), and names the lowest-scoring dimensions so the writer knows which lens to run next.</p>
         <pre><code>/pilcrow polish drafts/post.md</code></pre>
 
-        <h3 id="lens-humanize">humanize</h3>
+        <h3 id="editor-humanize">humanize</h3>
         <p>Strip AI tells without sanding off voice (Wikipedia <em>Signs of AI writing</em>). Classifies findings by class (vocabulary, cadence, template, fossil) with class-specific rewrite shapes.</p>
         <pre><code>/pilcrow humanize drafts/post.md</code></pre>
 
-        <h3 id="lens-tighten">tighten</h3>
+        <h3 id="editor-tighten">tighten</h3>
         <p>Cut zombie nouns and weak verbs (Williams <em>Style</em>). The character/action principle: name the actor, surface the buried verb.</p>
         <pre><code>/pilcrow tighten drafts/post.md</code></pre>
 
-        <h3 id="lens-clarify">clarify</h3>
+        <h3 id="editor-clarify">clarify</h3>
         <p>Reduce the reader&rsquo;s working-memory load (Pinker <em>Sense of Style</em>, Orwell). Per-passage rewrites with mental-model commentary: what the reader has to hold, what the payoff is.</p>
         <pre><code>/pilcrow clarify drafts/post.md</code></pre>
 
-        <h3 id="lens-pace">pace</h3>
+        <h3 id="editor-pace">pace</h3>
         <p>Restore rhythm (King <em>On Writing</em>, Strunk). Sentence-length histogram, paragraph-weight chart, aural diagnostic (tongue-twisters, consonant clusters, unintentional rhyme), split/merge proposals.</p>
         <pre><code>/pilcrow pace drafts/post.md</code></pre>
 
-        <h3 id="lens-lead">lead</h3>
+        <h3 id="editor-lead">lead</h3>
         <p>Sharpen the opening (Zinsser on leads). Finds the real lede in the first paragraphs and proposes three alternative first sentences: news lede, scene lede, stakes lede.</p>
         <pre><code>/pilcrow lead drafts/post.md</code></pre>
 
-        <h3 id="lens-verify">verify</h3>
+        <h3 id="editor-verify">verify</h3>
         <p>Surface load-bearing claims (journalism fact-check tradition). Each numeric, dated, comparative, or attributed claim gets a three-question check (citation, specificity, plausibility) and a classification: <code>unsupported</code>, <code>vague</code>, <code>hedged</code>, <code>unchecked</code>.</p>
         <pre><code>/pilcrow verify drafts/post.md</code></pre>
 
-        <h3 id="lens-aloud">aloud</h3>
+        <h3 id="editor-aloud">aloud</h3>
         <p>Play the prose back via TTS in an interactive session. Four modes: <code>walkthrough</code> (paragraph by paragraph), <code>full</code> (end to end), <code>targeted</code> (only paragraphs <code>pace</code> flagged), <code>compare</code> (two passages back to back). Requires <code>OPENAI_API_KEY</code> and a system audio player.</p>
         <pre><code>/pilcrow aloud drafts/post.md</code></pre>
         <p>Audio is content-addressed and cached at <code>/tmp/pilcrow/aloud/&lt;sha256&gt;.mp3</code>. Replays across sessions are free. The lens detects an installed <a href="https://github.com/openai/skills/tree/main/skills/.curated/speech">OpenAI speech skill</a> in your harness or fetches a pinned snapshot.</p>
 
-        <h3 id="lens-argue">argue</h3>
+        <h3 id="editor-argue">argue</h3>
         <p>Map the argument (Toulmin, IBIS, <a href="https://argdown.org">Argdown</a>). Confirms the thesis with a multi-choice gate, surfaces supports and load-bearing premises as an indented tree, generates the strongest counter (genre-aware), and checks coverage: engaged, dodged, or missing.</p>
         <pre><code>/pilcrow argue drafts/post.md
 /pilcrow argue drafts/post.md --argdown   # also emit a .argdown file</code></pre>

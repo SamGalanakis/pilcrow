@@ -2,7 +2,7 @@
 
 Make the reader's job easier. Clarify is the empathy pass: at each sentence, what does the reader have to hold in working memory, and is the cost paid back? If a sentence forces the reader to track three abstract subjects, two embedded clauses, and a referent that lives two paragraphs back, it has failed — no matter how technically correct.
 
-This lens is for prose that is *accurate* but *opaque*. Tighten cuts; clarify connects.
+This command is for prose that is *accurate* but *opaque*. Tighten cuts; clarify connects.
 
 ## Source
 

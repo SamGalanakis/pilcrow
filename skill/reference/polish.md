@@ -8,11 +8,11 @@ Strunk & White, *The Elements of Style* — "Omit needless words. Vigorous writi
 
 Zinsser, *On Writing Well* — "Writing is rewriting." Polish is the explicit rewrite pass, not a copy-edit.
 
-Polish is the meta-lens. It runs everything and ranks.
+Polish is the meta-command. It runs everything and ranks.
 
 ## Load before running
 
-- [_style-laws.md](_style-laws.md) — universal laws every lens respects.
+- [_style-laws.md](_style-laws.md) — universal laws every editor command respects.
 - [_ai-tell-catalog.md](_ai-tell-catalog.md) — for ship-blocker classification.
 - [_readers.md](_readers.md) — to rank findings by reader-impact.
 - [_cadence-theory.md](_cadence-theory.md) — for rhythmic findings.
@@ -29,9 +29,9 @@ Polish is the meta-lens. It runs everything and ranks.
 
 ## Scorecard
 
-Nine dimensions, one per lens. Each scored 0–4 honestly: a 4 means *genuinely excellent*, not "good enough." The dimensions cover the same ground each lens specializes in.
+Nine dimensions, one per command. Each scored 0–4 honestly: a 4 means *genuinely excellent*, not "good enough." The dimensions cover the same ground each command specializes in.
 
-| Dimension | Lens anchor | What a 4 looks like | What a 0 looks like |
+| Dimension | Command anchor | What a 4 looks like | What a 0 looks like |
 |---|---|---|---|
 | **Distinctiveness** | humanize | No AI tells; voice is recognizable | Multiple AI-fossil hits; reads like any model could've written it |
 | **Concision** | tighten | Strong verbs, named characters; no zombie nouns | Nominalization chains; weak copulas throughout |
@@ -52,10 +52,10 @@ Nine dimensions, one per lens. Each scored 0–4 honestly: a 4 means *genuinely 
 | 32–36 | Excellent | Minor polish only; ship it. |
 | 25–31 | Good | Address weak axes (those scoring 0–2); solid foundation. |
 | 17–24 | Acceptable | Significant work needed before publish. |
-| 9–16 | Poor | Multi-lens rewrite required; structural issues. |
+| 9–16 | Poor | Multi-command rewrite required; structural issues. |
 | 0–8 | Critical | Restart from outline; the piece isn't there yet. |
 
-Lead the report with the score, verdict, and the two or three lowest-scoring dimensions. Those are the lens commands the writer should run next.
+Lead the report with the score, verdict, and the two or three lowest-scoring dimensions. Those are the editor commands the writer should run next.
 
 ### Issue priority (P0–P3)
 
@@ -134,16 +134,16 @@ Surface as one-liners. Do not propose rewrites. The writer decides.
 - line:col `<rule-id>` — <one-line message>. Keep if intentional.
 ```
 
-Lead with the score and verdict. Then the lowest-scoring dimensions and which lens to run for each. Then triage.
+Lead with the score and verdict. Then the lowest-scoring dimensions and which command to run for each. Then triage.
 
 ## Anti-patterns
 
 - **Treating all findings as ship-blockers.** Polish is triage; if everything is critical, nothing is.
-- **Proposing rewrites for taste-calls.** Voice is not the lens's problem.
+- **Proposing rewrites for taste-calls.** Voice is not the command's problem.
 - **Polishing past the lede.** If `buried-lede` fires, fix the lede first; many downstream findings will dissolve.
 - **Cutting sentences the reader is meant to dwell on.** Short, lyrical end-of-paragraph sentences are deliberate slowdowns.
 - **Grinding past two polish passes.** Endless polish creates glossy uniformity — its own AI tell.
 - **Inflating the score.** A 4 means genuinely excellent on that dimension. If you're picking 4s out of charity, you're hiding the work the writer still has to do. When in doubt between two scores, pick the lower one.
-- **Treating the score as a verdict on the writer.** It's a verdict on this draft. The lens points to the dimensions to work on; the dimensions don't define the writer's ability.
+- **Treating the score as a verdict on the writer.** It's a verdict on this draft. The command points to the dimensions to work on; the dimensions don't define the writer's ability.
 
 After polish ships clean, the piece is publish-ready.

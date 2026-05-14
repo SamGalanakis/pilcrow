@@ -1,6 +1,6 @@
 # verify
 
-Surface load-bearing claims and check whether each one carries support the reader can audit. LLM drafts hallucinate specifics — a confident number, a real-sounding date, a credible-but-fake citation — and the writer can miss it on re-read. `verify` is the lens that makes those claims visible.
+Surface load-bearing claims and check whether each one carries support the reader can audit. LLM drafts hallucinate specifics — a confident number, a real-sounding date, a credible-but-fake citation — and the writer can miss it on re-read. `verify` is the command that makes those claims visible.
 
 A claim is **load-bearing** if removing or weakening it changes the piece's argument. A specific number that anchors a paragraph is load-bearing. A passing-mention number used as colour is not.
 
@@ -8,7 +8,7 @@ A claim is **load-bearing** if removing or weakening it changes the piece's argu
 
 Journalism's fact-check tradition: every load-bearing fact gets a source line in the margin. Wikipedia's [[citation needed]] discipline. The academic norm that extraordinary claims need extraordinary evidence.
 
-Pilcrow's existing `claim-without-support` LLM rule (coarse, surfaced by `polish` and `clarify`) — `verify` is the dedicated lens that drives the deeper pass and produces the new `unsupported-claim` finding.
+Pilcrow's existing `claim-without-support` LLM rule (coarse, surfaced by `polish` and `clarify`) — `verify` is the dedicated command that drives the deeper pass and produces the new `unsupported-claim` finding.
 
 ## Load before running
 
@@ -55,7 +55,7 @@ The bar for "load-bearing" shifts by genre:
 - **Essay.** Anchor claims and counter-evidence are load-bearing; rhetorical comparisons and metaphors are not.
 - **Explainer.** Numbers used to illustrate ("a typical request takes ~50ms") are pedagogical; flag only if the number is the *point* of the section.
 - **Marketing.** Comparatives ("twice as fast", "the leader in X") are always load-bearing. They carry the claim.
-- **Fiction.** Skip. The lens does not apply.
+- **Fiction.** Skip. The command does not apply.
 
 If `VOICE.md` `genre` is unset, default to the essay bar.
 
@@ -109,7 +109,7 @@ Genre: <from VOICE.md, or "essay (default)">
 
 - **Flagging every number.** Only load-bearing ones. A passing-mention "in the late 2010s" inside a colour paragraph isn't the same as a `42% latency drop` that anchors a section.
 - **Inventing citations.** Never suggest a specific source the writer didn't name. Propose "name the source" or "drop the specificity" — let the writer supply the citation.
-- **Treating rhetorical claims as load-bearing.** "AI is changing how we write" is the piece's argument, not a fact it relies on. Different lens (try `claim-without-support` via `polish`).
+- **Treating rhetorical claims as load-bearing.** "AI is changing how we write" is the piece's argument, not a fact it relies on. Different command (try `claim-without-support` via `polish`).
 - **Demanding citations for common knowledge.** Reader fatigue compounds; over-citation reads as defensive.
 - **Confusing hedge-as-honesty with hedge-as-evasion.** "We didn't measure exactly" is honest. "Studies have shown" is evasive. Different findings.
 - **Producing a `critique`-shaped report.** `verify` returns a per-claim audit, not a list of rule hits. The output looks different on purpose.

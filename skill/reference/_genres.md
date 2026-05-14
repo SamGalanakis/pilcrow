@@ -58,7 +58,7 @@ Sells something. Knows it's selling. Reader is skeptical; tolerance is short.
 
 **Tolerates:** confident tone, hero-line typography, short paragraphs.
 
-**Common AI tells:** *all of them*. Marketing is the genre where AI tells cluster densest. The `humanize` lens is the most-used lens for this genre.
+**Common AI tells:** *all of them*. Marketing is the genre where AI tells cluster densest. The `humanize` command is the most-used command for this genre.
 
 ---
 
@@ -88,15 +88,15 @@ Narrative prose. Different rules entirely. Pilcrow's deterministic catalog often
 
 **Common AI tells in fiction:** stilted dialogue (every line is grammatical), copula-dodge in description (`The river served as a boundary`), absence of sensory specifics.
 
-Lenses run with caution. Many findings are voice; the `VOICE.md` `exceptions` field should be aggressive.
+Editor commands run with caution. Many findings are voice; the `VOICE.md` `exceptions` field should be aggressive.
 
 ---
 
-## How lenses use this file
+## How editor commands use this file
 
 - `clarify` reads the relevant genre section before triaging findings. A long sentence in fiction is rarely a clarify finding; in a report, it is.
 - `lead` consults the genre when proposing alternative openings — a memo lede is different from an essay lede.
 - `document` uses these conventions when inferring `genre:` from existing prose.
 - `craft` uses these as the brief context for the LLM during drafting.
 
-If `VOICE.md` doesn't name a genre, the lens infers from filename / directory: `posts/` and `essays/` → essay; `docs/` → explainer; `postmortems/` → report; `marketing/` and root-level landing pages → marketing.
+If `VOICE.md` doesn't name a genre, the command infers from filename / directory: `posts/` and `essays/` → essay; `docs/` → explainer; `postmortems/` → report; `marketing/` and root-level landing pages → marketing.

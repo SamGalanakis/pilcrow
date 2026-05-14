@@ -1,6 +1,6 @@
 # teach
 
-A multi-round interview that captures the writer's voice and writing process. The output is `VOICE.md` at the project root: a short, opinionated document the lenses read before proposing rewrites so suggestions sound like the writer, not like a generic technical-writing assistant.
+A multi-round interview that captures the writer's voice and writing process. The output is `VOICE.md` at the project root: a short, opinionated document the editor commands read before proposing rewrites so suggestions sound like the writer, not like a generic technical-writing assistant.
 
 `teach` runs once per project, then re-runs whenever the writer's voice or method shifts.
 
@@ -16,7 +16,7 @@ Interview style draws from journalism: short questions, follow up on specifics, 
 ## Load before running
 
 - [_readers.md](_readers.md) — the audience field maps to a reader persona; offer the persona menu as a starting point.
-- [_genres.md](_genres.md) — the genre field constrains downstream lens behavior; show the writer the genre options before asking.
+- [_genres.md](_genres.md) — the genre field constrains downstream command behavior; show the writer the genre options before asking.
 
 ## Procedure
 
@@ -103,7 +103,7 @@ updated: YYYY-MM-DD
 - <rule the writer breaks on purpose, and when>
 ```
 
-Keep it under 70 lines. The lenses read it; brevity matters.
+Keep it under 70 lines. The editor commands read it; brevity matters.
 
 ### Step 4 — confirm
 
@@ -112,12 +112,12 @@ Show the file. Ask one question:
 
 If they correct anything, update before exiting. Don't re-interview unless asked.
 
-## How lenses use VOICE.md
+## How editor commands use VOICE.md
 
 When `polish`, `humanize`, `tighten`, `clarify`, `pace`, or `lead` runs:
 
 1. Load `VOICE.md` via `scripts/load-context.mjs`.
-2. Read `genre` and constrain lens behavior to genre conventions (see `_genres.md`).
+2. Read `genre` and constrain command behavior to genre conventions (see `_genres.md`).
 3. Read `audience` and frame proposals around that reader.
 4. Filter findings against the `Taboos` and `Exceptions` lists: if a rule flags something the writer's `Exceptions` list explicitly allows, demote the finding to `info`.
 5. Match rewrite proposals to the `Register` and `Signatures` notes.
@@ -126,7 +126,7 @@ When `craft` runs:
 - Read `method` and run the matching phase-2 variant.
 - If `method` is unset, ask once and save it back to VOICE.md.
 
-A lens without VOICE.md still works; it just won't match the writer's voice as closely.
+A command without VOICE.md still works; it just won't match the writer's voice as closely.
 
 ## Output (after teach completes)
 
@@ -142,14 +142,14 @@ Method:   <field>
 Signatures: <count> tracked
 Taboos:    <count> tracked
 
-Next: try `/pilcrow polish <draft>` — lenses will now propose rewrites in your voice.
+Next: try `/pilcrow polish <draft>` — editor commands will now propose rewrites in your voice.
 ```
 
 ## Anti-patterns
 
 - **Interviewing in one shot.** Six questions in one prompt produces six generic answers. Run rounds.
 - **Inferring register without a sample.** Round 5's paragraph is non-negotiable. Without it you're guessing.
-- **Writing a long VOICE.md.** Over 70 lines is over-spec. The lenses read this every invocation; keep it tight.
+- **Writing a long VOICE.md.** Over 70 lines is over-spec. The editor commands read this every invocation; keep it tight.
 - **Putting style rules in VOICE.md that already live in the pilcrow catalog.** Don't write "no em-dashes" — that's already a rule. Write *exceptions*: "em-dashes are fine in dialogue."
 - **Re-interviewing fields the writer didn't change.** If they say "update register", only ask register questions.
 - **Forcing a method choice on someone who genuinely varies.** If the writer says "depends on the piece", note that and skip setting `method:`. `craft` will ask per-session.

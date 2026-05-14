@@ -2,7 +2,7 @@
 
 Restore rhythm. Prose has a beat — sentence length, paragraph weight, the alternation of long-explained-thought and short-punchy-aside. AI-generated prose tends toward uniform sentence length (15–22 words, every sentence) and uniform paragraph weight (3–4 sentences each). The reader stops noticing the prose and starts skimming.
 
-Pace is the lens that hears the writing.
+Pace is the command that hears the writing.
 
 ## Source
 

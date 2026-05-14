@@ -1,8 +1,8 @@
 # aloud
 
-Play the writer's prose back to them via OpenAI TTS in an interactive session. The eye skips; the ear catches. Tongue-twisters, sing-songy parallel triplets, stumbling consonant clusters, paragraphs that drag — `pace`'s aural diagnostic flags candidates from word patterns, but `aloud` is the lens where the writer actually hears the prose.
+Play the writer's prose back to them via OpenAI TTS in an interactive session. The eye skips; the ear catches. Tongue-twisters, sing-songy parallel triplets, stumbling consonant clusters, paragraphs that drag — `pace`'s aural diagnostic flags candidates from word patterns, but `aloud` is the command where the writer actually hears the prose.
 
-The session *is* the lens. There's no static report.
+The session *is* the command. There's no static report.
 
 ## Source
 
@@ -12,11 +12,11 @@ The OpenAI speech skill ([`github.com/openai/skills`](https://github.com/openai/
 
 ## Dependencies
 
-- **`OPENAI_API_KEY`** must be set in the environment. The lens checks at session start. If missing, point the writer at the speech skill's instructions for setting it; never ask them to paste it.
-- **System audio player** — one of `afplay` (macOS), `mpv`, `mplayer`, `paplay`, `ffplay` (Linux), `start` (Windows). The lens detects which is available.
+- **`OPENAI_API_KEY`** must be set in the environment. The command checks at session start. If missing, point the writer at the speech skill's instructions for setting it; never ask them to paste it.
+- **System audio player** — one of `afplay` (macOS), `mpv`, `mplayer`, `paplay`, `ffplay` (Linux), `start` (Windows). The command detects which is available.
 - **Python 3 + `openai` package** — required by the speech skill's `text_to_speech.py`. Install via `uv pip install openai` (preferred) or `python3 -m pip install openai`.
 
-If anything's missing, the lens falls back to emitting file paths the writer can play manually — but warns explicitly that the interactive flow is degraded.
+If anything's missing, the command falls back to emitting file paths the writer can play manually — but warns explicitly that the interactive flow is degraded.
 
 ## Load before running
 
@@ -159,7 +159,7 @@ default-aloud-mode: walkthrough
 
 ## Output
 
-The session is the lens. The report (Step 8) is the artifact. There's no JSON or finding-shaped output — `aloud` produces commentary, not findings.
+The session is the command. The report (Step 8) is the artifact. There's no JSON or finding-shaped output — `aloud` produces commentary, not findings.
 
 ## Anti-patterns
 

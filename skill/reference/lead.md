@@ -2,7 +2,7 @@
 
 Sharpen the opening. The first sentence is the only sentence the reader has agreed to read; every following sentence has to earn the next one. If the lede is buried, throat-cleared, or sycophantic, nothing downstream matters — the reader has already left.
 
-This lens looks only at the first 1–2 paragraphs and proposes three alternative openings the writer can choose between.
+This command looks only at the first 1–2 paragraphs and proposes three alternative openings the writer can choose between.
 
 ## Source
 

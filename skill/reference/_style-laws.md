@@ -1,20 +1,20 @@
 # _style-laws — shared
 
-Universal laws every pilcrow lens respects. Loaded by all lenses; do not duplicate inline.
+Universal laws every pilcrow command respects. Loaded by all editor commands; do not duplicate inline.
 
 ## 1. Voice trumps rule
 
-A rule that fires on the writer's deliberate choice is not a finding — it's a category error. Always check the surrounding context before proposing a cut. The em-dash density rule fires whenever em-dashes exceed a threshold; if the writer uses em-dashes for contrast and interruption *throughout the piece*, that's voice, and the lens demotes the finding to `info` or skips it.
+A rule that fires on the writer's deliberate choice is not a finding — it's a category error. Always check the surrounding context before proposing a cut. The em-dash density rule fires whenever em-dashes exceed a threshold; if the writer uses em-dashes for contrast and interruption *throughout the piece*, that's voice, and the command demotes the finding to `info` or skips it.
 
 `VOICE.md` exceptions override any rule. `PILCROW.md` recurring patterns are surfaced to the writer, not silently rewritten.
 
-## 2. Lens output ≠ raw audit
+## 2. Command output ≠ raw audit
 
-If a lens returns the same shape of output as `pilcrow audit`, it has failed. The lens is for *interpretation*. Each lens has its own output structure defined in its reference file. Never collapse a lens to "the audit findings filtered to rules X, Y, Z."
+If a command returns the same shape of output as `pilcrow audit`, it has failed. The command is for *interpretation*. Each command has its own output structure defined in its reference file. Never collapse a command to "the audit findings filtered to rules X, Y, Z."
 
 ## 3. Propose, don't edit
 
-The engine never modifies prose. Lenses propose rewrites; the writer (or an agent acting on their behalf) decides. Always present rewrites as candidates with rationale, never as the new text the file should hold. The `suggestion` field in finding JSON is informational.
+The engine never modifies prose. Editor commands propose rewrites; the writer (or an agent acting on their behalf) decides. Always present rewrites as candidates with rationale, never as the new text the file should hold. The `suggestion` field in finding JSON is informational.
 
 ## 4. Match the writer's voice in rewrites
 
@@ -24,7 +24,7 @@ If `VOICE.md` exists, read it first. Its `signatures` field names habits to pres
 
 ## 5. Ship-blockers and taste-calls are different
 
-Some findings must be fixed before publish (AI fossils, citation artifacts, sycophant openers, buried lede on a load-bearing piece). Some findings are reasonable taste-calls one writer would fix and another wouldn't (Title Case headers, the third em-dash on a page, a deliberate fragment). Lenses distinguish; never treat all findings as critical.
+Some findings must be fixed before publish (AI fossils, citation artifacts, sycophant openers, buried lede on a load-bearing piece). Some findings are reasonable taste-calls one writer would fix and another wouldn't (Title Case headers, the third em-dash on a page, a deliberate fragment). Editor commands distinguish; never treat all findings as critical.
 
 ## 6. Severity follows context, not the rule's default
 
@@ -32,8 +32,8 @@ A rule marked `info` can be a ship-blocker in the right context (e.g. `overused-
 
 ## 7. Don't over-fix the piece into invisibility
 
-Excellent prose has texture. Cutting every flagged adjective, varying every parallel triplet, smoothing every long sentence flattens the writing. After the lens's proposed rewrites, re-read: does the prose still have personality? If it now reads like generic editing-assistant output, propose fewer changes.
+Excellent prose has texture. Cutting every flagged adjective, varying every parallel triplet, smoothing every long sentence flattens the writing. After the command's proposed rewrites, re-read: does the prose still have personality? If it now reads like generic editing-assistant output, propose fewer changes.
 
 ## 8. The reader is the judge
 
-Every finding ultimately maps to: does this make the *reader's* job harder, or the writer's preference different? Lenses prioritize reader-impact, not editor-preference.
+Every finding ultimately maps to: does this make the *reader's* job harder, or the writer's preference different? Editor commands prioritize reader-impact, not editor-preference.

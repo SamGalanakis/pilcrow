@@ -137,7 +137,7 @@ Open for the writer:
 Next:
   - Answer the open questions now (I'll update the file), or
   - Run `/pilcrow teach` later to lock them, or
-  - Try `/pilcrow polish <recent draft>` — lenses use the inferred profile.
+  - Try `/pilcrow polish <recent draft>` — editor commands use the inferred profile.
 ```
 
 ## Anti-patterns

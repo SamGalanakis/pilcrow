@@ -76,9 +76,9 @@ Each persona names what they bring to the page, what trips them up, and what mak
 
 ---
 
-## How lenses use personas
+## How editor commands use personas
 
-- `clarify` runs the passage against the persona named in `VOICE.md` (`audience` field). If multiple personas plausibly match, it runs against the most demanding one. The lens reports working-memory load *from that persona's perspective*.
+- `clarify` runs the passage against the persona named in `VOICE.md` (`audience` field). If multiple personas plausibly match, it runs against the most demanding one. The command reports working-memory load *from that persona's perspective*.
 - `lead` uses personas to evaluate the opening: would the skeptical engineer click away here? Would the executive stop reading? The proposed alternative openings are tailored to who's actually reading.
 - `polish` uses personas to rank ship-blockers vs. taste-calls: anything that would lose the named audience is a ship-blocker.
 
@@ -88,7 +88,7 @@ If `VOICE.md` has no `audience` field, default to the skeptical engineer — mos
 
 ## Persona-finding mapping
 
-| If the persona is… | Most-weighted lens findings |
+| If the persona is… | Most-weighted command findings |
 |---|---|
 | Skeptical engineer | `claim-without-support`, `abstract-without-concrete`, `marketing-template-cadence`, `weasel-hedges`, fossil class |
 | Busy executive | `buried-lede`, `sentence-too-long`, `transition-coherence`, throat-clearing openers |
