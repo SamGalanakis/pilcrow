@@ -117,7 +117,7 @@ pilcrow critique drafts/post.md | llm -m gpt-5</code></pre>
       <section class="chapter" id="commands">
         <p class="chapter-mark">Chapter IV</p>
         <h2 class="chapter-title">Commands</h2>
-        <p>Pilcrow exposes seventeen commands today. Five run the engine; eight load an interpretive lens; four act on the project as a whole. The engine is the <em>what</em> &mdash; deterministic findings, milliseconds per file. The lens is the <em>how</em> &mdash; a reference file anchored in a classical style guide that tells the model which findings matter under that lens and what rewrite shape to propose. Lenses are not rule filters; each has its own methodology, its own output, its own anti-patterns.</p>
+        <p>Pilcrow exposes eighteen commands today. Five run the engine; nine load an interpretive lens; four act on the project as a whole. The engine is the <em>what</em> &mdash; deterministic findings, milliseconds per file. The lens is the <em>how</em> &mdash; a reference file anchored in a classical style guide that tells the model which findings matter under that lens and what rewrite shape to propose. Lenses are not rule filters; each has its own methodology, its own output, its own anti-patterns.</p>
 
         <h3>Utility &mdash; run the engine</h3>
         <table>
@@ -143,6 +143,7 @@ pilcrow critique drafts/post.md | llm -m gpt-5</code></pre>
             <tr><td><code>lead</code></td><td>Zinsser on leads</td><td>sharpen openings; finds the buried lede, proposes three alternative first sentences</td></tr>
             <tr><td><code>verify</code></td><td>journalism fact-check tradition</td><td>surface load-bearing claims; classify each as unsupported, vague, hedged, or unchecked</td></tr>
             <tr><td><code>aloud</code></td><td>aural reading tradition</td><td>play the prose back via OpenAI TTS in an interactive session; gates on writer response</td></tr>
+            <tr><td><code>argue</code></td><td>Toulmin, IBIS, <a href="https://argdown.org">Argdown</a></td><td>map the argument structure; surface supports, objections, and load-bearing premises; generate the strongest counter and check coverage</td></tr>
           </tbody>
         </table>
         <p>Lenses don&rsquo;t prescribe what to run next. Most writers run one lens at a time, on one piece at a time. <code>polish</code> is the meta-lens for a final pre-ship sweep; the others stand alone.</p>

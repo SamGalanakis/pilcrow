@@ -60,6 +60,7 @@ Six interpretive lenses sit on top of the engine. Each loads its own reference f
 | `lead` | Zinsser on leads | Sharpen openings; finds the buried lede, proposes three alternative first sentences |
 | `verify` | journalism fact-check tradition | Surface load-bearing claims; classify each as unsupported / vague / hedged / unchecked |
 | `aloud` | aural reading tradition | Play the prose back via OpenAI TTS in an interactive session; gates on writer response |
+| `argue` | Toulmin / IBIS / Argdown | Map the argument structure; surface supports, objections, and load-bearing unstated premises; generate the strongest counter and check coverage |
 
 A lens is not a rule filter — each defines its own procedure, rubric, and output. See `skill/reference/<lens>.md` for the playbooks.
 

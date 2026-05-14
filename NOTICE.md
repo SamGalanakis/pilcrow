@@ -16,6 +16,10 @@ Specifically, the following structural patterns are adapted from impeccable:
 
 The substance of pilcrow's commands — the 49 deterministic rules, the 19 LLM-judged rules, the six interpretive lenses (`polish`, `humanize`, `tighten`, `clarify`, `pace`, `lead`), and the four project commands (`teach`, `document`, `extract`, `craft`) — is original to pilcrow and anchored in classical style guides (Strunk & White, Zinsser, Williams, Pinker, Orwell, King).
 
+## Argdown (referenced by `argue`)
+
+The `argue` lens borrows marker conventions and an opt-in export format from [Argdown](https://argdown.org) by Christian Voigt (MIT). Pilcrow does not redistribute Argdown code; the `--argdown` flag emits a text file in the Argdown syntax that the writer can paste into the Argdown sandbox or render with a local Argdown installation.
+
 ## OpenAI speech skill (used by `aloud`)
 
 The `aloud` lens depends on the [OpenAI speech skill](https://github.com/openai/skills/tree/main/skills/.curated/speech) (Apache 2.0) for text-to-speech generation. Pilcrow does not redistribute the skill; it detects an installed copy in the project's harness directories, and if absent, fetches a pinned snapshot into `/tmp/pilcrow/skills/speech/`.

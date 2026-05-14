@@ -1,6 +1,6 @@
 ---
 name: pilcrow
-description: Detect AI tells and writing-quality issues in prose. Use when reviewing, polishing, or auditing markdown, HTML, or plain-text prose. Wraps the `pilcrow` CLI plus eight interpretive lenses (polish, humanize, tighten, clarify, pace, lead, verify, aloud) and four project-level commands (teach, document, extract, craft).
+description: Detect AI tells and writing-quality issues in prose. Use when reviewing, polishing, or auditing markdown, HTML, or plain-text prose. Wraps the `pilcrow` CLI plus nine interpretive lenses (polish, humanize, tighten, clarify, pace, lead, verify, aloud, argue) and four project-level commands (teach, document, extract, craft).
 version: 0.9.0
 user-invocable: true
 argument-hint: "[{{command_hint}}] [paths...]"
@@ -24,7 +24,7 @@ license: MIT
 
 # pilcrow ¶
 
-A prose linter that flags AI tells and writing-quality issues. 49 deterministic rules plus 20 LLM-judged ones, plus eight interpretive lenses anchored in classical style guides, plus four project-level commands for voice capture and drafting. Detection-only — the engine never edits.
+A prose linter that flags AI tells and writing-quality issues. 49 deterministic rules plus 20 LLM-judged ones, plus nine interpretive lenses anchored in classical style guides, plus four project-level commands for voice capture and drafting. Detection-only — the engine never edits.
 
 ## Setup
 
@@ -79,7 +79,7 @@ Process the argument string `$ARG` (everything after `{{command_prefix}}pilcrow`
    - If a target/path follows, shell out: `pilcrow <subcommand> <rest>` via Bash.
    - If nothing follows AND no recent prose is in conversation, ask "what should I `<subcommand>`?". Do not shell out with no input.
    - If nothing follows BUT recent prose is in the conversation, pipe that text via `printf '%s' "..." | pilcrow <subcommand>` and report findings.
-3. **First word is a lens or project command** (`polish`, `humanize`, `tighten`, `clarify`, `pace`, `lead`, `verify`, `aloud`, `teach`, `document`, `extract`, `craft`):
+3. **First word is a lens or project command** (`polish`, `humanize`, `tighten`, `clarify`, `pace`, `lead`, `verify`, `aloud`, `argue`, `teach`, `document`, `extract`, `craft`):
    - Load shared context via `node {{scripts_path}}/load-context.mjs` (skip if already cached this session).
    - Load `reference/<command>.md` from this skill's directory.
    - Also load any cross-cutting reference files that command's playbook names (`reference/_*.md`).
@@ -118,6 +118,7 @@ Subcommands map 1:1 to the CLI binary. Pass flags through verbatim (`--ignore-qu
 | `lead` | Zinsser on leads | Sharpen the opening; finds the buried lede and proposes three alternative first sentences | [reference/lead.md](reference/lead.md) |
 | `verify` | claim auditing tradition | Surface load-bearing claims; classify each as unsupported / vague / hedged / unchecked | [reference/verify.md](reference/verify.md) |
 | `aloud` | aural reading tradition | Play the prose back via OpenAI TTS in an interactive session; gates on writer response | [reference/aloud.md](reference/aloud.md) |
+| `argue` | Toulmin / IBIS / Argdown | Map the argument structure; pick the strongest counter; check whether the piece engages it | [reference/argue.md](reference/argue.md) |
 
 ### Project (read/write project files)
 

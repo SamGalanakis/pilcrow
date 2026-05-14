@@ -13,6 +13,7 @@
   "lead":     { "description": "Sharpen the opening. Finds the buried lede and proposes three alternative first sentences with different angles.",                  "argumentHint": "[paths...]", "category": "lens" },
   "verify":   { "description": "Surface load-bearing claims and check whether each carries a citation, a specific number, or a checkable date. Classifies findings as unsupported / vague / hedged / unchecked.", "argumentHint": "[paths...]", "category": "lens" },
   "aloud":    { "description": "Play the prose back via OpenAI TTS in an interactive session. Modes: walkthrough, full, targeted, compare. Requires OPENAI_API_KEY.",                                                "argumentHint": "[paths...] [--mode=walkthrough|full|targeted|compare]", "category": "lens" },
+  "argue":    { "description": "Map the piece's argument structure and stress-test it. Four phases: confirm the thesis (multi-choice), map supports/objections/premises, generate the strongest counter, check coverage.", "argumentHint": "[paths...] [--argdown]", "category": "lens" },
 
   "teach":    { "description": "Multi-round interview to capture the writer's voice (genre, audience, stance, method, signatures, taboos). Writes VOICE.md.",       "argumentHint": "",           "category": "project" },
   "document": { "description": "Infer the writer's voice from existing prose in the repo. Writes VOICE.md with citations and explicit open questions for the writer.", "argumentHint": "",           "category": "project" },
