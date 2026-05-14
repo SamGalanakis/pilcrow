@@ -1,6 +1,6 @@
 {
   "name": "pilcrow-ink",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "description": "Prose linter that flags AI tells and writing-quality issues. 49 deterministic rules plus 19 LLM-judged ones. Detection-only.",
   "license": "MIT",
   "author": "Samuel Galanakis",
