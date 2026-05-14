@@ -1,7 +1,7 @@
 ---
 name: pilcrow
 description: Make your clanker your editor. A prose linter plus nine interpretive lenses anchored in classical style guides (Strunk, Williams, Zinsser, Pinker, Orwell, King) plus four project-level commands for voice capture and drafting. Use when reviewing, polishing, drafting, or auditing markdown, HTML, or plain-text prose. AI-tell detection is one feature among many.
-version: 0.10.1
+version: 0.11.0
 user-invocable: true
 argument-hint: "[{{command_hint}}] [paths...]"
 allowed-tools:
