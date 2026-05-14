@@ -23,6 +23,8 @@ const FAMILIES = [
 
 const escape = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
+const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
 function severityBadge(sev) {
   return `<span class="sev sev-${sev}">${sev}</span>`;
 }
@@ -73,7 +75,7 @@ const familySections = FAMILIES.map((fam) => {
     seen.add(id);
     return renderRule(rule);
   }).join("\n");
-  return `<section class="cat-group">
+  return `<section class="cat-group" id="det-${slug(fam.label)}">
     <h3>${escape(fam.label)} <span class="cat-count">${fam.ids.length}</span></h3>
     <table class="rules-table">
       <thead><tr><th>id</th><th>sev</th><th>what it catches</th></tr></thead>
@@ -81,6 +83,10 @@ const familySections = FAMILIES.map((fam) => {
     </table>
   </section>`;
 }).join("\n");
+
+const spineFamilyItems = FAMILIES.map(
+  (fam) => `<li><a href="#det-${slug(fam.label)}">${escape(fam.label)}</a></li>`,
+).join("\n            ");
 
 const unfamiliar = deterministic.filter((r) => !seen.has(r.id));
 if (unfamiliar.length > 0) {
@@ -128,23 +134,38 @@ const html = `<!doctype html>
     </div>
   </section>
 
-  <main class="catalog" id="main">
-    <section class="cat-section">
-      <p class="cat-eyebrow">Deterministic</p>
-      <h2 class="cat-section-title">${deterministic.length} rules, no LLM, milliseconds per file</h2>
-      <p class="cat-blurb">Each phrase-based rule lists every phrase it scans for. Density rules report only when their threshold is crossed; structural rules examine sentence and paragraph shape.</p>
-      ${familySections}
-    </section>
+  <main class="book" id="main">
+    <aside class="spine" aria-label="Contents">
+      <p class="spine-label">Contents</p>
+      <ol class="spine-tree">
+        <li>
+          <a class="spine-item" href="#deterministic">Deterministic</a>
+          <ol class="spine-sub">
+            ${spineFamilyItems}
+          </ol>
+        </li>
+        <li><a class="spine-item" href="#llm">LLM-judged</a></li>
+      </ol>
+    </aside>
 
-    <section class="cat-section">
-      <p class="cat-eyebrow">LLM-judged</p>
-      <h2 class="cat-section-title">${llmRules.length} higher-level patterns</h2>
-      <p class="cat-blurb">Patterns regex can&rsquo;t catch. The engine ships these as a prompt the model evaluates; the model returns structured findings in the same shape the deterministic engine uses.</p>
-      <table class="rules-table">
-        <thead><tr><th>id</th><th>sev</th><th>what it catches</th></tr></thead>
-        <tbody>${llmRows}</tbody>
-      </table>
-    </section>
+    <article class="book-body catalog">
+      <section class="chapter cat-section" id="deterministic">
+        <p class="cat-eyebrow">Deterministic</p>
+        <h2 class="cat-section-title">${deterministic.length} rules, no LLM, milliseconds per file</h2>
+        <p class="cat-blurb">Each phrase-based rule lists every phrase it scans for. Density rules report only when their threshold is crossed; structural rules examine sentence and paragraph shape.</p>
+        ${familySections}
+      </section>
+
+      <section class="chapter cat-section" id="llm">
+        <p class="cat-eyebrow">LLM-judged</p>
+        <h2 class="cat-section-title">${llmRules.length} higher-level patterns</h2>
+        <p class="cat-blurb">Patterns regex can&rsquo;t catch. The engine ships these as a prompt the model evaluates; the model returns structured findings in the same shape the deterministic engine uses.</p>
+        <table class="rules-table">
+          <thead><tr><th>id</th><th>sev</th><th>what it catches</th></tr></thead>
+          <tbody>${llmRows}</tbody>
+        </table>
+      </section>
+    </article>
   </main>
 
   <footer class="site-foot">

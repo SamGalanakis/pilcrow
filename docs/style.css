@@ -396,11 +396,11 @@ img, svg { display: block; max-width: 100%; }
 
 /* ── CATALOG PAGE ────────────────────────────────────────── */
 
-.catalog {
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: clamp(48px, 7vw, 96px) clamp(20px, 5vw, 40px) clamp(72px, 9vw, 112px);
+/* Catalog uses .book grid (with spine) but needs a wider body for tables. */
+.book:has(> .book-body.catalog) {
+  grid-template-columns: 220px minmax(0, 88ch);
 }
+.book-body.catalog { font-size: var(--t-body-lg); }
 .cat-section { margin-bottom: clamp(48px, 7vw, 88px); }
 .cat-section:last-child { margin-bottom: 0; }
 .cat-eyebrow {
