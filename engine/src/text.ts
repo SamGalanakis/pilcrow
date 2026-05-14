@@ -36,6 +36,51 @@ export function stripMarkdown(text: string): string {
   return prose;
 }
 
+const HTML_ENTITIES: Array<[RegExp, string]> = [
+  [/&mdash;/gi, "—"],
+  [/&ndash;/gi, "–"],
+  [/&hellip;/gi, "…"],
+  [/&nbsp;/gi, " "],
+  [/&rsquo;/gi, "'"],
+  [/&lsquo;/gi, "'"],
+  [/&rdquo;/gi, "\""],
+  [/&ldquo;/gi, "\""],
+  [/&amp;/gi, "&"],
+  [/&lt;/gi, "<"],
+  [/&gt;/gi, ">"],
+  [/&quot;/gi, "\""],
+  [/&apos;/gi, "'"],
+  [/&#x27;/gi, "'"],
+  [/&#39;/g, "'"],
+];
+
+export function stripHtml(text: string): string {
+  let prose = text;
+  prose = prose.replace(/<!--[\s\S]*?-->/g, (m) => " ".repeat(m.length));
+  prose = prose.replace(
+    /<(script|style|pre|code)\b[^>]*>[\s\S]*?<\/\1>/gi,
+    (m) => " ".repeat(m.length),
+  );
+  for (const [pat, repl] of HTML_ENTITIES) {
+    prose = prose.replace(pat, (m) => {
+      if (repl.length >= m.length) return repl.slice(0, m.length);
+      return repl + " ".repeat(m.length - repl.length);
+    });
+  }
+  prose = prose.replace(
+    /<\/(p|li|tr|td|th|h[1-6]|div|section|article|aside|header|footer|main|nav|blockquote)>/gi,
+    (m) => "." + " ".repeat(m.length - 1),
+  );
+  prose = prose.replace(/<[^>]+>/g, (m) => " ".repeat(m.length));
+  return prose;
+}
+
+const QUOTED_PHRASE = /(["“”])([^"“”\n]{1,80})(["“”])/g;
+
+export function maskQuotedPhrases(prose: string): string {
+  return prose.replace(QUOTED_PHRASE, (_full, q1, inner, q2) => q1 + " ".repeat(inner.length) + q2);
+}
+
 export function buildLocator(text: string) {
   const lineStarts = [0];
   for (let i = 0; i < text.length; i++) {
@@ -135,8 +180,14 @@ export function countWords(s: string): number {
   return n;
 }
 
-export function buildContext(text: string): RuleContext {
-  const prose = stripMarkdown(text);
+export interface ContextOptions {
+  ignoreQuoted?: boolean;
+}
+
+export function buildContext(text: string, options: ContextOptions = {}): RuleContext {
+  let prose = stripHtml(text);
+  prose = stripMarkdown(prose);
+  if (options.ignoreQuoted) prose = maskQuotedPhrases(prose);
   const sentences = splitSentences(prose);
   const paragraphs = splitParagraphs(prose);
   const words = splitWords(prose);

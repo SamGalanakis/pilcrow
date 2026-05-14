@@ -59,7 +59,7 @@
         <p class="chapter-mark">Chapter I</p>
         <h2 class="chapter-title">Preface</h2>
         <p><span class="newthought">One AI tell</span> survives every model jump: writers who all sound like the same writer. Pilcrow is a small toolkit for noticing it before you ship.</p>
-        <p>The deterministic engine catches 49 lexical and structural patterns: the phrasebank (<code>delve into</code>, <code>rich tapestry</code>), the antithesis cadence (<code>not just X, but Y</code>), the copula dodge (<code>serves as</code>, <code>stands as</code>), em-dash density, throat-clearing openers, hero-tagline cadence, AI fossils like chat sign-offs and citation tokens, the bullet-bold-lead markdown signature, and the rest of the family.</p>
+        <p>The deterministic engine catches 49 lexical and structural patterns. The phrasebank handles outright AI vocabulary (<code>delve into</code>, <code>rich tapestry</code>). The antithesis cadence catches the <em>not just X, but Y</em> rhythm. The copula dodge spots <code>serves as</code> and <code>stands as</code> standing in for plain <code>is</code>. The rest of the family covers em-dash density, throat-clearing openers, hero-tagline cadence, AI fossils like chat sign-offs and citation tokens, and the bullet-bold-lead markdown signature.</p>
         <p>The LLM catalog adds 19 higher-level patterns regex can&rsquo;t catch — buried lede, mixed metaphor, voice drift, missing stakes, marketing-template cadence, stakes inflation, listicle-in-prose — packaged as a single critique prompt you pipe into any model.</p>
         <p>Credit to Paul Bakaus&rsquo;s <a href="https://impeccable.style/">impeccable</a>, which does the same job for frontend design. Same idea, applied to prose.</p>
         <p><strong>Detection-only.</strong> The engine never edits your text. Findings carry line, column, excerpt, and an optional suggestion; the LLM (or you) decides what to change.</p>
@@ -249,9 +249,9 @@ pilcrow critique drafts/post.md | llm -m gpt-5</code></pre>
         <table>
           <thead><tr><th>Phrase</th><th>Also catches</th></tr></thead>
           <tbody>
-            <tr><td>delve into</td><td>delves, delving, delved, <em>delve deeply</em> into</td></tr>
-            <tr><td>foster</td><td>fosters, fostering, fostered</td></tr>
-            <tr><td>let&rsquo;s dive in</td><td>Let&rsquo;s dive in, lets dive in</td></tr>
+            <tr><td><code>delve into</code></td><td><code>delves</code>, <code>delving</code>, <code>delved</code>, <em><code>delve deeply</code></em> <code>into</code></td></tr>
+            <tr><td><code>foster</code></td><td><code>fosters</code>, <code>fostering</code>, <code>fostered</code></td></tr>
+            <tr><td><code>let&rsquo;s dive in</code></td><td><code>Let&rsquo;s dive in</code>, <code>lets dive in</code></td></tr>
           </tbody>
         </table>
 

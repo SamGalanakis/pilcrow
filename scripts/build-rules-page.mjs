@@ -29,7 +29,7 @@ function severityBadge(sev) {
 
 function renderPhrases(rule) {
   if (rule.phrases && rule.phrases.length > 0) {
-    const items = rule.phrases.map((p) => `<li>${escape(p)}</li>`).join("");
+    const items = rule.phrases.map((p) => `<li><code>${escape(p)}</code></li>`).join("");
     return `<details class="rule-data"><summary>${rule.phrases.length} phrase${rule.phrases.length === 1 ? "" : "s"}</summary><ul class="phrase-list">${items}</ul></details>`;
   }
   if (rule.replacements && rule.replacements.length > 0) {
@@ -55,8 +55,8 @@ function renderLlmRule(rule) {
     <td>${severityBadge(rule.severity)}</td>
     <td>${escape(rule.description)}
       <details class="rule-data"><summary>Examples</summary>
-        <p class="ex"><span class="ex-label">Good</span> ${escape(rule.positiveExample)}</p>
-        <p class="ex"><span class="ex-label">Bad</span> ${escape(rule.negativeExample)}</p>
+        <p class="ex"><span class="ex-label">Good</span> <code>${escape(rule.positiveExample)}</code></p>
+        <p class="ex"><span class="ex-label">Bad</span> <code>${escape(rule.negativeExample)}</code></p>
       </details>
     </td>
   </tr>`;

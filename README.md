@@ -33,14 +33,16 @@ pilcrow skills check              # show installed vs package version
 ## CLI
 
 ```
-pilcrow audit [paths...]      Human-readable findings (default)
-pilcrow lint  [paths...]      JSON output for LLM consumption
-pilcrow critique [path]       Print the LLM-critique prompt
-pilcrow rules [--json]        List all rules
-pilcrow skills <subcommand>   Install or update the skill in your AI harness
+pilcrow audit [paths...] [--ignore-quoted]   Human-readable findings (default)
+pilcrow lint  [paths...] [--ignore-quoted]   JSON output for LLM consumption
+pilcrow critique [path]                      Print the LLM-critique prompt
+pilcrow rules [--json]                       List all rules
+pilcrow skills <subcommand>                  Install or update the skill in your AI harness
 ```
 
-Reads stdin if no paths. Recurses directories, scanning `.md`, `.mdx`, `.markdown`, `.txt`.
+Reads stdin if no paths. Recurses directories, scanning `.md`, `.mdx`, `.markdown`, `.txt`, `.html`, `.htm`.
+
+HTML support strips `<script>`, `<style>`, `<pre>`, and `<code>` content; decodes common entities; treats closing block tags as sentence breaks. Pass `--ignore-quoted` to skip phrases inside straight or curly double quotes — useful when prose discusses AI tells without quoting them in backticks.
 
 ## Rules
 

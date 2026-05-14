@@ -5,7 +5,7 @@ import { audit, buildCritiquePrompt, listRules, llmRules } from "../../engine/di
 import type { Finding, Severity } from "../../engine/dist/index.js";
 import { runSkills } from "./skills.js";
 
-const EXTENSIONS = [".md", ".mdx", ".markdown", ".txt"];
+const EXTENSIONS = [".md", ".mdx", ".markdown", ".txt", ".html", ".htm"];
 
 interface ParsedArgs {
   command: string;
@@ -111,18 +111,23 @@ function printSummary(totals: Record<Severity, number>): void {
   }
 }
 
+function auditOptions(args: ParsedArgs) {
+  return { ignoreQuoted: Boolean(args.flags["ignore-quoted"]) };
+}
+
 function cmdAudit(args: ParsedArgs): number {
   const files = collectFiles(args.paths);
+  const opts = auditOptions(args);
   const totals: Record<Severity, number> = { error: 0, warning: 0, info: 0 };
   if (files.length === 0) {
     const text = readStdin();
-    const result = audit(text);
+    const result = audit(text, opts);
     printFindings(null, result.findings);
     for (const k of Object.keys(totals) as Severity[]) totals[k] = result.summary.bySeverity[k];
   } else {
     for (const f of files) {
       const text = readFileSync(f, "utf8");
-      const result = audit(text);
+      const result = audit(text, opts);
       printFindings(f, result.findings);
       for (const k of Object.keys(totals) as Severity[]) totals[k] += result.summary.bySeverity[k];
     }
@@ -134,17 +139,18 @@ function cmdAudit(args: ParsedArgs): number {
 
 function cmdLint(args: ParsedArgs): number {
   const files = collectFiles(args.paths);
+  const opts = auditOptions(args);
   const out: Array<{ file: string | null; findings: Finding[] }> = [];
   let errorCount = 0;
   if (files.length === 0) {
     const text = readStdin();
-    const result = audit(text);
+    const result = audit(text, opts);
     out.push({ file: null, findings: result.findings });
     errorCount += result.summary.bySeverity.error;
   } else {
     for (const f of files) {
       const text = readFileSync(f, "utf8");
-      const result = audit(text);
+      const result = audit(text, opts);
       out.push({ file: relative(process.cwd(), f), findings: result.findings });
       errorCount += result.summary.bySeverity.error;
     }
@@ -197,20 +203,24 @@ function cmdHelp(): number {
   console.log(`pilcrow ¶  — mark up prose before it ships
 
 Usage:
-  pilcrow audit [paths...]            Detect findings, human-readable output
-  pilcrow lint  [paths...]            Detect findings, JSON output for LLM consumption
-  pilcrow critique [path]             Print an LLM-critique prompt for the given file/stdin
-  pilcrow rules [--json]              List every rule (deterministic + LLM-judged)
-  pilcrow skills <subcommand>         Install or update the skill in your AI harness
+  pilcrow audit [paths...] [--ignore-quoted]   Detect findings, human-readable output
+  pilcrow lint  [paths...] [--ignore-quoted]   Detect findings, JSON output for LLM consumption
+  pilcrow critique [path]                      Print an LLM-critique prompt for the given file/stdin
+  pilcrow rules [--json]                       List every rule (deterministic + LLM-judged)
+  pilcrow skills <subcommand>                  Install or update the skill in your AI harness
   pilcrow help
 
+Flags:
+  --ignore-quoted   Mask content inside straight or curly double quotes before matching,
+                    so prose discussing AI tells doesn't trigger its own rules.
+
 Install once globally:
-  npm install -g pilcrow
+  npm install -g pilcrow-ink
   cd your-project && pilcrow skills install
 
 Or per-project without installing:
-  npx pilcrow skills install
-  npx pilcrow audit drafts/
+  npx pilcrow-ink skills install
+  npx pilcrow-ink audit drafts/
 
 Reads stdin if no paths are given. File extensions scanned: ${EXTENSIONS.join(", ")}.
 Detection-only — nothing is ever auto-modified. The LLM decides what to change.

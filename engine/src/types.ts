@@ -65,6 +65,7 @@ export interface Rule {
 export interface AuditOptions {
   rules?: string[];
   exclude?: string[];
+  ignoreQuoted?: boolean;
 }
 
 export interface AuditSummary {

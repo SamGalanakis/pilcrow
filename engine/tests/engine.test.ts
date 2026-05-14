@@ -35,6 +35,38 @@ describe("audit", () => {
     const result = audit(text, { rules: ["ai-tell-phrasebank"] });
     expect(result.findings).toHaveLength(0);
   });
+
+  it("strips HTML script/style/pre/code content", () => {
+    const text = '<p>Body prose.</p><code>delve into the rich tapestry</code><script>delve into x</script><style>.x { delve: into }</style><pre>rich tapestry</pre>';
+    const result = audit(text, { rules: ["ai-tell-phrasebank"] });
+    expect(result.findings).toHaveLength(0);
+  });
+
+  it("strips HTML tags but keeps the prose between them", () => {
+    const text = '<p>Let me <em>delve into</em> the <strong>rich tapestry</strong>.</p>';
+    const result = audit(text, { rules: ["ai-tell-phrasebank"] });
+    expect(result.findings.length).toBeGreaterThan(0);
+  });
+
+  it("decodes &mdash; entity so em-dash density still sees it", () => {
+    const text = "<p>One sentence&mdash;then another&mdash;and a third&mdash;and more&mdash;and even more&mdash;continuing on.</p>";
+    const result = audit(text, { rules: ["em-dash-density"] });
+    expect(result.findings.length).toBeGreaterThan(0);
+  });
+
+  it("ignoreQuoted masks straight-quoted phrases", () => {
+    const text = 'The phrase "delve into" is a classic AI tell.';
+    const without = audit(text, { rules: ["ai-tell-phrasebank"] });
+    const withFlag = audit(text, { rules: ["ai-tell-phrasebank"], ignoreQuoted: true });
+    expect(without.findings.length).toBeGreaterThan(0);
+    expect(withFlag.findings).toHaveLength(0);
+  });
+
+  it("ignoreQuoted does not mask unquoted prose", () => {
+    const text = "Let me delve into the rich tapestry.";
+    const result = audit(text, { rules: ["ai-tell-phrasebank"], ignoreQuoted: true });
+    expect(result.findings.length).toBeGreaterThan(0);
+  });
 });
 
 describe("rule registry", () => {

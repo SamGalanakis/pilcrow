@@ -15,4 +15,5 @@ docs/rules.html
 # project-local skill installs (not source)
 .agents/
 .claude/
+.github/skills/
 skills-lock.json

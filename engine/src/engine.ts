@@ -26,7 +26,7 @@ function emptySummary(): AuditSummary {
 }
 
 export function audit(text: string, options: AuditOptions = {}): AuditResult {
-  const ctx = buildContext(text);
+  const ctx = buildContext(text, { ignoreQuoted: options.ignoreQuoted });
   const include = options.rules ? new Set(options.rules) : null;
   const exclude = options.exclude ? new Set(options.exclude) : new Set<string>();
   const findings: Finding[] = [];
