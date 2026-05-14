@@ -230,6 +230,17 @@ export const llmRules: LlmRule[] = [
     negativeExample:
       "Read latency dropped 42% after the cache rewrite. (No source, no date — the number carries the paragraph.)",
   },
+  {
+    id: "feature-tally",
+    name: "Feature tally",
+    severity: "warning",
+    description:
+      "Precise integer counts strung in parallel as rhetoric — 'X widgets plus Y gadgets, plus Z thingamabobs' — used to signal comprehensiveness without conveying what any of those things are or what the reader gains from them. The counts are a stand-in for substance.",
+    positiveExample:
+      "Deterministic checks for the patterns regex can pin down. LLM-judged ones for what regex can't. Lenses anchored in the classical style guides on top.",
+    negativeExample:
+      "49 deterministic rules plus 20 LLM-judged ones, plus nine interpretive lenses anchored in classical style guides, plus four project-level commands for voice capture and drafting.",
+  },
 ];
 
 export function buildCritiquePrompt(text: string, ruleIds?: string[]): string {

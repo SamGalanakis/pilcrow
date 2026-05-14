@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pilcrow ¶ — make your clanker your editor</title>
-  <meta name="description" content="Make your clanker your editor. A prose linter plus nine interpretive lenses anchored in classical style guides (Strunk, Williams, Zinsser, Pinker, Orwell, King). AI-tell detection is one feature among many.">
+  <meta name="description" content="Make your clanker your editor. A prose linter plus interpretive lenses anchored in classical style guides. AI-tell detection is one feature among many.">
   <meta property="og:title" content="Pilcrow ¶ — make your clanker your editor">
-  <meta property="og:description" content="Turn the LLM in your harness into the editor it should be. A prose linter, nine interpretive lenses, four project commands.">
+  <meta property="og:description" content="Turn the LLM in your harness into the editor it should be.">
   <meta property="og:type" content="website">
   <script>
     (function(){try{var s=localStorage.getItem('theme');var t=(s==='light'||s==='dark')?s:'light';document.documentElement.dataset.theme=t;}catch(e){}document.addEventListener('click',function(e){var b=e.target.closest('.theme-toggle');if(!b)return;var c=document.documentElement.dataset.theme;var n=c==='dark'?'light':'dark';document.documentElement.dataset.theme=n;try{localStorage.setItem('theme',n);}catch(e){}});})();
@@ -16,7 +16,7 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
 </head>
 <body>
-  <a class="skip" href="#preface">Skip to content</a>
+  <a class="skip" href="#start">Skip to content</a>
 
   <header class="site-nav">
     <a class="site-nav-home" href="./"><span class="mark">¶</span> Pilcrow</a>
@@ -34,217 +34,177 @@
     <div class="cover-wrap">
       <p class="cover-eyebrow">pilcrow.ink<span class="sep">·</span>v0.10<span class="sep">·</span>MIT</p>
       <h1 class="cover-title"><span class="cover-mark" aria-hidden="true">¶</span> Pilcrow</h1>
-      <p class="cover-lede"><strong>Make your clanker your editor.</strong> A prose linter and skill that turns the LLM in your harness into the editor it should be. 49 mechanical checks. 20 LLM-judged ones. Nine interpretive lenses anchored in tradition, not fashion. The engine never edits your text.</p>
-      <p class="cover-meta">Read straight through. The whole thing fits in five minutes, and the spine on the left will keep your place.</p>
+      <p class="cover-lede"><strong>Make your clanker your editor.</strong> Turn the LLM in your harness into the editor it should be. Mechanical checks. LLM-judged ones. Interpretive lenses anchored in tradition. The engine never edits your text.</p>
+      <p class="cover-meta">Read straight through, or jump to the command you need. The spine on the left keeps your place.</p>
     </div>
   </section>
 
   <main class="book" id="main">
     <aside class="spine" aria-label="Contents">
       <p class="spine-label">Contents</p>
-      <ol>
-        <li><a class="spine-item" href="#preface"><span class="num">i</span><span class="title">Preface</span></a></li>
-        <li><a class="spine-item" href="#install"><span class="num">ii</span><span class="title">Install</span></a></li>
-        <li><a class="spine-item" href="#cli"><span class="num">iii</span><span class="title">The CLI</span></a></li>
-        <li><a class="spine-item" href="#commands"><span class="num">iv</span><span class="title">Commands</span></a></li>
-        <li><a class="spine-item" href="#deterministic"><span class="num">v</span><span class="title">What audit catches</span></a></li>
-        <li><a class="spine-item" href="#llm"><span class="num">vi</span><span class="title">What critique catches</span></a></li>
-        <li><a class="spine-item" href="#fuzzy"><span class="num">vii</span><span class="title">Fuzzy matching</span></a></li>
+      <ol class="spine-tree">
+        <li><a class="spine-item" href="#start">Start</a></li>
+        <li><a class="spine-item" href="#install">Install</a></li>
+        <li>
+          <a class="spine-item" href="#cli">CLI</a>
+          <ol class="spine-sub">
+            <li><a href="#cli-audit"><code>audit</code></a></li>
+            <li><a href="#cli-lint"><code>lint</code></a></li>
+            <li><a href="#cli-critique"><code>critique</code></a></li>
+            <li><a href="#cli-rules"><code>rules</code></a></li>
+            <li><a href="#cli-skills"><code>skills</code></a></li>
+          </ol>
+        </li>
+        <li>
+          <a class="spine-item" href="#lenses">Lenses</a>
+          <ol class="spine-sub">
+            <li><a href="#lens-polish"><code>polish</code></a></li>
+            <li><a href="#lens-humanize"><code>humanize</code></a></li>
+            <li><a href="#lens-tighten"><code>tighten</code></a></li>
+            <li><a href="#lens-clarify"><code>clarify</code></a></li>
+            <li><a href="#lens-pace"><code>pace</code></a></li>
+            <li><a href="#lens-lead"><code>lead</code></a></li>
+            <li><a href="#lens-verify"><code>verify</code></a></li>
+            <li><a href="#lens-aloud"><code>aloud</code></a></li>
+            <li><a href="#lens-argue"><code>argue</code></a></li>
+          </ol>
+        </li>
+        <li>
+          <a class="spine-item" href="#project">Project</a>
+          <ol class="spine-sub">
+            <li><a href="#project-teach"><code>teach</code></a></li>
+            <li><a href="#project-document"><code>document</code></a></li>
+            <li><a href="#project-extract"><code>extract</code></a></li>
+            <li><a href="#project-craft"><code>craft</code></a></li>
+          </ol>
+        </li>
+        <li><a class="spine-item" href="#catalog">Catalog</a></li>
       </ol>
     </aside>
 
     <article class="book-body">
 
-      <section class="chapter" id="preface">
-        <p class="chapter-mark">Chapter I</p>
-        <h2 class="chapter-title">Preface</h2>
-        <p><span class="newthought">Every harness</span> ships with an LLM that could be the editor sitting next to you when you write. Mostly it isn&rsquo;t. It cheerleads instead of cutting, paraphrases instead of pruning, hallucinates citations instead of flagging missing ones, and quietly produces prose that all sounds the same.</p>
-        <p>Pilcrow turns it into the editor. A small CLI for the mechanical checks Strunk and Williams have been running for sixty years — 49 deterministic rules covering AI vocabulary, antithesis cadence, em-dash density, throat-clearing openers, and the surface patterns regex can pin down. Plus 20 LLM-judged rules for what regex can&rsquo;t catch: buried ledes, mixed metaphors, missing stakes, unsupported claims.</p>
-        <p>On top, nine interpretive lenses anchored in the classical style guides. <code>polish</code> (Strunk, Zinsser). <code>tighten</code> (Williams). <code>clarify</code> (Pinker, Orwell). <code>pace</code> (King). <code>lead</code> (Zinsser). <code>verify</code> (journalism fact-check). <code>aloud</code> (read it aloud). <code>argue</code> (Toulmin, Argdown). And <code>humanize</code> for the AI-specific work. Four project commands — <code>teach</code>, <code>document</code>, <code>extract</code>, <code>craft</code> — capture your voice and apply it to a new draft.</p>
-        <p>Works whether you wrote it, the model wrote it, or you co-wrote it. AI-tell detection is in there because it&rsquo;s one of the things a good editor catches &mdash; alongside the rest.</p>
-        <p>Credit to Paul Bakaus&rsquo;s <a href="https://impeccable.style/">impeccable</a>, which does the same job for frontend design. Same idea, applied to prose.</p>
-        <p><strong>Detection-only.</strong> The engine never edits your text. Findings carry line, column, excerpt, and an optional suggestion; the LLM (or you) decides what to change.</p>
+      <section class="chapter" id="start">
+        <h2 class="chapter-title">Start</h2>
+        <p><span class="newthought">Every harness</span> ships with an LLM that could be the editor sitting next to you when you write. Mostly it isn&rsquo;t. It cheerleads instead of cutting, paraphrases instead of pruning, and quietly produces prose that all sounds the same.</p>
+        <p>Pilcrow turns it into the editor. Mechanical checks for the patterns regex can pin down. LLM-judged ones for what regex can&rsquo;t. Interpretive lenses anchored in the classical style guides: Strunk, Williams, Zinsser, Pinker, Orwell, King.</p>
+        <p>Works whether you wrote it, the model wrote it, or you co-wrote it. <strong>Detection-only.</strong> The engine never edits your text. Findings carry line, column, excerpt, and an optional suggestion; the LLM or you decide what to change.</p>
+        <p>Inspired by Paul Bakaus&rsquo;s <a href="https://impeccable.style/">impeccable</a>. Same idea, applied to writing.</p>
       </section>
 
       <section class="chapter" id="install">
-        <p class="chapter-mark">Chapter II</p>
         <h2 class="chapter-title">Install</h2>
-        <p>Two paths. Pick one.</p>
-
-        <h3>Global (recommended)</h3>
+        <p>Global:</p>
         <pre><code>npm install -g pilcrow-ink</code></pre>
-        <p>The package on npm is <code>pilcrow-ink</code>; the binary it installs is <code>pilcrow</code>.</p>
-
-        <h3>Per-project, no install</h3>
-        <pre><code>npx pilcrow-ink audit drafts/
-npx pilcrow-ink skills install</code></pre>
-        <p>Works from any project without touching <code>node_modules</code>.</p>
-
-        <h3>Add the skill to your AI harness</h3>
-        <p>Once <code>pilcrow</code> is available, drop the skill into the right place for whichever harness you use:</p>
+        <p>The package is <code>pilcrow-ink</code>; the binary is <code>pilcrow</code>. Or per-project without installing:</p>
+        <pre><code>npx pilcrow-ink audit drafts/</code></pre>
+        <p>Then drop the skill into your AI harness:</p>
         <pre><code>cd your-project
-pilcrow skills install              # auto-detects .claude / .cursor / .gemini / .agents / etc.
-pilcrow skills install --all        # install into every supported provider
-pilcrow skills update               # re-sync after `npm update -g pilcrow-ink`
-pilcrow skills check                # show installed versions vs the package</code></pre>
-        <p>Supported harnesses: Claude Code, Cursor, Gemini CLI, Codex / Agents, OpenCode, Kiro, Pi, Qoder, Trae, GitHub Copilot.</p>
+pilcrow skills install</code></pre>
+        <p>Auto-detects <code>.claude</code>, <code>.cursor</code>, <code>.gemini</code>, <code>.agents</code>, <code>.opencode</code>, <code>.kiro</code>, <code>.pi</code>, <code>.qoder</code>, <code>.trae</code>, <code>.github</code>. Pass <code>--all</code> for every supported provider, or <code>--provider=.cursor</code> for one specifically.</p>
       </section>
 
       <section class="chapter" id="cli">
-        <p class="chapter-mark">Chapter III</p>
-        <h2 class="chapter-title">The CLI</h2>
-        <p>Five commands.</p>
-        <pre><code>pilcrow audit [paths...]     # human-readable findings (default)
-pilcrow lint  [paths...]     # JSON output for LLM consumption
-pilcrow critique [path]      # print the LLM-critique prompt
-pilcrow rules [--json]       # list every rule
-pilcrow skills &lt;sub&gt;         # install/update/check the harness skill</code></pre>
-        <p>If you pass no paths, the CLI reads stdin. If you pass a directory, it walks the tree and scans every <code>.md</code>, <code>.mdx</code>, <code>.markdown</code>, and <code>.txt</code> file. <code>audit</code> exits non-zero when an <code>error</code>-severity rule fires; <code>lint</code> exits the same way and prints JSON instead of pretty output.</p>
+        <h2 class="chapter-title">CLI</h2>
+        <p>Five commands run directly against prose. Reads stdin if you don&rsquo;t pass a path. Recurses directories, scanning <code>.md</code>, <code>.mdx</code>, <code>.markdown</code>, <code>.txt</code>, <code>.html</code>, <code>.htm</code>.</p>
 
-        <h3>A first run</h3>
-        <pre><code>$ echo "Let me delve into the rich tapestry of features." | pilcrow audit
-&lt;stdin&gt;  3 findings
-  ERROR   1:8 ai-tell-phrasebank — "delve into" (≈ "delve into")
-  ERROR   1:23 ai-tell-phrasebank — "rich tapestry" (≈ "rich tapestry")
-  ERROR   1:28 ai-tell-phrasebank — "tapestry of"  (≈ "tapestry of")</code></pre>
-        <p>Each finding includes a short excerpt of the surrounding text and a one-line suggestion when the rule has one.</p>
+        <h3 id="cli-audit">audit</h3>
+        <p>Run the rule catalog. Human-readable findings with line, column, excerpt, and an optional rewrite hint.</p>
+        <pre><code>pilcrow audit drafts/post.md
+pilcrow audit drafts/ --ignore-quoted
+echo "Let me delve into the rich tapestry…" | pilcrow audit</code></pre>
+        <p>Exits non-zero when an <code>error</code>-severity finding fires. The <code>--ignore-quoted</code> flag skips phrases inside straight or curly double quotes, useful for prose that quotes AI tells without backticking them.</p>
 
-        <h3>Piping to an LLM</h3>
-        <p>The <code>critique</code> command emits a single prompt the model reads against the 20 higher-level rules. Pipe it into your model of choice:</p>
+        <h3 id="cli-lint">lint</h3>
+        <p>Same scan as <code>audit</code>, JSON output for piping into another tool or back to a model.</p>
+        <pre><code>pilcrow lint drafts/post.md | jq '.files[0].findings[] | select(.severity == "error")'</code></pre>
+
+        <h3 id="cli-critique">critique</h3>
+        <p>Emit the LLM-critique prompt. Patterns regex can&rsquo;t reliably catch (buried lede, mixed metaphor, missing stakes, unsupported claims) packaged as a single prompt the model evaluates. The model returns JSON findings in the same shape as <code>lint</code>.</p>
         <pre><code>pilcrow critique drafts/post.md | claude
-pilcrow critique drafts/post.md | llm -m gpt-5</code></pre>
-        <p>The expected JSON response shape is documented inside the prompt itself.</p>
+pilcrow critique drafts/post.md --rules=buried-lede,unsupported-claim</code></pre>
+
+        <h3 id="cli-rules">rules</h3>
+        <p>List every rule with id, severity, and one-line description.</p>
+        <pre><code>pilcrow rules
+pilcrow rules --json</code></pre>
+        <p>Full catalog at <a href="rules.html">the catalog page</a>.</p>
+
+        <h3 id="cli-skills">skills</h3>
+        <p>Manage the pilcrow skill inside your AI harness.</p>
+        <pre><code>pilcrow skills install    # auto-detect and install
+pilcrow skills update     # re-sync after `npm update -g pilcrow-ink`
+pilcrow skills check      # show installed vs package version</code></pre>
       </section>
 
-      <section class="chapter" id="commands">
-        <p class="chapter-mark">Chapter IV</p>
-        <h2 class="chapter-title">Commands</h2>
-        <p>Pilcrow exposes eighteen commands today. Five run the engine; nine load an interpretive lens; four act on the project as a whole. The engine is the <em>what</em> &mdash; deterministic findings, milliseconds per file. The lens is the <em>how</em> &mdash; a reference file anchored in a classical style guide that tells the model which findings matter under that lens and what rewrite shape to propose. Lenses are not rule filters; each has its own methodology, its own output, its own anti-patterns.</p>
+      <section class="chapter" id="lenses">
+        <h2 class="chapter-title">Lenses</h2>
+        <p>Lenses interpret findings through a tradition. Each loads its own playbook from <code>skill/reference/&lt;lens&gt;.md</code> with methodology, output shape, and anti-patterns drawn from a named style guide. Lenses are <em>not</em> rule filters; each produces a different kind of report.</p>
+        <p>Invoke through the skill: <code>/pilcrow &lt;lens&gt; &lt;path&gt;</code>.</p>
 
-        <h3>Utility &mdash; run the engine</h3>
-        <table>
-          <tbody>
-            <tr><td><code>audit</code></td><td>run the deterministic catalog; human-readable findings</td></tr>
-            <tr><td><code>lint</code></td><td>same scan; JSON output for piping</td></tr>
-            <tr><td><code>critique</code></td><td>emit the LLM-critique prompt for the 20 higher-level rules</td></tr>
-            <tr><td><code>rules</code></td><td>list every rule with id, severity, description</td></tr>
-            <tr><td><code>skills</code></td><td>install or refresh the skill in your harness</td></tr>
-          </tbody>
-        </table>
+        <h3 id="lens-polish">polish</h3>
+        <p>Final pre-ship lens (Strunk &amp; White, Zinsser). Scores the piece on nine dimensions (one per lens, 0–4 each, 0–36 total) with a five-tier verdict from Excellent to Critical. Then triages findings into ship-blockers (P0), worth-fixing (P1–P2), and taste-calls (P3), and names the lowest-scoring dimensions so the writer knows which lens to run next.</p>
+        <pre><code>/pilcrow polish drafts/post.md</code></pre>
 
-        <h3>Lenses &mdash; interpret findings through a tradition</h3>
-        <p>Each lens loads a reference file (<code>skill/reference/&lt;name&gt;.md</code>) when invoked. The reference encodes a methodology drawn from a named style guide, plus rewrite patterns, an output shape, and anti-patterns. None of them is a subset of <code>audit</code>; each produces a different report.</p>
-        <table>
-          <thead><tr><th>Lens</th><th>Anchor</th><th>What it does</th></tr></thead>
-          <tbody>
-            <tr><td><code>polish</code></td><td>Strunk &amp; White, Zinsser</td><td>final pre-ship pass; triages findings into ship-blockers, worth-fixing, taste-calls</td></tr>
-            <tr><td><code>humanize</code></td><td>Wikipedia <em>Signs of AI writing</em></td><td>strip AI tells while preserving voice; classifies into vocabulary, cadence, template, fossil</td></tr>
-            <tr><td><code>tighten</code></td><td>Williams <em>Style</em></td><td>cut zombie nouns and weak verbs; per-sentence rewrites with the buried action surfaced</td></tr>
-            <tr><td><code>clarify</code></td><td>Pinker <em>Sense of Style</em>, Orwell</td><td>reduce reader&rsquo;s working-memory load; per-passage rewrites with mental-model commentary</td></tr>
-            <tr><td><code>pace</code></td><td>King <em>On Writing</em>, Strunk</td><td>restore rhythm; cadence histogram plus split/merge proposals</td></tr>
-            <tr><td><code>lead</code></td><td>Zinsser on leads</td><td>sharpen openings; finds the buried lede, proposes three alternative first sentences</td></tr>
-            <tr><td><code>verify</code></td><td>journalism fact-check tradition</td><td>surface load-bearing claims; classify each as unsupported, vague, hedged, or unchecked</td></tr>
-            <tr><td><code>aloud</code></td><td>aural reading tradition</td><td>play the prose back via OpenAI TTS in an interactive session; gates on writer response</td></tr>
-            <tr><td><code>argue</code></td><td>Toulmin, IBIS, <a href="https://argdown.org">Argdown</a></td><td>map the argument structure; surface supports, objections, and load-bearing premises; generate the strongest counter and check coverage</td></tr>
-          </tbody>
-        </table>
-        <p>Lenses don&rsquo;t prescribe what to run next. Most writers run one lens at a time, on one piece at a time. <code>polish</code> is the meta-lens for a final pre-ship sweep; the others stand alone.</p>
+        <h3 id="lens-humanize">humanize</h3>
+        <p>Strip AI tells without sanding off voice (Wikipedia <em>Signs of AI writing</em>). Classifies findings by class (vocabulary, cadence, template, fossil) with class-specific rewrite shapes.</p>
+        <pre><code>/pilcrow humanize drafts/post.md</code></pre>
 
-        <p>Lens references share five cross-cutting files (the underscore-prefixed entries in <code>skill/reference/</code>): <code>_style-laws.md</code>, <code>_ai-tell-catalog.md</code>, <code>_readers.md</code>, <code>_cadence-theory.md</code>, <code>_genres.md</code>. Each lens loads the shared files it actually needs, so the per-lens reference stays short.</p>
+        <h3 id="lens-tighten">tighten</h3>
+        <p>Cut zombie nouns and weak verbs (Williams <em>Style</em>). The character/action principle: name the actor, surface the buried verb.</p>
+        <pre><code>/pilcrow tighten drafts/post.md</code></pre>
 
-        <h3>Project &mdash; voice context and drafting</h3>
-        <p>Four commands act on the repo, not on a single passage. They capture or apply the writer&rsquo;s voice so lens proposals sound like the writer, not like a generic editor.</p>
-        <table>
-          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
-          <tbody>
-            <tr><td><code>teach</code></td><td>multi-round interview to capture the writer&rsquo;s voice; writes <code>VOICE.md</code></td></tr>
-            <tr><td><code>document</code></td><td>infer voice from existing prose in the repo; writes <code>VOICE.md</code> with citations and open questions</td></tr>
-            <tr><td><code>extract</code></td><td>mine the corpus for recurring AI tells and personal tics; writes <code>PILCROW.md</code></td></tr>
-            <tr><td><code>craft</code></td><td>method-aware end-to-end essay writing (outliner / discovery / iterative / model-drafter); shape &rarr; draft &rarr; critique &rarr; polish</td></tr>
-          </tbody>
-        </table>
-        <p>Each project command writes to disk only after explicit confirmation. The flow is gated, not autonomous. Once <code>VOICE.md</code> or <code>PILCROW.md</code> exist, every lens reads them on invocation and weights findings accordingly.</p>
-        <p><code>teach</code> captures four axes: <strong>genre</strong>, <strong>audience</strong>, <strong>stance</strong>, <strong>method</strong>. <code>craft</code> reads <code>method:</code> and runs one of four phase-2 variants — outliners outline first, discovery writers draft freely, iterative writers gate paragraph by paragraph, and model-drafter users get the model&rsquo;s draft as raw material to rewrite. Different writers draft differently; the flow respects that rather than forcing one shape.</p>
-        <p>Pin a lens you repeat &mdash; <code>node skill/scripts/pin.mjs pin polish</code> turns <code>/pilcrow polish</code> into <code>/polish</code>. The pinned shortcut carries a marker comment, so <code>unpin polish</code> only removes shortcuts pilcrow created.</p>
+        <h3 id="lens-clarify">clarify</h3>
+        <p>Reduce the reader&rsquo;s working-memory load (Pinker <em>Sense of Style</em>, Orwell). Per-passage rewrites with mental-model commentary: what the reader has to hold, what the payoff is.</p>
+        <pre><code>/pilcrow clarify drafts/post.md</code></pre>
+
+        <h3 id="lens-pace">pace</h3>
+        <p>Restore rhythm (King <em>On Writing</em>, Strunk). Sentence-length histogram, paragraph-weight chart, aural diagnostic (tongue-twisters, consonant clusters, unintentional rhyme), split/merge proposals.</p>
+        <pre><code>/pilcrow pace drafts/post.md</code></pre>
+
+        <h3 id="lens-lead">lead</h3>
+        <p>Sharpen the opening (Zinsser on leads). Finds the real lede in the first paragraphs and proposes three alternative first sentences: news lede, scene lede, stakes lede.</p>
+        <pre><code>/pilcrow lead drafts/post.md</code></pre>
+
+        <h3 id="lens-verify">verify</h3>
+        <p>Surface load-bearing claims (journalism fact-check tradition). Each numeric, dated, comparative, or attributed claim gets a three-question check (citation, specificity, plausibility) and a classification: <code>unsupported</code>, <code>vague</code>, <code>hedged</code>, <code>unchecked</code>.</p>
+        <pre><code>/pilcrow verify drafts/post.md</code></pre>
+
+        <h3 id="lens-aloud">aloud</h3>
+        <p>Play the prose back via TTS in an interactive session. Four modes: <code>walkthrough</code> (paragraph by paragraph), <code>full</code> (end to end), <code>targeted</code> (only paragraphs <code>pace</code> flagged), <code>compare</code> (two passages back to back). Requires <code>OPENAI_API_KEY</code> and a system audio player.</p>
+        <pre><code>/pilcrow aloud drafts/post.md</code></pre>
+        <p>Audio is content-addressed and cached at <code>/tmp/pilcrow/aloud/&lt;sha256&gt;.mp3</code>. Replays across sessions are free. The lens detects an installed <a href="https://github.com/openai/skills/tree/main/skills/.curated/speech">OpenAI speech skill</a> in your harness or fetches a pinned snapshot.</p>
+
+        <h3 id="lens-argue">argue</h3>
+        <p>Map the argument (Toulmin, IBIS, <a href="https://argdown.org">Argdown</a>). Confirms the thesis with a multi-choice gate, surfaces supports and load-bearing premises as an indented tree, generates the strongest counter (genre-aware), and checks coverage: engaged, dodged, or missing.</p>
+        <pre><code>/pilcrow argue drafts/post.md
+/pilcrow argue drafts/post.md --argdown   # also emit a .argdown file</code></pre>
       </section>
 
-      <section class="chapter" id="deterministic">
-        <p class="chapter-mark">Chapter V</p>
-        <h2 class="chapter-title">What audit catches</h2>
-        <p>Forty-nine deterministic rules, no LLM, no API key, milliseconds per file. They fall into eight families.</p>
-        <p>For the full catalog with every rule&rsquo;s id, severity, and description, see <a href="rules.html"><em>The catalog</em></a>.</p>
+      <section class="chapter" id="project">
+        <h2 class="chapter-title">Project</h2>
+        <p>Project commands act on the repo, not on a single passage. They capture the writer&rsquo;s voice so lens proposals sound like the writer, and they shape a new piece end to end. Each writes to disk only after explicit confirmation.</p>
 
-        <table>
-          <thead><tr><th>Family</th><th>Rules</th></tr></thead>
-          <tbody>
-            <tr><td>AI phrasebank</td><td>ai-tell-phrasebank, overused-words, antithesis-cadence, throat-clearing-openers, cliche-closers, meta-discourse, copula-dodge</td></tr>
-            <tr><td>AI fossils</td><td>signoff-chatbot, sycophant-opener, disclaimer-tail, citation-artifact</td></tr>
-            <tr><td>Phrase</td><td>corporate-cliche, cliche-list, wordy-phrases, redundant-pairs, weasel-hedges, vague-quantifiers</td></tr>
-            <tr><td>Density</td><td>em-dash-density, adverb-density, nominalization-density, boosters, passive-voice, pronoun-density-low, parenthetical-aside-density, inline-bold-emphasis</td></tr>
-            <tr><td>Cadence</td><td>sentence-length-monotony, sentence-too-long, paragraph-monotony, parallel-triplet-density, transition-stacking, repeated-words-window, noun-stacking, anaphora-cadence, fragment-cadence, hero-tagline-imperative, from-x-to-y, present-participle-tail</td></tr>
-            <tr><td>Consistency</td><td>dash-style-inconsistency, quote-style-inconsistency, oxford-comma-inconsistency</td></tr>
-            <tr><td>Weak constructions</td><td>there-is-there-are, expletives, negation-of-negation, pronoun-it-vague</td></tr>
-            <tr><td>Markdown shape</td><td>bullet-bold-lead, title-case-headers, colon-headline, decorative-emoji, false-precision-headline</td></tr>
-          </tbody>
-        </table>
+        <h3 id="project-teach">teach</h3>
+        <p>Multi-round interview to capture voice. Asks for genre, audience, stance, drafting method, signatures, taboos, and exceptions. Writes <code>VOICE.md</code>.</p>
+        <pre><code>/pilcrow teach</code></pre>
 
-        <p>The phrasebank carries the strongest AI tells (<code>delve</code>, <code>tapestry of</code>, <code>navigate the landscape</code>, <code>plays a crucial role</code>) at severity <code>error</code>. The single-word list (<code>transformative</code>, <code>groundbreaking</code>, <code>seamless</code>, <code>foster</code>, <code>unleash</code>, <code>robust</code>, &hellip;) sits at severity <code>info</code> because any one word can be defensible in context; the volume is the tell. The antithesis rule wants two or more matches in the document before it fires, since one instance is rhetoric and repetition is the fingerprint.</p>
+        <h3 id="project-document">document</h3>
+        <p>Infer voice from existing prose in the repo. Reads a corpus, computes stylometric features it can measure mechanically, and writes a draft <code>VOICE.md</code> with citations and an explicit <strong>Open questions</strong> section for fields the stats can&rsquo;t answer.</p>
+        <pre><code>/pilcrow document</code></pre>
 
-        <p>Density rules report only when a threshold is crossed: more than 1.5 em-dashes per 100 words, more than 5 unfortunate adverbs per 100, more than 8 nominalizations. Below that, prose breathes.</p>
+        <h3 id="project-extract">extract</h3>
+        <p>Mine the corpus for recurring AI tells and personal tics. Writes <code>PILCROW.md</code> as a descriptive map (repeat phrases, repeat constructions, high-frequency uncertain patterns, once-per-piece tells). Descriptive, not prescriptive; commit the patterns to voice rules via <code>teach</code>.</p>
+        <pre><code>/pilcrow extract</code></pre>
 
-        <p>Run <code>pilcrow rules</code> to see every rule with its description and severity. Run <code>pilcrow rules --json</code> to get a machine-readable copy.</p>
+        <h3 id="project-craft">craft</h3>
+        <p>Method-aware end-to-end writing. Picks <code>outliner</code>, <code>discovery</code>, <code>iterative</code>, or <code>model-drafter</code> at start (or reads <code>method:</code> from <code>VOICE.md</code>). Four phases (shape, draft, critique, polish), each gated by writer confirmation.</p>
+        <pre><code>/pilcrow craft "topic or assignment"</code></pre>
       </section>
 
-      <section class="chapter" id="llm">
-        <p class="chapter-mark">Chapter VI</p>
-        <h2 class="chapter-title">What critique catches</h2>
-        <p>Twenty higher-level patterns regex can&rsquo;t catch. These rules describe shapes of argument and rhetoric, not strings of characters. The engine ships them as a catalog plus a prompt builder; the model reads the prose against the catalog and returns structured JSON findings the CLI can consume.</p>
-
-        <table>
-          <thead><tr><th>Rule</th><th>What it watches for</th></tr></thead>
-          <tbody>
-            <tr><td>buried-lede</td><td>the real point doesn&rsquo;t appear in the first paragraph</td></tr>
-            <tr><td>voice-consistency</td><td>register drifts across sections without narrative cause</td></tr>
-            <tr><td>mixed-metaphor</td><td>two incompatible images in one sentence</td></tr>
-            <tr><td>claim-without-support</td><td>a non-trivial claim with no evidence, reasoning, or example</td></tr>
-            <tr><td>missing-stakes</td><td>the reader can&rsquo;t answer <em>so what</em> after reading</td></tr>
-            <tr><td>distinctive-vs-generic</td><td>could&rsquo;ve been written by anyone (or any model)</td></tr>
-            <tr><td>abstract-without-concrete</td><td>extended theory with no grounding example or scene</td></tr>
-            <tr><td>showing-vs-telling</td><td>tells the reader what to feel instead of showing why</td></tr>
-            <tr><td>transition-coherence</td><td>paragraphs that don&rsquo;t connect</td></tr>
-            <tr><td>register-mismatch</td><td>formal and casual jammed together without intent</td></tr>
-            <tr><td>excessive-balance</td><td>every claim earns a <em>but</em> or <em>however</em></td></tr>
-            <tr><td>redundant-thesis</td><td>opening and closing repeat the same line</td></tr>
-            <tr><td>marketing-template-cadence</td><td>imperative-fragment-plus-tricolon hero rhythm, regardless of content specificity</td></tr>
-            <tr><td>sycophantic-tone</td><td>passage-level flattery of reader, prompt, or topic</td></tr>
-            <tr><td>stakes-inflation</td><td>civilizational stakes attached to small things</td></tr>
-            <tr><td>false-reframe</td><td><em>not X, it&rsquo;s Y</em> with no semantic content behind it</td></tr>
-            <tr><td>invented-concept-label</td><td>Capitalized Compound treated as established term without definition</td></tr>
-            <tr><td>listicle-disguise</td><td>numbered list flowed into parallel paragraphs as prose</td></tr>
-            <tr><td>one-point-dilution</td><td>single idea restated under five framings, no new argument</td></tr>
-            <tr><td>unsupported-claim</td><td>a load-bearing number, date, comparative, or attribution with no citation the reader can audit (the lens behind <code>verify</code>)</td></tr>
-          </tbody>
-        </table>
-
-        <p>Each rule in the catalog ships with a description, a positive example, and a negative example, all embedded directly in the prompt. The model returns JSON that the engine parses back into the same <code>Finding</code> shape the deterministic engine uses, so the two passes can be merged into one report.</p>
-      </section>
-
-      <section class="chapter" id="fuzzy">
-        <p class="chapter-mark">Chapter VII</p>
-        <h2 class="chapter-title">Fuzzy matching</h2>
-        <p>Literal regex matches the wrong things. The phrasebank rules tokenize the prose, strip apostrophes, and stem each token before comparison. One phrase entry catches all the variants the model will produce in the wild.</p>
-
-        <table>
-          <thead><tr><th>Phrase</th><th>Also catches</th></tr></thead>
-          <tbody>
-            <tr><td><code>delve into</code></td><td><code>delves</code>, <code>delving</code>, <code>delved</code>, <em><code>delve deeply</code></em> <code>into</code></td></tr>
-            <tr><td><code>foster</code></td><td><code>fosters</code>, <code>fostering</code>, <code>fostered</code></td></tr>
-            <tr><td><code>let&rsquo;s dive in</code></td><td><code>Let&rsquo;s dive in</code>, <code>lets dive in</code></td></tr>
-          </tbody>
-        </table>
-
-        <p>One inserted word is permitted between phrase tokens, so <code>delve deeply into</code> matches <code>delve into</code>. Apostrophes are stripped from both sides before matching, so <code>Let&rsquo;s</code> matches <code>lets</code>.</p>
-        <p>For the complete list of phrases, words, and patterns the engine watches, see <a href="rules.html"><em>The catalog</em></a> &mdash; auto-generated from the source on every deploy.</p>
+      <section class="chapter" id="catalog">
+        <h2 class="chapter-title">Catalog</h2>
+        <p>The full rule catalog (deterministic and LLM-judged, with id, severity, and description for each) lives at <a href="rules.html"><em>The catalog</em></a>. Auto-generated from source on every deploy.</p>
       </section>
 
     </article>
@@ -254,8 +214,8 @@ pilcrow critique drafts/post.md | llm -m gpt-5</code></pre>
     <div class="colophon-wrap">
       <p class="colophon-eyebrow">Colophon</p>
       <h2>About the book</h2>
-      <p>Set in <strong>ET Book</strong>, Edward Tufte&rsquo;s revival of Bembo. Cream paper, ink text, a single sage band at the colophon, gilt for chapter numbers and focus. The layout borrows the sticky margin from Tufte CSS and turns it into a vertical spine.</p>
-      <p>Inspired by <a href="https://impeccable.style/">impeccable.style</a> by Paul Bakaus — the canonical design-language skill. The architecture (a skill, a CLI, an anti-pattern catalog, reference files per lens) is borrowed directly. Same idea, applied to writing instead of frontend.</p>
+      <p>Set in <strong>ET Book</strong>, Edward Tufte&rsquo;s revival of Bembo. Cream paper, ink text, a single sage band at the colophon, gilt for focus. The layout borrows the sticky margin from Tufte CSS and turns it into a vertical spine.</p>
+      <p>Inspired by <a href="https://impeccable.style/">impeccable.style</a> by Paul Bakaus, the canonical design-language skill. The architecture (a skill, a CLI, a rule catalog, reference files per command) is borrowed directly. Same idea, applied to writing.</p>
       <p>Source on <a href="https://github.com/SamGalanakis/pilcrow">GitHub</a>. MIT license. Hosted at <a href="https://pilcrow.ink">pilcrow.ink</a>.</p>
     </div>
   </section>

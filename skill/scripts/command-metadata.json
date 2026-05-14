@@ -5,7 +5,7 @@
   "rules":    { "description": "List every rule with id, severity, description. --json for machine output.",                                                        "argumentHint": "[--json]",                     "category": "utility" },
   "skills":   { "description": "Install or refresh the pilcrow skill in your AI harness directories.",                                                              "argumentHint": "<install|update|check> [--all] [--provider=.x]", "category": "utility" },
 
-  "polish":   { "description": "Final pre-ship lens. Triages combined audit + critique findings into ship-blockers, worth-fixing, and stylistic taste-calls.",      "argumentHint": "[paths...]", "category": "lens" },
+  "polish":   { "description": "Final pre-ship lens. Scores the piece on nine dimensions (0–4 each, 0–36 total) plus a verdict, then triages findings into ship-blockers (P0), worth-fixing (P1–P2), and taste-calls (P3).", "argumentHint": "[paths...]", "category": "lens" },
   "humanize": { "description": "Strip AI tells from prose while preserving voice. Classifies findings into vocabulary, cadence, template, fossil.",                 "argumentHint": "[paths...]", "category": "lens" },
   "tighten":  { "description": "Cut zombie nouns and weak verbs. Per-sentence rewrites that surface the buried action, anchored in Williams' Style.",               "argumentHint": "[paths...]", "category": "lens" },
   "clarify":  { "description": "Reduce the reader's working-memory load. Per-passage rewrites with mental-model commentary, anchored in Pinker and Orwell.",        "argumentHint": "[paths...]", "category": "lens" },

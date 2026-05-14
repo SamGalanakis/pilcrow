@@ -101,12 +101,16 @@ describe("fuzzy matching", () => {
 });
 
 describe("LLM-rule catalog", () => {
-  it("has 20 rules", () => {
-    expect(llmRules.length).toBe(20);
+  it("has 21 rules", () => {
+    expect(llmRules.length).toBe(21);
   });
 
   it("includes unsupported-claim", () => {
     expect(llmRules.some((r) => r.id === "unsupported-claim")).toBe(true);
+  });
+
+  it("includes feature-tally", () => {
+    expect(llmRules.some((r) => r.id === "feature-tally")).toBe(true);
   });
 
   it("buildCritiquePrompt embeds the rules and the prose", () => {
