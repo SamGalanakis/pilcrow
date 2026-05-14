@@ -61,6 +61,19 @@ Six interpretive lenses sit on top of the engine. Each loads its own reference f
 
 A lens is not a rule filter — each defines its own procedure, rubric, and output. See `skill/reference/<lens>.md` for the playbooks.
 
+## Project commands
+
+Four commands act on the repo, not on a single passage. They capture the writer's voice so lens proposals sound like the writer.
+
+| Command | What it does |
+|---|---|
+| `teach` | Multi-round interview to capture the writer's voice; writes `VOICE.md` |
+| `document` | Infer voice from existing prose in the repo; writes `VOICE.md` with citations and open questions |
+| `extract` | Mine the corpus for recurring AI tells and personal tics; writes `PILCROW.md` |
+| `craft` | End-to-end essay writing with gates: shape → draft → critique → polish; respects `VOICE.md` and `PILCROW.md` |
+
+Each writes to disk only after explicit confirmation. Once `VOICE.md` or `PILCROW.md` exist, every lens reads them on invocation and weights findings accordingly.
+
 ## Rules
 
 **49 deterministic** (regex + fuzzy stem matching, no LLM):

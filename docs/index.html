@@ -144,6 +144,19 @@ pilcrow critique drafts/post.md | llm -m gpt-5</code></pre>
           </tbody>
         </table>
         <p>Each lens recommends a handoff to another lens when its own job is done &mdash; <code>humanize</code> hands off to <code>polish</code>; <code>tighten</code> can hand off to <code>clarify</code> or <code>pace</code>; <code>lead</code> hands off to <code>polish</code>. Chains are the writer&rsquo;s call.</p>
+
+        <h3>Project &mdash; voice context and drafting</h3>
+        <p>Four commands act on the repo, not on a single passage. They capture or apply the writer&rsquo;s voice so lens proposals sound like the writer, not like a generic editor.</p>
+        <table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>teach</code></td><td>multi-round interview to capture the writer&rsquo;s voice; writes <code>VOICE.md</code></td></tr>
+            <tr><td><code>document</code></td><td>infer voice from existing prose in the repo; writes <code>VOICE.md</code> with citations and open questions</td></tr>
+            <tr><td><code>extract</code></td><td>mine the corpus for recurring AI tells and personal tics; writes <code>PILCROW.md</code></td></tr>
+            <tr><td><code>craft</code></td><td>end-to-end essay writing with gates: shape &rarr; draft &rarr; critique &rarr; polish</td></tr>
+          </tbody>
+        </table>
+        <p>Each project command writes to disk only after explicit confirmation. The flow is gated, not autonomous. Once <code>VOICE.md</code> or <code>PILCROW.md</code> exist, every lens reads them on invocation and weights findings accordingly.</p>
       </section>
 
       <section class="chapter" id="deterministic">
