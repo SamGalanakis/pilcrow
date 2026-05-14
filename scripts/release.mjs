@@ -184,7 +184,7 @@ step('Gathering commits since last tag');
 let notes;
 let prevTag;
 try {
-  prevTag = run(`git describe --tags --abbrev=0 --match "v*"`);
+  prevTag = run(`git describe --tags --abbrev=0 --match "v*" 2>/dev/null`);
 } catch {
   prevTag = null;
 }
