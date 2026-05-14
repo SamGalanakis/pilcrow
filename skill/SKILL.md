@@ -1,7 +1,7 @@
 ---
 name: pilcrow
 description: Detect AI tells and writing-quality issues in prose. Use when reviewing, polishing, or auditing markdown, HTML, or plain-text prose. Wraps the `pilcrow` CLI for invocation from inside an AI harness.
-version: 0.5.1
+version: 0.5.2
 user-invocable: true
 argument-hint: "[audit|lint|critique|rules|skills] [paths...]"
 allowed-tools:
