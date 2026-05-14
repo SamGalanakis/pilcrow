@@ -109,6 +109,7 @@ function verifySiblings(version) {
 // ---------------------------------------------------------------------------
 
 let pkg = readPkg();
+let justBumped = false;
 
 if (bump) {
   step('Checking working tree is clean before bump');
@@ -119,16 +120,20 @@ if (bump) {
   const next = bumpSemver(pkg.version, bump);
   step(`Bumping ${pkg.version} → ${next}`);
   pkg.version = next;
-  if (!dryRun) writePkg(pkg);
-  const changed = dryRun ? ['skill/SKILL.md', 'docs/index.html'] : syncSiblings(next);
-  ok(`updated package.json + ${changed.join(', ') || '(no siblings)'}`);
+  if (!dryRun) {
+    writePkg(pkg);
+    const changed = syncSiblings(next);
+    ok(`updated package.json + ${changed.join(', ') || '(no siblings)'}`);
+  } else {
+    ok('would update package.json + skill/SKILL.md, docs/index.html');
+  }
 
   step('Committing the bump');
   runMutating('git add package.json skill/SKILL.md docs/index.html');
   runMutating(`git commit -m "Release v${next}"`);
   step('Pushing to origin');
   runMutating('git push');
-  pkg = readPkg();
+  justBumped = true;
 }
 
 const version = pkg.version;
@@ -136,9 +141,11 @@ const tag = `v${version}`;
 
 step(`Releasing ${pkg.name} ${version}`);
 
-step('Verifying sibling versions match');
-verifySiblings(version);
-ok('skill/SKILL.md and docs/index.html match');
+if (!justBumped) {
+  step('Verifying sibling versions match');
+  verifySiblings(version);
+  ok('skill/SKILL.md and docs/index.html match');
+}
 
 step('Checking working tree is clean');
 const status = run('git status --porcelain');
