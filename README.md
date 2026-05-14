@@ -134,8 +134,8 @@ Audio is cached in `/tmp/pilcrow/aloud/<sha256>.mp3`. Replays across sessions ar
 | Weak constructions | `there-is-there-are`, `expletives`, `negation-of-negation`, `pronoun-it-vague` |
 | Markdown shape | `bullet-bold-lead`, `title-case-headers`, `colon-headline`, `decorative-emoji`, `false-precision-headline` |
 
-**19 LLM-judged** (surfaced as a prompt the model evaluates):
-`buried-lede`, `voice-consistency`, `mixed-metaphor`, `claim-without-support`, `missing-stakes`, `distinctive-vs-generic`, `abstract-without-concrete`, `showing-vs-telling`, `transition-coherence`, `register-mismatch`, `excessive-balance`, `redundant-thesis`, `marketing-template-cadence`, `sycophantic-tone`, `stakes-inflation`, `false-reframe`, `invented-concept-label`, `listicle-disguise`, `one-point-dilution`.
+**20 LLM-judged** (surfaced as a prompt the model evaluates):
+`buried-lede`, `voice-consistency`, `mixed-metaphor`, `claim-without-support`, `missing-stakes`, `distinctive-vs-generic`, `abstract-without-concrete`, `showing-vs-telling`, `transition-coherence`, `register-mismatch`, `excessive-balance`, `redundant-thesis`, `marketing-template-cadence`, `sycophantic-tone`, `stakes-inflation`, `false-reframe`, `invented-concept-label`, `listicle-disguise`, `one-point-dilution`, `unsupported-claim`.
 
 Deterministic rules cover patterns regex can pin down with low false positives. LLM rules cover semantic and rhetorical judgments — was the move empty, were the stakes inflated, is the passage a list pretending to be prose.
 
@@ -146,7 +146,7 @@ Phrase rules tokenize and stem before comparing, so `delve` / `delves` / `delvin
 ## Layout
 
 ```
-engine/   the rules engine: 49 deterministic + 19 LLM rules
+engine/   the rules engine: 49 deterministic + 20 LLM rules
 cli/      the pilcrow binary and the skills subcommand
 skill/    the SKILL.md that pilcrow skills install copies into provider dirs
 docs/     the GitHub Pages site

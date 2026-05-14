@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pilcrow ¶ — mark up prose before it ships</title>
-  <meta name="description" content="A prose linter that flags AI tells and writing-quality issues. 49 deterministic rules plus 19 LLM-judged ones. Detection-only.">
+  <meta name="description" content="A prose linter that flags AI tells and writing-quality issues. 49 deterministic rules plus 20 LLM-judged ones. Detection-only.">
   <meta property="og:title" content="Pilcrow ¶">
   <meta property="og:description" content="A prose linter for AI tells and writing-quality issues.">
   <meta property="og:type" content="website">
@@ -34,7 +34,7 @@
     <div class="cover-wrap">
       <p class="cover-eyebrow">pilcrow.ink<span class="sep">·</span>v0.9<span class="sep">·</span>MIT</p>
       <h1 class="cover-title"><span class="cover-mark" aria-hidden="true">¶</span> Pilcrow</h1>
-      <p class="cover-lede">A prose linter for AI tells and writing-quality issues. 49 deterministic rules. 19 LLM-judged ones. The engine never edits your text.</p>
+      <p class="cover-lede">A prose linter for AI tells and writing-quality issues. 49 deterministic rules. 20 LLM-judged ones. The engine never edits your text.</p>
       <p class="cover-meta">Read straight through. The whole thing fits in five minutes, and the spine on the left will keep your place.</p>
     </div>
   </section>
@@ -60,7 +60,7 @@
         <h2 class="chapter-title">Preface</h2>
         <p><span class="newthought">One AI tell</span> survives every model jump: writers who all sound like the same writer. Pilcrow is a small toolkit for noticing it before you ship.</p>
         <p>The deterministic engine catches 49 lexical and structural patterns. The phrasebank handles outright AI vocabulary (<code>delve into</code>, <code>rich tapestry</code>). The antithesis cadence catches the <em>not just X, but Y</em> rhythm. The copula dodge spots <code>serves as</code> and <code>stands as</code> standing in for plain <code>is</code>. The rest of the family covers em-dash density, throat-clearing openers, hero-tagline cadence, AI fossils like chat sign-offs and citation tokens, and the bullet-bold-lead markdown signature.</p>
-        <p>The LLM catalog adds 19 higher-level patterns regex can&rsquo;t catch — buried lede, mixed metaphor, voice drift, missing stakes, marketing-template cadence, stakes inflation, listicle-in-prose — packaged as a single critique prompt you pipe into any model.</p>
+        <p>The LLM catalog adds 20 higher-level patterns regex can&rsquo;t catch — buried lede, mixed metaphor, voice drift, missing stakes, marketing-template cadence, stakes inflation, listicle-in-prose, unsupported claims — packaged as a single critique prompt you pipe into any model.</p>
         <p>Credit to Paul Bakaus&rsquo;s <a href="https://impeccable.style/">impeccable</a>, which does the same job for frontend design. Same idea, applied to prose.</p>
         <p><strong>Detection-only.</strong> The engine never edits your text. Findings carry line, column, excerpt, and an optional suggestion; the LLM (or you) decides what to change.</p>
       </section>
@@ -108,7 +108,7 @@ pilcrow rules [--json]       # list every rule</code></pre>
         <p>Each finding includes a short excerpt of the surrounding text and a one-line suggestion when the rule has one.</p>
 
         <h3>Piping to an LLM</h3>
-        <p>The <code>critique</code> command emits a single prompt the model reads against the 19 higher-level rules. Pipe it into your model of choice:</p>
+        <p>The <code>critique</code> command emits a single prompt the model reads against the 20 higher-level rules. Pipe it into your model of choice:</p>
         <pre><code>pilcrow critique drafts/post.md | claude
 pilcrow critique drafts/post.md | llm -m gpt-5</code></pre>
         <p>The expected JSON response shape is documented inside the prompt itself.</p>
@@ -124,7 +124,7 @@ pilcrow critique drafts/post.md | llm -m gpt-5</code></pre>
           <tbody>
             <tr><td><code>audit</code></td><td>run the deterministic catalog; human-readable findings</td></tr>
             <tr><td><code>lint</code></td><td>same scan; JSON output for piping</td></tr>
-            <tr><td><code>critique</code></td><td>emit the LLM-critique prompt for the 19 higher-level rules</td></tr>
+            <tr><td><code>critique</code></td><td>emit the LLM-critique prompt for the 20 higher-level rules</td></tr>
             <tr><td><code>rules</code></td><td>list every rule with id, severity, description</td></tr>
             <tr><td><code>skills</code></td><td>install or refresh the skill in your harness</td></tr>
           </tbody>

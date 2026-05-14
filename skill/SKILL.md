@@ -24,7 +24,7 @@ license: MIT
 
 # pilcrow ¶
 
-A prose linter that flags AI tells and writing-quality issues. 49 deterministic rules plus 19 LLM-judged ones, plus six interpretive lenses anchored in classical style guides, plus four project-level commands for voice capture and drafting. Detection-only — the engine never edits.
+A prose linter that flags AI tells and writing-quality issues. 49 deterministic rules plus 20 LLM-judged ones, plus eight interpretive lenses anchored in classical style guides, plus four project-level commands for voice capture and drafting. Detection-only — the engine never edits.
 
 ## Setup
 
