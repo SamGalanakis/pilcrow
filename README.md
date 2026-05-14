@@ -84,6 +84,20 @@ npm test
 node cli/dist/index.js audit README.md
 ```
 
+## Release
+
+Trunk-based. Everything ships from `main`. To cut a release:
+
+```
+npm run release -- --bump patch --dry-run    # rehearse
+npm run release -- --bump patch              # bump + tag + GitHub release
+npm publish                                  # separate, manual
+```
+
+The script bumps `package.json`, syncs `skill/SKILL.md` and `docs/index.html`, commits, pushes, tags `v<version>`, and creates a GitHub release with auto-extracted commit notes. The Pages workflow redeploys `pilcrow.ink` from the bump commit. `npm publish` stays manual so npm credentials never leave your machine.
+
+Use `--bump major|minor|patch` to bump in one step, or omit `--bump` if you already edited the version yourself.
+
 ## License
 
 MIT — see [LICENSE](./LICENSE).
