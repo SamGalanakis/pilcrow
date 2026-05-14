@@ -70,6 +70,13 @@ function collectFiles(paths: string[]): string[] {
 }
 
 function readStdin(): string {
+  if (process.stdin.isTTY) {
+    console.error("pilcrow: no paths given and stdin is a terminal.");
+    console.error("Either pass a file/directory, or pipe text:");
+    console.error("  pilcrow audit drafts/post.md");
+    console.error("  echo 'Let me delve into…' | pilcrow audit");
+    process.exit(2);
+  }
   return readFileSync(0, "utf8");
 }
 

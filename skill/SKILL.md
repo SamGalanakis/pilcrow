@@ -16,11 +16,19 @@ A prose linter that flags AI tells and writing-quality issues. 49 deterministic 
 
 ## Routing rules
 
-1. **No argument**: show the command table below and ask what the user wants to do.
-2. **First word matches a subcommand** (`audit`, `lint`, `critique`, `rules`, `skills`): shell out to `pilcrow <subcommand> <rest>` via Bash and report the output. Everything after the subcommand is the target.
-3. **First word doesn't match a subcommand**: default to `audit` and treat the full argument as the target path or stdin content.
+Process the argument string `$ARG` (everything after `/pilcrow`) like this:
 
-Subcommands map 1:1 to the CLI binary. Don't re-implement them inline; always shell out.
+1. **`$ARG` is empty, or its first word is `help`, `?`, `-h`, or `--help`**: render the command table below and ask which subcommand the user wants. Don't run anything.
+2. **First word of `$ARG` matches a subcommand** (`audit`, `lint`, `critique`, `rules`, `skills`):
+   - If a target/path follows, shell out: `pilcrow <subcommand> <rest>` via Bash.
+   - If nothing follows AND no recent prose is in conversation, ask "what should I `<subcommand>`? (a file path, a directory, or text I should pipe to stdin)". Do not shell out with no input.
+   - If nothing follows BUT a recent draft/quote/paragraph is in the conversation, pipe that text via `printf '%s' "..." | pilcrow <subcommand>` and report findings.
+3. **First word doesn't match any subcommand** — disambiguate by content:
+   - If `$ARG` resolves to an existing path on disk (file or directory): treat as a path and run `pilcrow audit $ARG`.
+   - Otherwise: treat the entire `$ARG` as prose and pipe it: `printf '%s' "$ARG" | pilcrow audit`.
+4. **Typos**: if the first word looks like a misspelled subcommand (≤2 char edit distance), confirm the intended subcommand before running.
+
+Subcommands map 1:1 to the CLI binary. Don't re-implement them inline; always shell out. Pass flags through verbatim (`--ignore-quoted`, `--json`, `--rules=id,id`, `--all`, `--provider=.x`).
 
 ## Commands
 
