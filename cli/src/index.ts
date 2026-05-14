@@ -13,6 +13,8 @@ interface ParsedArgs {
   flags: Record<string, string | boolean>;
 }
 
+const BOOLEAN_FLAGS = new Set(["ignore-quoted", "json", "all", "help", "dry-run"]);
+
 function parseArgs(argv: string[]): ParsedArgs {
   const [, , command = "help", ...rest] = argv;
   const paths: string[] = [];
@@ -20,7 +22,16 @@ function parseArgs(argv: string[]): ParsedArgs {
   for (let i = 0; i < rest.length; i++) {
     const t = rest[i];
     if (t.startsWith("--")) {
+      const eq = t.indexOf("=");
+      if (eq !== -1) {
+        flags[t.slice(2, eq)] = t.slice(eq + 1);
+        continue;
+      }
       const key = t.slice(2);
+      if (BOOLEAN_FLAGS.has(key)) {
+        flags[key] = true;
+        continue;
+      }
       const next = rest[i + 1];
       if (next && !next.startsWith("--")) {
         flags[key] = next;
