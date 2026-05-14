@@ -1,7 +1,7 @@
 ---
 name: pilcrow
 description: Detect AI tells and writing-quality issues in prose. Use when reviewing, polishing, or auditing markdown, HTML, or plain-text prose. Wraps the `pilcrow` CLI plus six interpretive lenses (polish, humanize, tighten, clarify, pace, lead) and four project-level commands (teach, document, extract, craft).
-version: 0.6.0
+version: 0.7.0
 user-invocable: true
 argument-hint: "[audit|lint|critique · polish|humanize|tighten|clarify|pace|lead · teach|document|extract|craft · rules|skills] [paths...]"
 allowed-tools:
