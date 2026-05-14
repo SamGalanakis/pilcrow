@@ -9,7 +9,7 @@
   <meta property="og:description" content="Turn the LLM in your harness into the editor it should be.">
   <meta property="og:type" content="website">
   <script>
-    (function(){try{var s=localStorage.getItem('theme');var t=(s==='light'||s==='dark')?s:'light';document.documentElement.dataset.theme=t;}catch(e){}document.addEventListener('click',function(e){var b=e.target.closest('.theme-toggle');if(!b)return;var c=document.documentElement.dataset.theme;var n=c==='dark'?'light':'dark';document.documentElement.dataset.theme=n;try{localStorage.setItem('theme',n);}catch(e){}});})();
+    (function(){try{var s=localStorage.getItem('theme');var p=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';var t=(s==='light'||s==='dark')?s:p;document.documentElement.dataset.theme=t;}catch(e){}document.addEventListener('click',function(e){var b=e.target.closest('.theme-toggle');if(!b)return;var c=document.documentElement.dataset.theme;var n=c==='dark'?'light':'dark';document.documentElement.dataset.theme=n;try{localStorage.setItem('theme',n);}catch(e){}});})();
   </script>
   <link rel="canonical" href="https://pilcrow.ink/">
   <link rel="stylesheet" href="style.css">
@@ -35,7 +35,7 @@
       <p class="cover-eyebrow">pilcrow.ink<span class="sep">·</span>v0.12<span class="sep">·</span>MIT</p>
       <h1 class="cover-title"><span class="cover-mark" aria-hidden="true">¶</span> Pilcrow</h1>
       <p class="cover-lede"><strong>Make your clanker your editor.</strong> Turn the LLM in your harness into the editor it should be. Mechanical checks. LLM-judged ones. Interpretive lenses anchored in tradition. The engine never edits your text.</p>
-      <p class="cover-meta">Read straight through, or jump to the command you need. The spine on the left keeps your place.</p>
+      <p class="cover-meta">Read straight through, or jump to the command you need.</p>
     </div>
   </section>
 
@@ -77,7 +77,6 @@
             <li><a href="#cli-skills"><code>skills</code></a></li>
           </ol>
         </li>
-        <li><a class="spine-item" href="#catalog">Catalog</a></li>
       </ol>
     </aside>
 
@@ -88,7 +87,7 @@
         <p><span class="newthought">Every harness</span> ships with an LLM that could be the editor sitting next to you when you write. Mostly it isn&rsquo;t. It cheerleads instead of cutting, paraphrases instead of pruning, and quietly produces prose that all sounds the same.</p>
         <p>Pilcrow turns it into the editor. Mechanical checks for the patterns regex can pin down. LLM-judged ones for what regex can&rsquo;t. Interpretive lenses anchored in the classical style guides: Strunk, Williams, Zinsser, Pinker, Orwell, King.</p>
         <p>Works whether you wrote it, the model wrote it, or you co-wrote it. <strong>Detection-only.</strong> The engine never edits your text. Findings carry line, column, excerpt, and an optional suggestion; the LLM or you decide what to change.</p>
-        <p>Inspired by Paul Bakaus&rsquo;s <a href="https://impeccable.style/">impeccable</a>. Same idea, applied to writing.</p>
+        <p>Inspired by Paul Bakaus&rsquo;s <a href="https://impeccable.style/">impeccable</a>.<span class="sidenote">Same idea, applied to writing instead of UI.</span></p>
       </section>
 
       <section class="chapter" id="install">
@@ -105,7 +104,7 @@ pilcrow skills install</code></pre>
 
       <section class="chapter" id="project">
         <h2 class="chapter-title">Project</h2>
-        <p>Project commands act on the repo, not on a single passage. They capture the writer&rsquo;s voice so editor proposals sound like the writer, and they shape a new piece end to end. Each writes to disk only after explicit confirmation. Single source of truth: <code>VOICE.md</code>.</p>
+        <p><span class="newthought">Project commands</span> act on the repo, not on a single passage. They capture the writer&rsquo;s voice so editor proposals sound like the writer, and they shape a new piece end to end.<span class="sidenote">Each writes to disk only after explicit confirmation. Single source of truth: <code>VOICE.md</code>.</span></p>
 
         <h3 id="project-document">document</h3>
         <p>Scan existing prose in the repo. Computes stylometric features (sentence rhythm, em-dash density, vocabulary profile) and surfaces recurring moves (phrases, cadences, structural habits, punctuation tics). Writes a draft <code>VOICE.md</code> with citations and explicit <strong>Open questions</strong> for fields the stats can&rsquo;t answer (audience, stance, method).</p>
@@ -122,7 +121,7 @@ pilcrow skills install</code></pre>
 
       <section class="chapter" id="editor">
         <h2 class="chapter-title">Editor</h2>
-        <p>Editor commands interpret findings through a tradition. Each loads its own playbook from <code>skill/reference/&lt;name&gt;.md</code> with methodology, output shape, and anti-patterns drawn from a named style guide. They&rsquo;re <em>not</em> rule filters; each produces a different kind of report.</p>
+        <p><span class="newthought">Editor commands</span> interpret findings through a tradition. Each loads its own playbook from <code>skill/reference/&lt;name&gt;.md</code> with methodology, output shape, and anti-patterns drawn from a named style guide. They&rsquo;re <em>not</em> rule filters; each produces a different kind of report.</p>
         <p>Invoke through the skill: <code>/pilcrow &lt;command&gt; &lt;path&gt;</code>.</p>
 
         <h3 id="editor-polish">polish</h3>
@@ -156,7 +155,7 @@ pilcrow skills install</code></pre>
         <h3 id="editor-aloud">aloud</h3>
         <p>Play the prose back via TTS in an interactive session. Four modes: <code>walkthrough</code> (paragraph by paragraph), <code>full</code> (end to end), <code>targeted</code> (only paragraphs <code>pace</code> flagged), <code>compare</code> (two passages back to back). Requires <code>OPENAI_API_KEY</code> and a system audio player.</p>
         <pre><code>/pilcrow aloud drafts/post.md</code></pre>
-        <p>Audio is content-addressed and cached at <code>/tmp/pilcrow/aloud/&lt;sha256&gt;.mp3</code>. Replays across sessions are free. The lens detects an installed <a href="https://github.com/openai/skills/tree/main/skills/.curated/speech">OpenAI speech skill</a> in your harness or fetches a pinned snapshot.</p>
+        <p>Audio is content-addressed and cached at <code>/tmp/pilcrow/aloud/&lt;sha256&gt;.mp3</code>; replays across sessions are free.<span class="sidenote">The command detects an installed <a href="https://github.com/openai/skills/tree/main/skills/.curated/speech">OpenAI speech skill</a> in your harness or fetches a pinned snapshot.</span></p>
 
         <h3 id="editor-argue">argue</h3>
         <p>Map the argument (Toulmin, IBIS, <a href="https://argdown.org">Argdown</a>). Confirms the thesis with a multi-choice gate, surfaces supports and load-bearing premises as an indented tree, generates the strongest counter (genre-aware), and checks coverage: engaged, dodged, or missing.</p>
@@ -166,14 +165,14 @@ pilcrow skills install</code></pre>
 
       <section class="chapter" id="cli">
         <h2 class="chapter-title">CLI</h2>
-        <p>Five commands run directly against prose. Reads stdin if you don&rsquo;t pass a path. Recurses directories, scanning <code>.md</code>, <code>.mdx</code>, <code>.markdown</code>, <code>.txt</code>, <code>.html</code>, <code>.htm</code>.</p>
+        <p><span class="newthought">Five commands</span> run directly against prose. Reads stdin if you don&rsquo;t pass a path. Recurses directories, scanning <code>.md</code>, <code>.mdx</code>, <code>.markdown</code>, <code>.txt</code>, <code>.html</code>, <code>.htm</code>.</p>
 
         <h3 id="cli-audit">audit</h3>
         <p>Run the rule catalog. Human-readable findings with line, column, excerpt, and an optional rewrite hint.</p>
         <pre><code>pilcrow audit drafts/post.md
 pilcrow audit drafts/ --ignore-quoted
 echo "Let me delve into the rich tapestry…" | pilcrow audit</code></pre>
-        <p>Exits non-zero when an <code>error</code>-severity finding fires. The <code>--ignore-quoted</code> flag skips phrases inside straight or curly double quotes, useful for prose that quotes AI tells without backticking them.</p>
+        <p>Exits non-zero when an <code>error</code>-severity finding fires.<span class="sidenote"><code>--ignore-quoted</code> skips phrases inside straight or curly double quotes &mdash; useful for prose that quotes AI tells without backticking them.</span></p>
 
         <h3 id="cli-lint">lint</h3>
         <p>Same scan as <code>audit</code>, JSON output for piping into another tool or back to a model.</p>
@@ -195,11 +194,6 @@ pilcrow rules --json</code></pre>
         <pre><code>pilcrow skills install    # auto-detect and install
 pilcrow skills update     # re-sync after `npm update -g pilcrow-ink`
 pilcrow skills check      # show installed vs package version</code></pre>
-      </section>
-
-      <section class="chapter" id="catalog">
-        <h2 class="chapter-title">Catalog</h2>
-        <p>The full rule catalog (deterministic and LLM-judged, with id, severity, and description for each) lives at <a href="rules.html"><em>The catalog</em></a>. Auto-generated from source on every deploy.</p>
       </section>
 
     </article>

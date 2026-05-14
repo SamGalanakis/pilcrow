@@ -105,7 +105,7 @@ const html = `<!doctype html>
   <title>The catalog — Pilcrow ¶</title>
   <meta name="description" content="Every rule the engine watches for: ${deterministic.length} deterministic + ${llmRules.length} LLM-judged. Auto-generated from the source.">
   <script>
-    (function(){try{var s=localStorage.getItem('theme');var t=(s==='light'||s==='dark')?s:'light';document.documentElement.dataset.theme=t;}catch(e){}document.addEventListener('click',function(e){var b=e.target.closest('.theme-toggle');if(!b)return;var c=document.documentElement.dataset.theme;var n=c==='dark'?'light':'dark';document.documentElement.dataset.theme=n;try{localStorage.setItem('theme',n);}catch(e){}});})();
+    (function(){try{var s=localStorage.getItem('theme');var p=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';var t=(s==='light'||s==='dark')?s:p;document.documentElement.dataset.theme=t;}catch(e){}document.addEventListener('click',function(e){var b=e.target.closest('.theme-toggle');if(!b)return;var c=document.documentElement.dataset.theme;var n=c==='dark'?'light':'dark';document.documentElement.dataset.theme=n;try{localStorage.setItem('theme',n);}catch(e){}});})();
   </script>
   <link rel="canonical" href="https://pilcrow.ink/rules.html">
   <link rel="stylesheet" href="style.css">
@@ -149,10 +149,21 @@ const html = `<!doctype html>
     </aside>
 
     <article class="book-body catalog">
+      <div class="cat-filter" role="search">
+        <input type="search" class="cat-filter-input" id="cat-filter-input" placeholder="Filter by rule id, phrase, or description…  ( / to focus )" aria-label="Filter rules" autocomplete="off">
+        <span class="cat-filter-count" id="cat-filter-count" aria-live="polite"></span>
+      </div>
+      <dl class="cat-legend" aria-label="Severity key">
+        <div><dt><span class="sev sev-error">error</span></dt> <dd>exits non-zero; blocks CI</dd></div>
+        <div><dt><span class="sev sev-warning">warning</span></dt> <dd>should fix, won&rsquo;t block</dd></div>
+        <div><dt><span class="sev sev-info">info</span></dt> <dd>aggregate signal &mdash; one is fine, many is a fingerprint</dd></div>
+      </dl>
+      <p class="cat-empty" id="cat-empty" role="status" aria-live="polite" hidden>No rules match.</p>
+
       <section class="chapter cat-section" id="deterministic">
         <p class="cat-eyebrow">Deterministic</p>
         <h2 class="cat-section-title">${deterministic.length} rules, no LLM, milliseconds per file</h2>
-        <p class="cat-blurb">Each phrase-based rule lists every phrase it scans for. Density rules report only when their threshold is crossed; structural rules examine sentence and paragraph shape.</p>
+        <p class="cat-blurb">Each phrase-based rule lists every phrase it scans for.<span class="sidenote">Density rules report only when their threshold is crossed; structural rules examine sentence and paragraph shape.</span></p>
         ${familySections}
       </section>
 
@@ -183,6 +194,8 @@ const html = `<!doctype html>
       </div>
     </div>
   </footer>
+
+  <script src="script.js" defer></script>
 </body>
 </html>
 `;

@@ -45,12 +45,15 @@ html {
   --surface:   light-dark(oklch(0.99 0.005 95),  oklch(0.13 0.010 75));
 
   --plaster:   light-dark(oklch(0.74 0.022 145), oklch(0.16 0.012 75));
-  --plaster-3: light-dark(oklch(0.55 0.024 145), oklch(0.32 0.040 145));
+  --plaster-3: light-dark(oklch(0.55 0.024 145), oklch(0.38 0.050 145));
 
   --ink:       light-dark(oklch(0.22 0.015 80),  oklch(0.93 0.012 88));
   --ink-2:     light-dark(oklch(0.36 0.018 80),  oklch(0.80 0.014 86));
   --ink-3:     light-dark(oklch(0.50 0.018 85),  oklch(0.68 0.014 84));
-  --ink-4:     light-dark(oklch(0.66 0.014 85),  oklch(0.46 0.012 82));
+  --ink-4:     light-dark(oklch(0.55 0.016 85),  oklch(0.52 0.014 82));
+
+  --sidenote-w:    160px;
+  --sidenote-gap:  24px;
 
   --gilt:      light-dark(oklch(0.62 0.105 90),  oklch(0.78 0.090 90));
   --gilt-deep: light-dark(oklch(0.50 0.090 88),  oklch(0.70 0.110 86));
@@ -156,9 +159,11 @@ img, svg { display: block; max-width: 100%; }
   font-size: 14px;
   letter-spacing: 0.04em;
   color: var(--ink-3);
-  transition: color var(--dur-quick);
+  padding: 3px 8px;
+  border-radius: 2px;
+  transition: color var(--dur-quick), background-color var(--dur-quick);
 }
-.theme-toggle:hover { color: var(--ink); }
+.theme-toggle:hover { color: var(--ink); background-color: var(--bg-alt); }
 .theme-toggle-dark { display: inline; }
 .theme-toggle-light { display: none; }
 [data-theme="dark"] .theme-toggle-dark { display: none; }
@@ -167,7 +172,7 @@ img, svg { display: block; max-width: 100%; }
 /* ── COVER ───────────────────────────────────────────────── */
 
 .cover {
-  padding: clamp(80px, 11vw, 160px) 0 clamp(64px, 8vw, 112px);
+  padding: clamp(40px, 6vw, 88px) 0 clamp(48px, 6vw, 80px);
   border-bottom: 1px solid var(--rule);
 }
 .cover-wrap {
@@ -179,7 +184,7 @@ img, svg { display: block; max-width: 100%; }
   font-size: 15px;
   font-variant: small-caps;
   letter-spacing: 0.06em;
-  color: var(--ink-3);
+  color: var(--ink-2);
   margin-bottom: 28px;
 }
 .cover-eyebrow .sep { color: var(--ink-4); margin: 0 6px; }
@@ -215,7 +220,7 @@ img, svg { display: block; max-width: 100%; }
 /* ── BOOK LAYOUT — spine + body ──────────────────────────── */
 
 .book {
-  max-width: 1240px;
+  max-width: 1320px;
   margin: 0 auto;
   padding: clamp(48px, 7vw, 96px) clamp(20px, 5vw, 40px) clamp(72px, 9vw, 112px);
   display: grid;
@@ -270,6 +275,7 @@ img, svg { display: block; max-width: 100%; }
   transition: color var(--dur-quick);
 }
 .spine-sub a:hover { color: var(--ink-2); }
+.spine-sub a.is-current { color: var(--ink); font-weight: 600; }
 .spine-sub code { font-size: 12.5px; }
 
 /* ── BODY (chapters) ─────────────────────────────────────── */
@@ -311,10 +317,23 @@ img, svg { display: block; max-width: 100%; }
   color: var(--ink-2);
   margin: 1.6em 0 0.3em;
   line-height: 1.3;
+  scroll-margin-top: 96px;
 }
 
 .chapter p { margin-bottom: 1.05em; }
 .chapter p:last-child { margin-bottom: 0; }
+
+.chapter > p:first-of-type:has(> .newthought:first-child)::first-letter {
+  font-style: italic;
+  font-weight: 400;
+  font-size: 3.6em;
+  line-height: 0.85;
+  float: left;
+  margin: 0.08em 8px -0.05em 0;
+  color: var(--gilt-deep);
+  font-variant: normal;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+}
 
 .chapter a {
   color: var(--ink);
@@ -394,6 +413,69 @@ img, svg { display: block; max-width: 100%; }
   color: var(--ink-2);
 }
 
+/* ── SIDENOTES — Tufte-style marginalia ──────────────────── */
+
+.chapter, .cat-section { counter-reset: sidenote; position: relative; }
+
+/* In-body tether ref. JS injects <sup class="sn-ref"> before each aside.sidenote.
+   Hidden in narrow mode (the note flows inline right after, so the body marker is redundant).
+   Shown only when the sidenote floats to the margin. */
+.sn-ref {
+  display: none;
+  counter-increment: sidenote;
+}
+.sn-ref::before { content: counter(sidenote); }
+
+.sidenote {
+  display: block;
+  margin: 0.9em 0;
+  font-size: 0.86em;
+  font-style: italic;
+  line-height: 1.55;
+  color: var(--ink-3);
+  padding-left: 12px;
+  border-left: 1px solid var(--rule);
+}
+.sidenote::before {
+  content: counter(sidenote);
+  display: inline;
+  color: var(--gilt-deep);
+  font-style: normal;
+  font-variant-numeric: lining-nums;
+  font-size: 0.8em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin-right: 8px;
+  vertical-align: 0.25em;
+}
+
+@media (min-width: 1340px) {
+  .sn-ref {
+    display: inline;
+    color: var(--gilt-deep);
+    font-style: normal;
+    font-feature-settings: "sups" 1;
+    font-size: 0.72em;
+    font-weight: 600;
+    vertical-align: 0.45em;
+    margin: 0 0.05em 0 0.1em;
+    text-decoration: none;
+  }
+  .sidenote {
+    float: right;
+    clear: right;
+    width: var(--sidenote-w);
+    margin-top: 0.45em;
+    margin-bottom: 0.45em;
+    margin-left: var(--sidenote-gap);
+    margin-right: calc(-1 * (var(--sidenote-w) + var(--sidenote-gap)));
+    padding-left: 0;
+    border-left: none;
+    font-size: 0.78em;
+    line-height: 1.5;
+  }
+}
+
 /* ── CATALOG PAGE ────────────────────────────────────────── */
 
 /* Catalog uses .book grid (with spine) but needs a wider body for tables. */
@@ -403,6 +485,76 @@ img, svg { display: block; max-width: 100%; }
 .book-body.catalog { font-size: var(--t-body-lg); }
 .cat-section { margin-bottom: clamp(48px, 7vw, 88px); }
 .cat-section:last-child { margin-bottom: 0; }
+
+.cat-filter {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: clamp(32px, 4vw, 48px);
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--rule);
+}
+.cat-filter-input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--rule);
+  padding: 8px 2px;
+  font-family: inherit;
+  font-size: var(--t-body);
+  font-style: italic;
+  color: var(--ink);
+  outline: none;
+  transition: border-color var(--dur-quick);
+}
+.cat-filter-input::placeholder {
+  color: var(--ink-3);
+  font-style: italic;
+}
+.cat-filter-input:focus {
+  border-bottom-color: var(--gilt-deep);
+}
+.cat-filter-input:focus-visible {
+  outline: 2px solid var(--gilt-deep);
+  outline-offset: 6px;
+  border-radius: 1px;
+}
+.cat-filter-count {
+  font-variant: small-caps;
+  letter-spacing: 0.06em;
+  font-size: 13px;
+  color: var(--ink-3);
+  white-space: nowrap;
+  font-feature-settings: "lnum" 1;
+  font-variant-numeric: lining-nums;
+}
+.cat-empty {
+  font-style: italic;
+  color: var(--ink-3);
+  padding: 24px 0;
+}
+
+.cat-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin: 0 0 clamp(36px, 5vw, 56px);
+  padding: 0;
+  font-size: var(--t-body);
+  color: var(--ink-2);
+  line-height: 1.6;
+}
+.cat-legend > div {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.cat-legend dt { display: inline; margin: 0; }
+.cat-legend dd { display: inline; margin: 0; font-style: italic; }
+.cat-group.is-hidden,
+.cat-section.is-hidden,
+.rules-table tr.is-hidden { display: none; }
 .cat-eyebrow {
   font-variant: small-caps;
   letter-spacing: 0.08em;
