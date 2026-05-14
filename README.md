@@ -76,7 +76,7 @@ Project commands act on the repo, not on a single passage. They capture the writ
 |---|---|
 | `teach` | Multi-round interview to capture the writer's voice; writes `VOICE.md` |
 | `document` | Infer voice from existing prose in the repo; writes `VOICE.md` with citations and open questions |
-| `extract` | Mine the corpus for recurring AI tells and personal tics; writes `PILCROW.md` |
+| `extract` | Pull the writer's recurring moves from their corpus (phrases, cadences, structural habits, punctuation tics); writes `PILCROW.md` as a voice-signature catalog |
 | `craft` | End-to-end essay writing with gates: shape → draft → critique → polish; respects `VOICE.md` and `PILCROW.md` |
 
 Each writes to disk only after explicit confirmation. Once `VOICE.md` or `PILCROW.md` exist, every editor command reads them on invocation and weights findings accordingly.

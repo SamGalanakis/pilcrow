@@ -17,6 +17,6 @@
 
   "teach":    { "description": "Multi-round interview to capture the writer's voice (genre, audience, stance, method, signatures, taboos). Writes VOICE.md.",       "argumentHint": "",           "category": "project" },
   "document": { "description": "Infer the writer's voice from existing prose in the repo. Writes VOICE.md with citations and explicit open questions for the writer.", "argumentHint": "",           "category": "project" },
-  "extract":  { "description": "Mine the writer's corpus for recurring AI tells and personal tics. Writes PILCROW.md as a descriptive catalog.",                    "argumentHint": "",           "category": "project" },
+  "extract":  { "description": "Pull the writer's recurring moves from their corpus (phrases, cadences, structural habits, punctuation tics). Writes PILCROW.md as a descriptive voice-signature catalog. AI-tell overlap is a side note.", "argumentHint": "", "category": "project" },
   "craft":    { "description": "Method-aware end-to-end essay writing. Picks outliner / discovery / iterative / model-drafter at start; runs the matching flow with critique and polish gates.", "argumentHint": "[topic]", "category": "project" }
 }

@@ -1,27 +1,23 @@
 # extract
 
-Mine the writer's corpus for recurring patterns *to flag*. Not a style guide. Not assets to reuse. A descriptive map of the phrases, cadences, and tics that show up often enough to be either voice or a habit worth interrogating.
+Pull the writer's recurring moves out of their corpus. Phrases they reach for, cadences they use, structural habits, punctuation tics, the things that make a paragraph recognizably theirs. The output is `PILCROW.md`: a descriptive catalog of the writer's editorial fingerprint that the editor commands cross-reference when proposing rewrites.
 
-Where `document` answers "what's your voice?", `extract` answers "what do you reach for that you might want me to notice?"
-
-The output is `PILCROW.md`: a working document the editor commands cross-reference. Findings that match a recurring pattern get extra weight. The writer turns descriptions into prescriptions via a follow-up `teach`.
+Where `document` describes the voice in general terms (register, sentence rhythm, audience inference), `extract` zooms in on the specific recurring constructions. Where `teach` asks the writer to name their signatures, `extract` finds them empirically.
 
 ## Source
 
-The diagnostic move from `humanize` (catalog AI tells) plus the diagnostic move from `document` (read across a corpus), narrowed to one question: which findings repeat?
-
-Every writer has tics. Hemingway had his short sentences. AI-assisted writers tend to have `delve into`, `tapestry`, `not just X but Y`. `extract` surfaces them; it does not judge them.
+Stylometric observation: writers have signatures even when they don't know it. Hemingway had his short sentences. Pinker has his em-dashes. The signature isn't a single instance — it's a pattern that repeats across pieces.
 
 ## Load before running
 
-- [_ai-tell-catalog.md](_ai-tell-catalog.md) — to recognize which recurring phrases are AI fossils vs writer's voice.
-- [_style-laws.md](_style-laws.md) — for the "describe, don't prescribe" discipline.
+- [_ai-tell-catalog.md](_ai-tell-catalog.md) — to flag overlap between the writer's signatures and known AI tells. Overlap is a *side note*, not a verdict.
+- [_style-laws.md](_style-laws.md) — voice trumps rule.
 
 ## Procedure
 
 ### Step 1 — find and read the corpus
 
-Same corpus rules as `document`:
+Same rules as `document`:
 1. `posts/`, `blog/`, `essays/`, `writing/`, `drafts/`, `notes/`, then `docs/` and root `*.md`.
 2. Require at least 2,000 words. Below that, exit: "Not enough prose to extract patterns from. Try `humanize` on individual files instead."
 3. Sample up to 8 representative files if the corpus is large.
@@ -34,55 +30,65 @@ pilcrow lint <corpus-files> --ignore-quoted
 
 Aggregate findings by `ruleId`. For each rule:
 - Total hits across the corpus.
-- Number of files the rule fires in (presence, not just frequency).
-- Specific phrases or constructions that triggered the rule, sorted by frequency.
+- Number of files the rule fires in.
+- The specific phrases or constructions that triggered the rule, sorted by frequency.
 
-### Step 3 — surface the patterns
+### Step 3 — surface the recurring moves
 
-A rule firing once across the corpus is noise. A rule firing **3+ times across 2+ files** is a pattern. Mine for:
+A pattern is anything that fires **3+ times across 2+ files**. Group them into four kinds:
 
-- **Repeat phrases** — specific n-grams the writer reaches for. If `ai-tell-phrasebank` fires on `navigate the complexities` four times, that's a pattern; four different phrases each once is just AI vocabulary spread.
-- **Repeat tics** — `em-dash-density` firing across 5 files. Could be voice (keep) or AI accent (cut). Don't decide.
-- **Repeat constructions** — `antithesis-cadence` firing in every other essay's opener = a structural habit.
-- **Personal closers** — `cliche-closers` recurring tells you what move the writer reaches for at the end.
+- **Phrases the writer reaches for.** Specific n-grams they use across pieces. (`navigate the complexities` four times across three essays = a phrase signature.)
+- **Cadences they use.** Sentence-length patterns, parallel-triplet density, em-dash rhythm. The shape of how they write.
+- **Structural moves.** How they open paragraphs, how they close them, how they bridge between sections. The piece-level patterns.
+- **Punctuation tics.** Em-dashes, parentheticals, semicolons, ellipses. The writer's punctuation hand.
 
-### Step 4 — write PILCROW.md (descriptive, not prescriptive)
+### Step 4 — write PILCROW.md (descriptive)
 
 ```markdown
 ---
 name: PILCROW
-purpose: Descriptive map of recurring patterns. Editor commands weight matching findings higher; the writer decides via teach which are voice and which are tic.
+purpose: Recurring moves extracted from the corpus. The writer's editorial fingerprint. Editor commands cross-reference this when proposing rewrites so suggestions sound like the writer.
 corpus: <N files, <M> words>
 updated: YYYY-MM-DD
 ---
 
-# Recurring patterns
+# Recurring moves
 
-This file describes what the corpus shows. It does not prescribe what to keep or cut. To convert any of these into a rule, run `/pilcrow teach` and add to VOICE.md's `Signatures` (keep) or `Taboos` (cut).
+The patterns in this file are descriptive: things the writer *does*, observed empirically across the corpus. Not judgements. Some of these are voice the writer should defend; some are tics they may want to flag. The classification lives in `VOICE.md`'s `Signatures` and `Taboos` sections. Run `/pilcrow teach` to commit which is which.
 
-## Repeat phrases (N)
-The writer reaches for these phrases across multiple pieces. Once each is fine; in aggregate they form an accent.
+## Phrases (N)
 
-- **`<phrase>`** — N hits across M files. Examples: posts/X.md L12, posts/Y.md L34, posts/Z.md L8.
+Specific words and short phrases that show up across pieces.
+
+- **`<phrase>`** — N hits across M files. Examples: posts/X.md L12, posts/Y.md L34.
 - **`<phrase>`** — …
 
-## Repeat constructions (N)
-Cadences and patterns the writer uses more than baseline.
+## Cadences (N)
 
-- **<construction name>** — N hits across M files. One sentence describing when it appears.
+Sentence-shape and rhythm patterns that recur.
 
-## High-frequency, uncertain (N)
-Patterns that show up enough to be a tic. Could be intentional voice; could be habit. The writer decides via `teach`.
+- **<cadence name>** — N hits across M files. One sentence describing when it appears.
 
-- **<pattern>** — N hits across M files. (Not a recommendation either way.)
+## Structural moves (N)
 
-## Once-per-piece tells (N)
-Rules that fire exactly once in every piece. Probably habits the writer is unaware of.
+Paragraph- and piece-level patterns.
 
-- **<rule>** — fires once in N/N files. <Example.>
+- **<move name>** — describes the move. Locations.
+
+## Punctuation tics (N)
+
+The writer's punctuation hand.
+
+- **<tic>** — N hits, frequency / 100 words. One sentence.
+
+## Also in the AI-tell catalog (N)
+
+These recurring moves overlap with patterns the AI-tell catalog flags. That doesn't make them *bad*; it means the writer's voice happens to share territory with a current AI tell. Worth deciding, in `teach`, whether to keep or cut.
+
+- **<move>** — appears N times across M files; matches AI-tell `<rule-id>`.
 ```
 
-**Discipline:** every section in PILCROW.md describes; none prescribes. No "keep" or "cut" recommendations. No "you should". The writer turns description into prescription through `teach`.
+**Discipline:** PILCROW.md describes; it does not prescribe. No "you should keep this" or "you should cut this." Those decisions live in `teach`.
 
 ### Step 5 — link to the editor commands
 
@@ -92,43 +98,41 @@ Append:
 ## How the editor commands use this file
 
 When `polish`, `humanize`, `tighten`, `clarify`, `pace`, or `lead` runs:
-- Findings that match a **repeat phrase** here get promoted one severity level (the writer is repeating themselves).
-- **Repeat constructions** get a "you reach for this often — is this one of the times?" note attached.
-- **High-frequency uncertain** patterns are listed but not auto-promoted. They wait for VOICE.md to commit.
-
-This file does not change command severity for **non-matching** findings.
+- Phrases and cadences listed here are read as the writer's voice. Proposed rewrites preserve them unless `VOICE.md`'s `Taboos` overrides.
+- Moves flagged in **Also in the AI-tell catalog** get a *"this is one of your signatures — keep, or cut as AI accent?"* note attached to matching findings. The writer decides per piece.
 ```
 
 ### Step 6 — present and propose teach
 
-> "I read N pieces (M words). These are the patterns that repeat. The big question for each High-frequency uncertain item: is it your voice (keep), or a habit you'd like flagged in future? Run `/pilcrow teach` to commit your answers to VOICE.md."
+> "I read N pieces (M words). These are the moves that repeat in your writing. The next step: run `/pilcrow teach` to commit which are voice (Signatures) and which are tic (Taboos). Until then, the editor commands treat them all as voice by default."
 
-Do *not* walk the writer through the uncertain items in extract. Extract's job is to map. Teach's job is to commit.
+Do *not* walk the writer through the moves inside extract. Extract maps; teach commits.
 
 ## Output
 
 ```
-# Recurring patterns extracted
+# Recurring moves extracted
 
 Wrote: PILCROW.md (<line count> lines)
 Corpus: <N files, <M> words>
 
-Patterns mapped (descriptive only):
-  Repeat phrases:        <count>
-  Repeat constructions:  <count>
-  High-frequency uncertain: <count>  ← needs your call via teach
-  Once-per-piece tells:  <count>
+Moves catalogued:
+  Phrases:                <count>
+  Cadences:               <count>
+  Structural moves:       <count>
+  Punctuation tics:       <count>
+  AI-tell overlap:        <count>  ← decide in teach
 
 Next:
-  - Run `/pilcrow teach` to commit which uncertain patterns are voice (Signatures) or tic (Taboos).
-  - Run `/pilcrow audit <draft>` — recurring patterns here will now show up bolder in findings.
+  - Run `/pilcrow teach` to lock the moves into Signatures or Taboos.
+  - Run `/pilcrow audit <draft>` — editor commands now read your signatures.
 ```
 
 ## Anti-patterns
 
-- **Prescribing.** PILCROW.md describes. It never says "keep" or "cut". That's `teach`'s job.
-- **Walking the writer through uncertain items inside extract.** Extract maps; teach decides. Keep them separate so the writer can come back to teach when they have time.
-- **Flagging single hits.** One `delve into` in 12 essays is not a pattern. The whole point is *repetition*.
-- **Outputting a long file.** PILCROW.md is a working document, not a manifesto. Each pattern is one line. If the writer has 80 patterns, the corpus is unusual; investigate before listing them all.
-- **Skipping the corpus read.** Stats without paragraphs read for context are blind. Always quote 1–2 example phrases per pattern.
-- **Auto-applying to VOICE.md.** PILCROW.md is descriptive; VOICE.md is prescriptive. Don't write voice rules from extract — surface them, then run `teach` to commit.
+- **Framing the output as anti-patterns.** PILCROW.md is the writer's voice profile, not their slop list. Even AI-tell-overlapping moves get neutral framing.
+- **Flagging single hits.** One `delve into` in 12 essays is not a signature. The whole point is *repetition*.
+- **Deciding for the writer.** Don't pre-classify moves as keep-or-cut. That's `teach`.
+- **Outputting a long file.** PILCROW.md is a working document, not a manifesto. Each move is one line. Eighty patterns means the corpus is unusual; investigate.
+- **Skipping the corpus read.** Stats without paragraphs read for context are blind. Quote one or two example phrases per move.
+- **Writing to VOICE.md.** PILCROW.md is descriptive; VOICE.md is prescriptive. The pipeline is: extract → review → teach → VOICE.md.

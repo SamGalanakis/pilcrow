@@ -126,7 +126,7 @@ Subcommands map 1:1 to the CLI binary. Pass flags through verbatim (`--ignore-qu
 |---|---|---|
 | `teach` | Multi-round interview to capture the writer's voice; writes `VOICE.md` | [reference/teach.md](reference/teach.md) |
 | `document` | Infer voice from existing prose in the repo; writes `VOICE.md` with citations and open questions | [reference/document.md](reference/document.md) |
-| `extract` | Mine the corpus for recurring AI tells and personal tics; writes `PILCROW.md` | [reference/extract.md](reference/extract.md) |
+| `extract` | Pull the writer's recurring moves from their corpus (phrases, cadences, structural habits, punctuation tics); writes `PILCROW.md` as a voice-signature catalog | [reference/extract.md](reference/extract.md) |
 | `craft` | Method-aware end-to-end writing (outliner / discovery / iterative / model-drafter); shape → draft → critique → polish | [reference/craft.md](reference/craft.md) |
 
 ## Pin / unpin
