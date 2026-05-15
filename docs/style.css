@@ -478,9 +478,12 @@ img, svg { display: block; max-width: 100%; }
 
 /* ── CATALOG PAGE ────────────────────────────────────────── */
 
-/* Catalog uses .book grid (with spine) but needs a wider body for tables. */
-.book:has(> .book-body.catalog) {
-  grid-template-columns: 220px minmax(0, 88ch);
+/* Catalog uses .book grid (with spine) but needs a wider body for tables.
+   Scoped to widths where the spine is sticky; narrow widths use the single-column rule below. */
+@media (min-width: 1001px) {
+  .book:has(> .book-body.catalog) {
+    grid-template-columns: 220px minmax(0, 88ch);
+  }
 }
 .book-body.catalog { font-size: var(--t-body-lg); }
 .cat-section { margin-bottom: clamp(48px, 7vw, 88px); }
@@ -782,4 +785,53 @@ img, svg { display: block; max-width: 100%; }
   .site-nav { gap: 16px; padding: 14px 20px; }
   .site-nav-links { gap: 16px; font-size: 14px; }
   .cover { padding-top: 56px; }
+
+  /* Reduce body grid padding so the content column gets more horizontal room. */
+  .book { padding-left: 18px; padding-right: 18px; }
+
+  /* Collapse rules-table rows to a stacked card: id + sev pill on a top line,
+     description on the line below. Avoids cramped 3-column layouts on phones. */
+  .rules-table thead { display: none; }
+  .rules-table tr {
+    display: block;
+    padding: 14px 0 16px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .rules-table tr:last-child { border-bottom: none; }
+  .rules-table td {
+    display: block;
+    border-bottom: none;
+    padding: 0;
+    line-height: 1.55;
+  }
+  .rules-table td:first-child,
+  .rules-table td:nth-child(2) {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 8px 8px 0;
+    padding: 0;
+  }
+  .rules-table td:first-child {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    font-size: 13px;
+  }
+  .rules-table td:nth-child(2) { padding-right: 0; }
+  .rules-table td:last-child { display: block; }
+
+  /* Stack the filter row so the count doesn't get squeezed against the input. */
+  .cat-filter { flex-direction: column; align-items: stretch; gap: 8px; }
+  .cat-filter-count { text-align: right; }
+
+  /* Footer rule stack at bottom so the two metadata lines don't crowd each other. */
+  .site-foot-rule { flex-direction: column; align-items: flex-start; gap: 6px; }
+
+  /* Sidenotes already inline, but ensure their left rule sits inside the column. */
+  .sidenote { margin-left: 0; }
+}
+
+/* Phrase list grid items also stack on very narrow widths so two-column auto-fit
+   doesn't force the longer code phrases to truncate awkwardly. */
+@media (max-width: 480px) {
+  .phrase-list { grid-template-columns: 1fr; gap: 4px 0; }
 }
