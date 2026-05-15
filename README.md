@@ -1,12 +1,14 @@
 # pilcrow ¶
 
-**Make your clanker your editor.**
+**Make your clanker your editor.** Docs and catalog: **[pilcrow.ink](https://pilcrow.ink)**.
 
 A prose linter and AI-harness skill that turns the LLM in your harness into the editor it should be. Mechanical checks for the patterns regex can pin down. LLM-judged ones for what regex can't. Editor commands anchored in classical style guides (Strunk, Williams, Zinsser, Pinker, Orwell, King). Project commands that capture your voice and apply it to new drafts.
 
 Catches AI tells as one feature among many. Works for prose you wrote, prose the model wrote, and everything in between.
 
 Inspired by [impeccable.style](https://impeccable.style/) — same idea, applied to writing. Detection-only. Findings carry line, column, excerpt, and an optional suggestion. The engine never edits.
+
+**Bare invocation triages.** Run `/pilcrow` with no arguments and the skill finds the prose in scope, runs lint, identifies the genre, and proposes an ordered sequence of editor commands tuned to the piece. The plan gates on confirmation. The skill also enforces an editor-side discipline: a reflex-rewrite catalog, a proposal ritual that surfaces and rejects LLM defaults, and a slop self-test on the editor's own output. Full catalog (49 deterministic + 21 LLM-judged rules) at **[pilcrow.ink/rules.html](https://pilcrow.ink/rules.html)**.
 
 ## Install
 
@@ -84,17 +86,16 @@ Each writes to disk only after explicit confirmation. Once `VOICE.md` exists, ev
 
 ## Cross-cutting references
 
-The skill's `reference/` folder also contains five underscore-prefixed files loaded by multiple commands:
+The skill's `reference/` folder contains underscore-prefixed files loaded by multiple commands:
 
 | File | Content |
 |---|---|
-| `_style-laws.md` | Universal writing laws (voice trumps rule, propose-don't-edit, ship-blockers ≠ taste calls) |
 | `_ai-tell-catalog.md` | Exhaustive AI-tell catalog organized by class (vocabulary, cadence, template, fossil) |
 | `_readers.md` | Reader personas (skeptical engineer, busy executive, casual blog reader, fellow expert, undergraduate) |
 | `_cadence-theory.md` | King and Strunk on rhythm: sentence-length variation, fragment use, parallel triplets in moderation |
 | `_genres.md` | Per-genre conventions: what each demands, forbids, tolerates |
 
-These aren't commands; they're content the command references name explicitly when they need it.
+Universal writing laws, the editor reflex catalog, the proposal ritual, and the editor slop test are inlined in the parent `SKILL.md` — they apply to every command without an explicit load. The four files above carry content the command references load explicitly when they need it.
 
 ## Pin / unpin
 

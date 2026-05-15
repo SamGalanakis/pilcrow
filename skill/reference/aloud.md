@@ -21,7 +21,8 @@ If anything's missing, the command falls back to emitting file paths the writer 
 ## Load before running
 
 - [_cadence-theory.md](_cadence-theory.md) — rhythm vocabulary used when discussing flagged paragraphs.
-- [_style-laws.md](_style-laws.md) — propose, don't edit; voice trumps rule.
+
+Universal laws and the editor slop test (in the parent `SKILL.md`) apply by default.
 
 ## Procedure
 

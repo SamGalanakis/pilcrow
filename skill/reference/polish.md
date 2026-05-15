@@ -12,11 +12,12 @@ Polish is the meta-command. It runs everything and ranks.
 
 ## Load before running
 
-- [_style-laws.md](_style-laws.md) — universal laws every editor command respects.
 - [_ai-tell-catalog.md](_ai-tell-catalog.md) — for ship-blocker classification.
 - [_readers.md](_readers.md) — to rank findings by reader-impact.
 - [_cadence-theory.md](_cadence-theory.md) — for rhythmic findings.
 - `VOICE.md` if present — to filter findings the writer's exceptions allow.
+
+Universal laws, the proposal ritual, and the editor slop test (in the parent `SKILL.md`) apply by default. Ship-blocker rewrites run through the proposal ritual; the slop test gates the final report.
 
 ## Procedure
 

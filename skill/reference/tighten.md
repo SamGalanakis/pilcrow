@@ -10,8 +10,9 @@ Steven Pinker, *The Sense of Style* — names these "zombie nouns" and identifie
 
 ## Load before running
 
-- [_style-laws.md](_style-laws.md) — voice trumps rule. Some nominalizations are technical terms the writer keeps deliberately.
 - `VOICE.md` if present — `taboos` may include specific verbs to avoid; `signatures` may include long-sentence rhythms to preserve.
+
+Universal laws, the proposal ritual, and the editor slop test (in the parent `SKILL.md`) apply by default. Per-sentence rewrites run through the proposal ritual.
 
 ## The diagnostic
 

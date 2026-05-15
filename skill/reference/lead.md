@@ -15,6 +15,8 @@ Journalism's lede tradition — name the news first, then the context.
 - [_readers.md](_readers.md) — different leads work for different audiences. Use the persona from `VOICE.md` `audience` if set.
 - [_genres.md](_genres.md) — a memo lede differs from an essay lede differs from a fiction opening.
 
+Universal laws, the proposal ritual, and the editor slop test (in the parent `SKILL.md`) apply by default. The three proposed openings are the canonical example of the proposal ritual — each must survive all four gates.
+
 ## Procedure
 
 1. Identify the **real lede**: the most surprising, consequential, or specific sentence in the first 3 paragraphs. Rarely the actual first sentence in an AI draft.

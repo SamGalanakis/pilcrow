@@ -16,7 +16,8 @@ Joseph Williams' Coherence chapter in *Style* — readers expect old information
 
 - [_readers.md](_readers.md) — clarity is *for* someone. Use the persona in `VOICE.md` `audience` if set, else default to the skeptical engineer.
 - [_genres.md](_genres.md) — explainers need definitions on first use; memos can assume context; fiction sets its own rules.
-- [_style-laws.md](_style-laws.md) — voice trumps rule. A deliberate complex sentence may not be a clarify finding.
+
+Universal laws, the proposal ritual, and the editor slop test (in the parent `SKILL.md`) apply by default. Per-passage rewrites run through the proposal ritual.
 
 ## Procedure
 

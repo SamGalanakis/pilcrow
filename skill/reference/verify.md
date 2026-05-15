@@ -12,8 +12,9 @@ Pilcrow's existing `claim-without-support` LLM rule (coarse, surfaced by `polish
 
 ## Load before running
 
-- [_style-laws.md](_style-laws.md) — voice trumps rule; propose, don't edit.
 - [_genres.md](_genres.md) — different genres have different evidence conventions. A memo can lean on "as we discussed Tuesday"; a report cannot.
+
+Universal laws and the editor slop test (in the parent `SKILL.md`) apply by default.
 
 ## Procedure
 

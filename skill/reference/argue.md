@@ -18,8 +18,9 @@ The steelman discipline: paraphrase the opponent's strongest case before respond
 
 ## Load before running
 
-- [_style-laws.md](_style-laws.md) — voice trumps rule; propose, don't edit.
 - [_genres.md](_genres.md) — different genres have different stock objections. A hostile-engineer skeptic raises different concerns than a hostile-marketer one.
+
+Universal laws and the editor slop test (in the parent `SKILL.md`) apply by default.
 
 ## Procedure
 

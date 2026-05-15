@@ -11,15 +11,17 @@ Wikipedia, *Signs of AI writing* — the canonical editor-maintained catalog of 
 ## Load before running
 
 - [_ai-tell-catalog.md](_ai-tell-catalog.md) — primary input. Read this end-to-end.
-- [_style-laws.md](_style-laws.md) — for voice preservation principles.
 - `VOICE.md` if present — its `signatures` and `exceptions` fields name habits to keep.
+
+Universal laws, the proposal ritual, and the editor slop test (in the parent `SKILL.md`) apply by default; don't load.
 
 ## Procedure
 
 1. Run `pilcrow lint <target>`. Filter findings to those that match a class in [_ai-tell-catalog.md](_ai-tell-catalog.md).
 2. For each AI tell, classify by class (vocabulary, cadence, template, fossil).
 3. Read the writer's adjacent paragraphs (3–4 sentences before and after each finding) to find their voice. Cite the location of the voice-match in your proposal.
-4. Propose a rewrite tailored to the class.
+4. Propose a rewrite tailored to the class, running each proposed rewrite through the **proposal ritual** in `SKILL.md` (list first three → reject reflexes → cross-check genre → anchor in voice → ship what survives).
+5. Apply the **editor slop test** to the finished report before emitting.
 
 ## Rewrite shape per class
 
