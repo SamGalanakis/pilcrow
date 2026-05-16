@@ -1,13 +1,16 @@
+import { createHash } from "node:crypto";
 import {
   existsSync,
+  lstatSync,
   mkdirSync,
   readFileSync,
   readdirSync,
   rmSync,
   statSync,
+  unlinkSync,
   writeFileSync,
 } from "node:fs";
-import { dirname, join, resolve } from "node:path";
+import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -31,6 +34,17 @@ const PROVIDER_DIRS = [
 const SKILL_FOLDER = "pilcrow";
 
 const SUBSTITUTABLE_EXTENSIONS = new Set([".md"]);
+
+// Sub-skill names pilcrow installed in the past but no longer ships.
+// Add an entry here when renaming or merging a sub-skill or pinned shortcut.
+// Each entry is the FOLDER NAME under `.<provider>/skills/`. The sweep verifies
+// the folder is pilcrow-owned (its SKILL.md mentions "pilcrow") before deleting,
+// so user-owned skills with the same name are safe.
+const DEPRECATED_SUB_SKILLS: string[] = [
+  // Examples for the future:
+  // "humanize-old",       // renamed to humanize in vX.Y
+  // "extract",            // folded into /pilcrow extract in vX.Y
+];
 
 interface CommandMetaEntry {
   description: string;
@@ -123,6 +137,57 @@ function installedVersion(skillRoot: string): string | null {
   return content.match(/^version:\s*(.+)$/m)?.[1]?.trim().replace(/^["']|["']$/g, "") ?? null;
 }
 
+// Walk a directory and yield [relativePath, contents] for every file, sorted
+// so the hash is deterministic across runs and platforms.
+function* walkFiles(root: string, prefix = ""): Generator<{ rel: string; abs: string }> {
+  const entries = readdirSync(root, { withFileTypes: true }).sort((a, b) =>
+    a.name.localeCompare(b.name),
+  );
+  for (const entry of entries) {
+    const abs = join(root, entry.name);
+    const rel = prefix ? `${prefix}/${entry.name}` : entry.name;
+    if (entry.isDirectory()) {
+      yield* walkFiles(abs, rel);
+    } else if (entry.isFile()) {
+      yield { rel, abs };
+    }
+  }
+}
+
+// Compute a content hash for a skill directory. If `applySubs` is set, .md
+// files are run through substitution before hashing — this lets the hash of
+// the unsubstituted source match the hash of a fresh installed copy.
+function hashSkillDir(dir: string, applySubs: Record<string, string> | null): string {
+  if (!existsSync(dir)) return "";
+  const overall = createHash("sha256");
+  for (const { rel, abs } of walkFiles(dir)) {
+    const raw = readFileSync(abs);
+    const content =
+      applySubs && SUBSTITUTABLE_EXTENSIONS.has(fileExtension(rel))
+        ? Buffer.from(applySubstitutions(raw.toString("utf8"), applySubs), "utf8")
+        : raw;
+    overall.update(rel);
+    overall.update("\0");
+    overall.update(content);
+    overall.update("\0");
+  }
+  return overall.digest("hex").slice(0, 12);
+}
+
+// True iff the directory looks like a pilcrow-owned skill: its SKILL.md
+// frontmatter names it `pilcrow`. Guards against deleting unrelated user
+// skills with a name that collides with a deprecated entry.
+function isPilcrowSkill(skillDir: string): boolean {
+  const md = join(skillDir, "SKILL.md");
+  if (!existsSync(md)) return false;
+  try {
+    const content = readFileSync(md, "utf8");
+    return /^name:\s*pilcrow\b/m.test(content) || /\bpilcrow\b/i.test(content.slice(0, 800));
+  } catch {
+    return false;
+  }
+}
+
 function ensureSkillSrc(): void {
   if (!existsSync(SKILL_SRC) || !existsSync(join(SKILL_SRC, "SKILL.md"))) {
     console.error(`Skill source not found at ${SKILL_SRC}.`);
@@ -134,12 +199,14 @@ function ensureSkillSrc(): void {
 interface SkillArgs {
   providers: string[] | null;
   all: boolean;
+  force: boolean;
 }
 
 function parseSkillArgs(args: string[]): SkillArgs {
-  const out: SkillArgs = { providers: null, all: false };
+  const out: SkillArgs = { providers: null, all: false, force: false };
   for (const a of args) {
     if (a === "--all") out.all = true;
+    else if (a === "--force" || a === "-f") out.force = true;
     else if (a.startsWith("--provider=")) {
       const p = a.slice("--provider=".length);
       out.providers = (out.providers ?? []).concat(p.startsWith(".") ? p : `.${p}`);
@@ -148,10 +215,88 @@ function parseSkillArgs(args: string[]): SkillArgs {
   return out;
 }
 
+// Status of one installed skill copy.
+type SkillStatus =
+  | { kind: "missing" }
+  | { kind: "clean"; version: string }
+  | { kind: "outdated"; version: string }
+  | { kind: "modified"; version: string }
+  | { kind: "outdated-and-modified"; version: string };
+
+function skillStatus(
+  installPath: string,
+  srcHash: string,
+  pkgVer: string,
+): SkillStatus {
+  if (!existsSync(join(installPath, "SKILL.md"))) return { kind: "missing" };
+  const ver = installedVersion(installPath) ?? "?";
+  const installedHash = hashSkillDir(installPath, null);
+  const hashMatches = installedHash === srcHash;
+  const versionMatches = ver === pkgVer;
+  if (hashMatches && versionMatches) return { kind: "clean", version: ver };
+  if (!hashMatches && versionMatches) return { kind: "modified", version: ver };
+  if (!hashMatches && !versionMatches) return { kind: "outdated-and-modified", version: ver };
+  return { kind: "outdated", version: ver };
+}
+
+function formatStatus(provider: string, st: SkillStatus, pkgVer: string): string {
+  const path = `${provider}/skills/${SKILL_FOLDER}`;
+  switch (st.kind) {
+    case "missing":
+      return `  ${path}  not installed`;
+    case "clean":
+      return `  ${path}  v${st.version}  ✓ clean`;
+    case "outdated":
+      return `  ${path}  v${st.version} → v${pkgVer}  ↑ run \`pilcrow skills update\``;
+    case "modified":
+      return `  ${path}  v${st.version}  ✎ locally modified (use --force to overwrite)`;
+    case "outdated-and-modified":
+      return `  ${path}  v${st.version} → v${pkgVer}  ↑ outdated + ✎ locally modified (use --force to upgrade)`;
+  }
+}
+
+// Remove every deprecated sub-skill folder from every harness `skills/` dir
+// under `root`. Only deletes if the folder is pilcrow-owned (its SKILL.md
+// names `pilcrow`). Returns the absolute paths it deleted.
+function sweepDeprecatedSubSkills(root: string): string[] {
+  const deleted: string[] = [];
+  if (DEPRECATED_SUB_SKILLS.length === 0) return deleted;
+  for (const provider of PROVIDER_DIRS) {
+    const skillsDir = join(root, provider, "skills");
+    if (!existsSync(skillsDir)) continue;
+    for (const name of DEPRECATED_SUB_SKILLS) {
+      const target = join(skillsDir, name);
+      let st;
+      try {
+        st = lstatSync(target);
+      } catch {
+        continue;
+      }
+      if (st.isSymbolicLink()) {
+        const alive = existsSync(target);
+        const safeToRemove = alive ? isPilcrowSkill(target) : true;
+        if (safeToRemove) {
+          unlinkSync(target);
+          deleted.push(target);
+        }
+        continue;
+      }
+      if (st.isDirectory() && isPilcrowSkill(target)) {
+        rmSync(target, { recursive: true, force: true });
+        deleted.push(target);
+      }
+    }
+  }
+  return deleted;
+}
+
 export function cmdInstall(args: string[]): number {
   ensureSkillSrc();
   const root = findProjectRoot();
   const opts = parseSkillArgs(args);
+  const subs = buildSubstitutions();
+  const srcHash = hashSkillDir(SKILL_SRC, subs);
+  const pkgVer = pkgVersion();
 
   let targets: string[] = opts.providers ?? findExistingProviders(root);
   if (opts.all) targets = PROVIDER_DIRS;
@@ -161,14 +306,36 @@ export function cmdInstall(args: string[]): number {
     targets = [".claude"];
   }
 
-  const subs = buildSubstitutions();
+  let blocked = 0;
   for (const provider of targets) {
     const dest = join(root, provider, "skills", SKILL_FOLDER);
+    const st = skillStatus(dest, srcHash, pkgVer);
+
+    if (st.kind === "clean") {
+      console.log(`up-to-date     ${provider}/skills/${SKILL_FOLDER}  (v${pkgVer})`);
+      continue;
+    }
+
+    if ((st.kind === "modified" || st.kind === "outdated-and-modified") && !opts.force) {
+      console.log(
+        `skipped        ${provider}/skills/${SKILL_FOLDER}  (v${st.version}) — locally modified, pass --force to overwrite`,
+      );
+      blocked++;
+      continue;
+    }
+
     if (existsSync(dest)) rmSync(dest, { recursive: true, force: true });
     copyDir(SKILL_SRC, dest, subs);
-    console.log(`installed → ${provider}/skills/${SKILL_FOLDER}  (v${pkgVersion()})`);
+    console.log(`installed →    ${provider}/skills/${SKILL_FOLDER}  (v${pkgVer})`);
   }
-  return 0;
+
+  // Always sweep deprecated sub-skills after install. Quiet if nothing matched.
+  const swept = sweepDeprecatedSubSkills(root);
+  for (const path of swept) {
+    console.log(`removed (deprecated) → ${relative(root, path)}`);
+  }
+
+  return blocked > 0 ? 3 : 0;
 }
 
 export function cmdUpdate(args: string[]): number {
@@ -186,7 +353,9 @@ export function cmdUpdate(args: string[]): number {
 
 export function cmdCheck(): number {
   const root = findProjectRoot();
-  const current = pkgVersion();
+  const subs = buildSubstitutions();
+  const srcHash = hashSkillDir(SKILL_SRC, subs);
+  const pkgVer = pkgVersion();
   const installed = findExistingProviders(root).filter((d) =>
     existsSync(join(root, d, "skills", SKILL_FOLDER, "SKILL.md")),
   );
@@ -195,29 +364,84 @@ export function cmdCheck(): number {
     console.log("Run `pilcrow skills install` to install.");
     return 0;
   }
-  let stale = false;
+  let anyStale = false;
   for (const provider of installed) {
-    const v = installedVersion(join(root, provider, "skills", SKILL_FOLDER));
-    const ok = v === current;
-    if (!ok) stale = true;
-    console.log(`  ${provider}/skills/${SKILL_FOLDER}  installed: v${v ?? "?"}  package: v${current}  ${ok ? "✓" : "↑ run `pilcrow skills update`"}`);
+    const dest = join(root, provider, "skills", SKILL_FOLDER);
+    const st = skillStatus(dest, srcHash, pkgVer);
+    if (st.kind !== "clean" && st.kind !== "missing") anyStale = true;
+    console.log(formatStatus(provider, st, pkgVer));
   }
-  return stale ? 0 : 0;
+  // Report potential cleanup targets, but only list ones that exist.
+  const swept = previewDeprecatedSweep(root);
+  if (swept.length > 0) {
+    console.log("");
+    console.log("Deprecated installs detected — run `pilcrow skills cleanup`:");
+    for (const path of swept) console.log(`  ${relative(root, path)}`);
+  }
+  return anyStale ? 0 : 0;
+}
+
+// Dry-run version of sweep: just lists what cleanup would remove.
+function previewDeprecatedSweep(root: string): string[] {
+  const candidates: string[] = [];
+  if (DEPRECATED_SUB_SKILLS.length === 0) return candidates;
+  for (const provider of PROVIDER_DIRS) {
+    const skillsDir = join(root, provider, "skills");
+    if (!existsSync(skillsDir)) continue;
+    for (const name of DEPRECATED_SUB_SKILLS) {
+      const target = join(skillsDir, name);
+      try {
+        const st = lstatSync(target);
+        if (st.isSymbolicLink() && (!existsSync(target) || isPilcrowSkill(target))) {
+          candidates.push(target);
+        } else if (st.isDirectory() && isPilcrowSkill(target)) {
+          candidates.push(target);
+        }
+      } catch {
+        // not present
+      }
+    }
+  }
+  return candidates;
+}
+
+export function cmdCleanup(): number {
+  const root = findProjectRoot();
+  const swept = sweepDeprecatedSubSkills(root);
+  if (swept.length === 0) {
+    console.log("No deprecated pilcrow skill installs found.");
+    return 0;
+  }
+  console.log(`Removed ${swept.length} deprecated install${swept.length === 1 ? "" : "s"}:`);
+  for (const path of swept) console.log(`  ${relative(root, path)}`);
+  return 0;
 }
 
 export function cmdSkillsHelp(): number {
   console.log(`pilcrow skills — manage the skill in your AI harness
 
-  pilcrow skills install [--provider=.cursor ...] [--all]
-        Install skill/ into each detected provider directory's skills/iw/
+  pilcrow skills install [--provider=.cursor ...] [--all] [--force]
+        Install skill/ into each detected provider directory's skills/
         --provider=.NAME    install only into this provider (repeatable)
         --all               install into every supported provider
+        --force, -f         overwrite even if the installed copy was edited locally
 
   pilcrow skills update [flags]
-        Re-install the latest copy of the skill (use after \`npm update -g\`)
+        Re-install the latest copy of the skill (use after \`npm update -g\`).
+        Accepts the same flags as install. Skips copies that are already
+        clean at the current version; warns on locally-edited copies unless
+        --force is passed.
 
   pilcrow skills check
-        Show installed versions side-by-side with the package version
+        Show installed versions + content-hash status side-by-side with
+        the package. Marks each install as clean / outdated / locally
+        modified, and lists any deprecated installs to clean up.
+
+  pilcrow skills cleanup
+        Remove pilcrow skill folders that pilcrow itself shipped under a
+        deprecated name (after a rename or merge). Verifies each candidate
+        is pilcrow-owned before deleting; user-owned skills with the same
+        folder name are left alone.
 
   pilcrow skills help
         Show this message
@@ -227,7 +451,7 @@ Supported providers: ${PROVIDER_DIRS.join(", ")}
 Tip: install pilcrow once globally, then run \`pilcrow skills install\`
 in any project to drop the skill into the right place.
 
-  npm install -g pilcrow
+  npm install -g pilcrow-ink
   cd your-project && pilcrow skills install
 `);
   return 0;
@@ -242,6 +466,8 @@ export async function runSkills(args: string[]): Promise<number> {
       return cmdUpdate(args.slice(1));
     case "check":
       return cmdCheck();
+    case "cleanup":
+      return cmdCleanup();
     case "help":
     case "-h":
     case "--help":

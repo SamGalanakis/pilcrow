@@ -12,8 +12,16 @@ docs/rules.html
 .idea/
 .DS_Store
 
-# project-local skill installs (not source)
+# project-local skill installs (not source). Every harness provider dir
+# pilcrow can target — keep this in sync with PROVIDER_DIRS in cli/src/skills.ts.
 .agents/
 .claude/
+.cursor/
+.gemini/
 .github/skills/
+.kiro/
+.opencode/
+.pi/
+.qoder/
+.trae/
 skills-lock.json

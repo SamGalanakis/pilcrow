@@ -33,8 +33,11 @@ cd your-project
 pilcrow skills install            # auto-detects which harness dirs exist
 pilcrow skills install --all      # install into every supported provider
 pilcrow skills update             # re-sync after `npm update -g pilcrow-ink`
-pilcrow skills check              # show installed vs package version
+pilcrow skills check              # show installed version + content-hash status
+pilcrow skills cleanup            # remove pilcrow installs under deprecated names
 ```
+
+`install` and `update` use a content hash, not just the version string, so they detect a copy that's already on the current version but was edited locally. Modified installs are skipped with a notice — pass `--force` to overwrite. `cleanup` removes orphan skill folders left behind when pilcrow renames a sub-skill (verifies each is pilcrow-owned before deleting).
 
 ## CLI
 

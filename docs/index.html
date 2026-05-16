@@ -195,7 +195,9 @@ pilcrow rules --json</code></pre>
         <p>Manage the pilcrow skill inside your AI harness.</p>
         <pre><code>pilcrow skills install    # auto-detect and install
 pilcrow skills update     # re-sync after `npm update -g pilcrow-ink`
-pilcrow skills check      # show installed vs package version</code></pre>
+pilcrow skills check      # show installed version + content-hash status
+pilcrow skills cleanup    # remove installs under deprecated names</code></pre>
+        <p><code>install</code> and <code>update</code> use a content hash, not just the version string, so they detect a copy that&rsquo;s already on the current version but was edited locally.<span class="sidenote">Modified installs are skipped with a notice — pass <code>--force</code> to overwrite. The hash covers every file in the skill, not just <code>SKILL.md</code>, so an edit anywhere in <code>reference/</code> trips it.</span> <code>cleanup</code> removes orphan skill folders left behind when pilcrow renames or merges a sub-skill; it verifies each candidate is pilcrow-owned before deleting, so user-owned skills with a colliding name stay safe.</p>
       </section>
 
     </article>
