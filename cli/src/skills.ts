@@ -216,12 +216,19 @@ function parseSkillArgs(args: string[]): SkillArgs {
 }
 
 // Status of one installed skill copy.
+//
+// Edit detection only fires when versions match — a content-hash difference
+// across versions is expected (every file's substituted form differs once
+// the version frontmatter changes), and conflating it with local edits
+// would block routine updates. If a user genuinely edited locally AND
+// then a version bump shipped, the edits get overwritten on update; this
+// is a deliberate trade for keeping `skills update --all` non-interactive
+// across version bumps.
 type SkillStatus =
   | { kind: "missing" }
   | { kind: "clean"; version: string }
   | { kind: "outdated"; version: string }
-  | { kind: "modified"; version: string }
-  | { kind: "outdated-and-modified"; version: string };
+  | { kind: "modified"; version: string };
 
 function skillStatus(
   installPath: string,
@@ -230,13 +237,10 @@ function skillStatus(
 ): SkillStatus {
   if (!existsSync(join(installPath, "SKILL.md"))) return { kind: "missing" };
   const ver = installedVersion(installPath) ?? "?";
+  if (ver !== pkgVer) return { kind: "outdated", version: ver };
   const installedHash = hashSkillDir(installPath, null);
-  const hashMatches = installedHash === srcHash;
-  const versionMatches = ver === pkgVer;
-  if (hashMatches && versionMatches) return { kind: "clean", version: ver };
-  if (!hashMatches && versionMatches) return { kind: "modified", version: ver };
-  if (!hashMatches && !versionMatches) return { kind: "outdated-and-modified", version: ver };
-  return { kind: "outdated", version: ver };
+  if (installedHash !== srcHash) return { kind: "modified", version: ver };
+  return { kind: "clean", version: ver };
 }
 
 function formatStatus(provider: string, st: SkillStatus, pkgVer: string): string {
@@ -250,8 +254,6 @@ function formatStatus(provider: string, st: SkillStatus, pkgVer: string): string
       return `  ${path}  v${st.version} → v${pkgVer}  ↑ run \`pilcrow skills update\``;
     case "modified":
       return `  ${path}  v${st.version}  ✎ locally modified (use --force to overwrite)`;
-    case "outdated-and-modified":
-      return `  ${path}  v${st.version} → v${pkgVer}  ↑ outdated + ✎ locally modified (use --force to upgrade)`;
   }
 }
 
@@ -316,7 +318,7 @@ export function cmdInstall(args: string[]): number {
       continue;
     }
 
-    if ((st.kind === "modified" || st.kind === "outdated-and-modified") && !opts.force) {
+    if (st.kind === "modified" && !opts.force) {
       console.log(
         `skipped        ${provider}/skills/${SKILL_FOLDER}  (v${st.version}) — locally modified, pass --force to overwrite`,
       );
