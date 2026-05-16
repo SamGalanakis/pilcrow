@@ -61,11 +61,7 @@ html {
   --rule:      light-dark(oklch(0.82 0.014 95),  oklch(0.36 0.012 75));
   --border:    light-dark(oklch(0.86 0.012 95),  oklch(0.32 0.012 75));
 
-  --t-caption: 13px;
-  --t-meta:    14px;
-  --t-body:    18px;
-  --t-body-lg: 20px;
-  --t-lede:    clamp(20px, 1.6vw, 23px);
+  --t-body:    19px;
   --t-h-chap:  clamp(30px, 3vw, 40px);
   --t-h-cover: clamp(48px, 6vw, 76px);
 
@@ -158,16 +154,28 @@ img, svg { display: block; max-width: 100%; }
   font-variant: small-caps;
   font-size: 14px;
   letter-spacing: 0.04em;
-  color: var(--ink-3);
-  padding: 3px 8px;
+  color: var(--ink-2);
+  padding: 3px 10px;
   border-radius: 2px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
   transition: color var(--dur-quick), background-color var(--dur-quick);
 }
-.theme-toggle:hover { color: var(--ink); background-color: var(--bg-alt); }
-.theme-toggle-dark { display: inline; }
+.theme-toggle:hover {
+  color: var(--gilt-deep);
+  background-color: var(--bg-alt);
+}
+.theme-toggle .glyph {
+  font-style: normal;
+  font-size: 13px;
+  color: var(--gilt-deep);
+  transform: translateY(0.5px);
+}
+.theme-toggle-dark { display: inline-flex; align-items: baseline; gap: 6px; }
 .theme-toggle-light { display: none; }
 [data-theme="dark"] .theme-toggle-dark { display: none; }
-[data-theme="dark"] .theme-toggle-light { display: inline; }
+[data-theme="dark"] .theme-toggle-light { display: inline-flex; align-items: baseline; gap: 6px; }
 
 /* ── COVER ───────────────────────────────────────────────── */
 
@@ -203,18 +211,29 @@ img, svg { display: block; max-width: 100%; }
   color: var(--gilt-deep);
   font-feature-settings: normal;
 }
+.cover-epigraph {
+  font-style: italic;
+  font-size: clamp(20px, 1.6vw, 24px);
+  line-height: 1.45;
+  color: var(--ink-2);
+  max-width: 50ch;
+  margin-top: 6px;
+}
+.cover-epigraph::before {
+  content: "";
+  display: block;
+  width: 56px;
+  height: 1px;
+  background: var(--gilt);
+  margin-bottom: 18px;
+}
+/* Subpage lede: kept for rules.html / genres.html where the cover paragraph
+   carries real page-explaining content. The index hero uses .cover-epigraph. */
 .cover-lede {
-  font-size: clamp(22px, 1.8vw, 26px);
+  font-size: clamp(20px, 1.6vw, 24px);
   line-height: 1.5;
   color: var(--ink-2);
-  max-width: 60ch;
-  margin-bottom: 24px;
-}
-.cover-meta {
-  font-style: italic;
-  font-size: 17px;
-  color: var(--ink-3);
-  max-width: 60ch;
+  max-width: 62ch;
 }
 
 /* ── BOOK LAYOUT: spine + body ───────────────────────────── */
@@ -290,7 +309,7 @@ img, svg { display: block; max-width: 100%; }
 /* ── BODY (chapters) ─────────────────────────────────────── */
 
 .book-body {
-  font-size: var(--t-body-lg);
+  font-size: var(--t-body);
   line-height: 1.65;
   color: var(--ink);
   hanging-punctuation: first last;
@@ -332,6 +351,10 @@ img, svg { display: block; max-width: 100%; }
 .chapter p { margin-bottom: 1.05em; }
 .chapter p:last-child { margin-bottom: 0; }
 
+/* Drop cap. Triggered only when the first paragraph opens with .newthought,
+   which guarantees the leading character is a letter (not a quote or digit
+   that would render the cap awkwardly). The override block resets oldstyle
+   figures + small caps so a stray opening glyph still draws as display caps. */
 .chapter > p:first-of-type:has(> .newthought:first-child)::first-letter {
   font-style: italic;
   font-weight: 400;
@@ -341,6 +364,8 @@ img, svg { display: block; max-width: 100%; }
   margin: 0.08em 8px -0.05em 0;
   color: var(--gilt-deep);
   font-variant: normal;
+  font-variant-numeric: normal;
+  font-variant-caps: normal;
   font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
 }
 
@@ -494,7 +519,7 @@ img, svg { display: block; max-width: 100%; }
     grid-template-columns: 220px minmax(0, 88ch);
   }
 }
-.book-body.catalog { font-size: var(--t-body-lg); }
+.book-body.catalog { font-size: var(--t-body); }
 .cat-section { margin-bottom: clamp(48px, 7vw, 88px); }
 .cat-section:last-child { margin-bottom: 0; }
 
@@ -583,7 +608,7 @@ img, svg { display: block; max-width: 100%; }
   margin-bottom: 18px;
 }
 .cat-blurb {
-  font-size: var(--t-body-lg);
+  font-size: var(--t-body);
   line-height: 1.55;
   color: var(--ink-2);
   max-width: 64ch;
@@ -742,6 +767,18 @@ img, svg { display: block; max-width: 100%; }
   border: 1px solid var(--rule);
   border-radius: 3px;
   background: var(--surface);
+  container-type: inline-size;
+  container-name: leaf;
+}
+/* Component-scoped: stack the rule-example grid when a leaf gets narrow,
+   regardless of viewport (e.g. embedded in a future side-by-side layout). */
+@container leaf (max-width: 520px) {
+  .genre-rule-ex {
+    grid-template-columns: 1fr;
+    gap: 4px 0;
+  }
+  .genre-rule-ex dt { margin-top: 6px; }
+  .genre-rule-ex dt:first-child { margin-top: 0; }
 }
 .genre-leaf:target {
   border-color: var(--gilt-deep);
@@ -775,7 +812,7 @@ img, svg { display: block; max-width: 100%; }
   color: var(--ink);
 }
 .genre-def {
-  font-size: var(--t-body-lg);
+  font-size: var(--t-body);
   line-height: 1.55;
   color: var(--ink);
   margin: 0 0 18px;

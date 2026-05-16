@@ -286,8 +286,8 @@ const html = `<!doctype html>
       <a href="rules.html">Catalog</a>
       <a href="https://github.com/SamGalanakis/pilcrow">GitHub</a>
       <button type="button" class="theme-toggle" aria-label="Toggle dark mode">
-        <span class="theme-toggle-dark">Dark</span>
-        <span class="theme-toggle-light">Light</span>
+        <span class="theme-toggle-dark"><span class="glyph" aria-hidden="true">☾</span>Dark</span>
+        <span class="theme-toggle-light"><span class="glyph" aria-hidden="true">☀</span>Light</span>
       </button>
     </nav>
   </header>
