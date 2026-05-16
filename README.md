@@ -1,14 +1,16 @@
 # pilcrow ¶
 
-**Make your clanker your editor.** Docs and catalog: **[pilcrow.ink](https://pilcrow.ink)**.
-
-A prose linter and AI-harness skill that turns the LLM in your harness into the editor it should be. Mechanical checks for the patterns regex can pin down. LLM-judged ones for what regex can't. Editor commands anchored in classical style guides (Strunk, Williams, Zinsser, Pinker, Orwell, King). Project commands that capture your voice and apply it to new drafts.
+**pilcrow** turns the LLM in your AI harness into the editor it should be. A prose linter and harness skill anchored in classical style guides (Strunk, Williams, Zinsser, Pinker, Orwell, King): mechanical checks for what regex catches, LLM-judged ones for what it can't. Docs and catalog: [pilcrow.ink](https://pilcrow.ink).
 
 Catches AI tells as one feature among many. Works for prose you wrote, prose the model wrote, and everything in between.
 
-Inspired by [impeccable.style](https://impeccable.style/) — same idea, applied to writing. Detection-only. Findings carry line, column, excerpt, and an optional suggestion. The engine never edits.
+Inspired by [impeccable.style](https://impeccable.style/): same idea, applied to writing. Detection-only. Findings carry line, column, excerpt, and an optional suggestion. The engine never edits.
 
-**Bare invocation triages.** Run `/pilcrow` with no arguments and the skill finds the prose in scope, runs lint, identifies the genre, and proposes an ordered sequence of editor commands tuned to the piece. The plan gates on confirmation. The skill also enforces an editor-side discipline: a reflex-rewrite catalog, a proposal ritual that surfaces and rejects LLM defaults, and a slop self-test on the editor's own output. Full catalog (49 deterministic + 21 LLM-judged rules) at **[pilcrow.ink/rules.html](https://pilcrow.ink/rules.html)**.
+**Bare invocation triages.** Run `/pilcrow` with no arguments. The skill finds the prose in scope, runs lint, identifies the genre, and proposes an ordered sequence of editor commands tuned to the piece. The plan gates on confirmation.
+
+Every editor command applies three meta-disciplines: a reflex-rewrite catalog, a proposal ritual that surfaces and rejects LLM defaults, and a slop self-test on the editor's own output.
+
+The full rule catalog lists 49 deterministic and 21 LLM-judged base rules at [pilcrow.ink/rules.html](https://pilcrow.ink/rules.html). Per-genre extras add 76 more LLM rules across 39 leaves at [pilcrow.ink/genres.html](https://pilcrow.ink/genres.html).
 
 ## Install
 
@@ -37,7 +39,7 @@ pilcrow skills check              # show installed version + content-hash status
 pilcrow skills cleanup            # remove pilcrow installs under deprecated names
 ```
 
-`install` and `update` use a content hash, not just the version string, so they detect a copy that's already on the current version but was edited locally. Modified installs are skipped with a notice — pass `--force` to overwrite. `cleanup` removes orphan skill folders left behind when pilcrow renames a sub-skill (verifies each is pilcrow-owned before deleting).
+`install` and `update` use a content hash, not just the version string, so they detect a copy that's already on the current version but was edited locally. Modified installs are skipped with a notice; pass `--force` to overwrite. `cleanup` removes orphan skill folders left behind when pilcrow renames a sub-skill (verifies each is pilcrow-owned before deleting).
 
 ## CLI
 
@@ -46,14 +48,14 @@ Five engine commands:
 ```
 pilcrow audit [paths...] [--ignore-quoted]   Human-readable findings (default)
 pilcrow lint  [paths...] [--ignore-quoted]   JSON output for LLM consumption
-pilcrow critique [path]                      Print the LLM-critique prompt
+pilcrow critique [path] [--genre slug]       Print the LLM-critique prompt
 pilcrow rules [--json]                       List all rules
 pilcrow skills <subcommand>                  Install or update the skill in your AI harness
 ```
 
 Reads stdin if no paths. Recurses directories, scanning `.md`, `.mdx`, `.markdown`, `.txt`, `.html`, `.htm`.
 
-HTML support strips `<script>`, `<style>`, `<pre>`, and `<code>` content; decodes common entities; treats closing block tags as sentence breaks. Pass `--ignore-quoted` to skip phrases inside straight or curly double quotes — useful when prose discusses AI tells without quoting them in backticks.
+HTML support strips `<script>`, `<style>`, `<pre>`, and `<code>` content; decodes common entities; treats closing block tags as sentence breaks. Pass `--ignore-quoted` to skip phrases inside straight or curly double quotes; useful when prose discusses AI tells without quoting them in backticks.
 
 ## Editor commands
 
@@ -79,13 +81,22 @@ Project commands act on the repo, not on a single passage. They capture the writ
 
 | Command | What it does |
 |---|---|
-| `document` | Scan existing prose. Computes stylometric features, surfaces recurring moves (phrases, cadences, structural habits, punctuation tics), drafts `VOICE.md` with citations and open questions |
-| `teach` | Interview the writer to refine an existing `VOICE.md` (answer the open questions, confirm Signatures, edit Taboos) or create one from scratch |
+| `document` | Scan existing prose. Find recurring moves: phrases, cadences, punctuation tics. Draft `VOICE.md` with citations and open questions |
+| `teach` | Interview the writer. Refine an existing `VOICE.md` by answering open questions, confirming Signatures, and editing Taboos; or create one from scratch |
 | `craft` | End-to-end essay writing with gates: shape → draft → critique → polish; respects `VOICE.md` |
 
 Each writes to disk only after explicit confirmation. Once `VOICE.md` exists, every editor command reads it on invocation and weights findings accordingly.
 
-`teach` captures four axes the editor commands use: **genre** (essay / explainer / report / marketing / memo / fiction), **audience** (a concrete reader, optionally mapped to one of the built-in personas), **stance** (claim / explain / persuade / narrate), and **method** (outliner / discovery / iterative / model-drafter). `craft` reads `method:` and runs one of four phase-2 variants — outliners get an outline-first draft, discovery writers get a free first pass, iterative writers get paragraph-by-paragraph gates, and model-drafter users get the model's draft as raw material to rewrite.
+`teach` captures four axes for editor commands:
+
+- **genre**: a slug from the taxonomy. Common ones: `essay`, `tutorial`, `readme`, `postmortem`, `cv`, `fiction`. Full tree at [pilcrow.ink/genres.html](https://pilcrow.ink/genres.html).
+- **audience**: a concrete reader, optionally one of the built-in personas
+- **stance**: `claim` / `explain` / `persuade` / `narrate`
+- **method**: `outliner` / `discovery` / `iterative` / `model-drafter`
+
+`craft` reads `method:` and runs one of four phase-2 variants: outline-first for outliners, free first pass for discovery, paragraph-gated for iterative, rewrite-the-model for model-drafter.
+
+Each genre leaf adds 1–2 LLM lint targets specific to that genre (e.g., `postmortem-counterfactual` flags `should have` / `could have` framing; `cv-vague-impact` flags `drove growth` without a number; `error-message-blame-user` flags `You entered an invalid X`). Pass `--genre <slug>` to `critique` and the prompt merges the base 21 rules with the active leaf's additions, walking the parent chain.
 
 ## Cross-cutting references
 
@@ -96,9 +107,10 @@ The skill's `reference/` folder contains underscore-prefixed files loaded by mul
 | `_ai-tell-catalog.md` | Exhaustive AI-tell catalog organized by class (vocabulary, cadence, template, fossil) |
 | `_readers.md` | Reader personas (skeptical engineer, busy executive, casual blog reader, fellow expert, undergraduate) |
 | `_cadence-theory.md` | King and Strunk on rhythm: sentence-length variation, fragment use, parallel triplets in moderation |
-| `_genres.md` | Per-genre conventions: what each demands, forbids, tolerates |
+| `_genres.md` | Genre taxonomy: 12 families, parent rules, path inference |
+| `genres/<slug>.md` | Per-leaf Demands / Forbids / Tolerates / AI tells / LLM lint additions (one file per leaf, ≤ 50 lines) |
 
-Universal writing laws, the editor reflex catalog, the proposal ritual, and the editor slop test are inlined in the parent `SKILL.md` — they apply to every command without an explicit load. The four files above carry content the command references load explicitly when they need it.
+Universal writing laws, the editor reflex catalog, the proposal ritual, and the editor slop test are inlined in the parent `SKILL.md`; they apply to every command without an explicit load. The four files above carry content the command references load explicitly when they need it.
 
 ## Pin / unpin
 
@@ -109,21 +121,21 @@ node skill/scripts/pin.mjs pin polish
 node skill/scripts/pin.mjs unpin polish
 ```
 
-The script writes a redirect skill into every harness directory where pilcrow is installed. Pinned shortcuts carry a marker comment, so `unpin` only deletes shortcuts it created — never user-owned skills with the same name.
+The script writes a redirect skill into every harness directory where pilcrow is installed. Pinned shortcuts carry a marker comment, so `unpin` only deletes shortcuts it created, never user-owned skills with the same name.
 
 ## aloud and TTS
 
-`aloud` plays prose back to you via OpenAI TTS in an interactive session — walkthrough, full read, targeted (only the paragraphs `pace` flagged), or compare two passages. It depends on the [OpenAI speech skill](https://github.com/openai/skills/tree/main/skills/.curated/speech) (Apache 2.0).
+`aloud` plays prose back to you via OpenAI TTS in an interactive session: walkthrough, full read, targeted (only the paragraphs `pace` flagged), or compare two passages. It depends on the [OpenAI speech skill](https://github.com/openai/skills/tree/main/skills/.curated/speech) (Apache 2.0).
 
 Set up:
 
 ```
 export OPENAI_API_KEY=...
-# python3 + the openai package — install once
+# python3 + the openai package (install once)
 python3 -m pip install openai
 ```
 
-The lens auto-resolves the speech skill — if it's installed in your harness (`.claude/skills/speech/`, `.cursor/skills/speech/`, etc.) it uses that; otherwise it fetches a pinned snapshot into `/tmp/pilcrow/skills/speech/`.
+The lens auto-resolves the speech skill. If it's installed in your harness (`.claude/skills/speech/`, `.cursor/skills/speech/`, etc.) it uses that; otherwise it fetches a pinned snapshot into `/tmp/pilcrow/skills/speech/`.
 
 Audio is cached in `/tmp/pilcrow/aloud/<sha256>.mp3`. Replays across sessions are free. A 14-day mtime GC sweep runs on every `aloud` invocation. Per-piece voice and speed live in `VOICE.md` (`aloud-voice:`, `aloud-speed:`, `default-aloud-mode:`).
 
@@ -142,10 +154,12 @@ Audio is cached in `/tmp/pilcrow/aloud/<sha256>.mp3`. Replays across sessions ar
 | Weak constructions | `there-is-there-are`, `expletives`, `negation-of-negation`, `pronoun-it-vague` |
 | Markdown shape | `bullet-bold-lead`, `title-case-headers`, `colon-headline`, `decorative-emoji`, `false-precision-headline` |
 
-**20 LLM-judged** (surfaced as a prompt the model evaluates):
-`buried-lede`, `voice-consistency`, `mixed-metaphor`, `claim-without-support`, `missing-stakes`, `distinctive-vs-generic`, `abstract-without-concrete`, `showing-vs-telling`, `transition-coherence`, `register-mismatch`, `excessive-balance`, `redundant-thesis`, `marketing-template-cadence`, `sycophantic-tone`, `stakes-inflation`, `false-reframe`, `invented-concept-label`, `listicle-disguise`, `one-point-dilution`, `unsupported-claim`.
+**21 LLM-judged base rules** (surfaced as a prompt the model evaluates):
+`buried-lede`, `voice-consistency`, `mixed-metaphor`, `claim-without-support`, `missing-stakes`, `distinctive-vs-generic`, `abstract-without-concrete`, `showing-vs-telling`, `transition-coherence`, `register-mismatch`, `excessive-balance`, `redundant-thesis`, `marketing-template-cadence`, `sycophantic-tone`, `stakes-inflation`, `false-reframe`, `invented-concept-label`, `listicle-disguise`, `one-point-dilution`, `unsupported-claim`, `feature-tally`.
 
-Deterministic rules cover patterns regex can pin down with low false positives. LLM rules cover semantic and rhetorical judgments — was the move empty, were the stakes inflated, is the passage a list pretending to be prose.
+**76 genre-specific LLM rules** across 39 leaves, merged into the prompt when `critique --genre <slug>` is set. Browse the full taxonomy at [pilcrow.ink/genres.html](https://pilcrow.ink/genres.html).
+
+Deterministic rules cover patterns regex can pin down with low false positives. LLM rules cover semantic and rhetorical judgments: was the move empty, were the stakes inflated, is the passage a list pretending to be prose. Genre rules cover patterns that fire usefully only in one context; `postmortem-counterfactual` is meaningless in fiction, and `cv-vague-impact` would over-fire in an essay.
 
 ## Fuzzy matching
 
@@ -154,7 +168,7 @@ Phrase rules tokenize and stem before comparing, so `delve` / `delves` / `delvin
 ## Layout
 
 ```
-engine/   the rules engine: 49 deterministic + 20 LLM rules
+engine/   the rules engine: 49 deterministic + 21 LLM base rules + per-genre extras (generated)
 cli/      the pilcrow binary and the skills subcommand
 skill/    the SKILL.md that pilcrow skills install copies into provider dirs
 docs/     the GitHub Pages site
@@ -185,4 +199,4 @@ Use `--bump major|minor|patch` to bump in one step, or omit `--bump` if you alre
 
 ## License
 
-MIT — see [LICENSE](./LICENSE).
+MIT. See [LICENSE](./LICENSE).

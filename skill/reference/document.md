@@ -1,6 +1,6 @@
 # document
 
-Scan the writer's existing prose and produce a draft `VOICE.md` — what the prose actually does, measured empirically, with explicit open questions for the things stats can't answer.
+Scan the writer's existing prose and produce a draft `VOICE.md`: what the prose actually does, measured empirically, with explicit open questions for the things stats can't answer.
 
 `document` is the corpus pass. `teach` is the refinement pass that runs after.
 
@@ -12,13 +12,13 @@ The honest caveat: stats can tell you what a writer does. They cannot tell you w
 
 ## Load before running
 
-- [_genres.md](_genres.md) — to map observed conventions back to a likely genre.
-- [_readers.md](_readers.md) — to propose an audience persona for the writer to confirm in `teach`.
-- [_ai-tell-catalog.md](_ai-tell-catalog.md) — to flag overlap between the writer's recurring moves and known AI tells (a side note for the writer to decide in `teach`).
+- [_genres.md](_genres.md): to map observed conventions back to a likely genre.
+- [_readers.md](_readers.md): to propose an audience persona for the writer to confirm in `teach`.
+- [_ai-tell-catalog.md](_ai-tell-catalog.md): to flag overlap between the writer's recurring moves and known AI tells (a side note for the writer to decide in `teach`).
 
 ## Procedure
 
-### Step 1 — find the corpus
+### Step 1: find the corpus
 
 Search candidate directories in order:
 1. `posts/`, `blog/`, `essays/`, `writing/`
@@ -26,11 +26,11 @@ Search candidate directories in order:
 3. `docs/` (skipping autogen / api-reference content)
 4. `README.md` and root-level `*.md` files
 
-Filter to substantive prose — skip code blocks, tables of contents, headings-only files, machine-generated content. Corpus must total **at least 2,000 words**. If less, exit: "Not enough prose to scan. Run `/pilcrow teach` instead."
+Filter to substantive prose: skip code blocks, tables of contents, headings-only files, machine-generated content. Corpus must total **at least 2,000 words**. If less, exit: "Not enough prose to scan. Run `/pilcrow teach` instead."
 
 If the corpus exceeds 20,000 words, sample 5–8 representative files spanning the date range. Bias toward recent.
 
-### Step 2 — run the engine
+### Step 2: run the engine
 
 ```
 pilcrow lint <corpus-files> --ignore-quoted
@@ -38,7 +38,7 @@ pilcrow lint <corpus-files> --ignore-quoted
 
 Capture every finding, every file. The next steps interpret the aggregate.
 
-### Step 3 — compute stylometric features
+### Step 3: compute stylometric features
 
 From the lint output plus a fresh read of the prose:
 
@@ -52,7 +52,7 @@ From the lint output plus a fresh read of the prose:
 - Question marks per 1,000 words.
 - Anaphora and parallel-triplet incidence.
 
-### Step 4 — surface recurring moves
+### Step 4: surface recurring moves
 
 A move counts as a **signature** if it fires **3+ times across 2+ files**. Group them:
 
@@ -63,7 +63,7 @@ A move counts as a **signature** if it fires **3+ times across 2+ files**. Group
 
 For each move, note whether it overlaps with the [_ai-tell-catalog.md](_ai-tell-catalog.md). Overlap is a flag for the writer to consider in `teach`, not a verdict.
 
-### Step 5 — read for register
+### Step 5: read for register
 
 Beyond stats and recurring moves, read three random paragraphs from each sampled file. Describe:
 
@@ -72,7 +72,7 @@ Beyond stats and recurring moves, read three random paragraphs from each sampled
 - Where the writer hedges and where they commit.
 - Whether the writer addresses the reader directly.
 
-### Step 6 — separate surface from intent
+### Step 6: separate surface from intent
 
 | Confident from stats | Needs the writer to confirm |
 |---|---|
@@ -84,7 +84,7 @@ Beyond stats and recurring moves, read three random paragraphs from each sampled
 
 The left column populates VOICE.md confidently. The right column becomes the **Open questions** section.
 
-### Step 7 — write VOICE.md
+### Step 7: write VOICE.md
 
 ```markdown
 ---
@@ -131,7 +131,7 @@ These are the fields stats cannot answer. Run `/pilcrow teach` to lock them — 
 
 The **Open questions** section is the headline output, not a footnote. The writer is meant to read it.
 
-### Step 8 — show and confirm
+### Step 8: show and confirm
 
 Show the file. Ask:
 > "Here's what the corpus shows. The Open questions are what I can't see from stats. Run `/pilcrow teach` to answer them, or answer them in chat now and I'll update the file."
@@ -167,7 +167,7 @@ Next:
 - **Burying the Open questions.** They are the headline. A writer who reads only the first half of VOICE.md should still see what `document` couldn't answer.
 - **Asserting intent.** "The writer is persuading skeptical engineers" is a claim about intent. Mark as best-guess and put it in Open questions, not Register.
 - **Citing every claim with a noisy file:line list.** One or two locations per signature; more is bureaucracy.
-- **Skipping the engine pass.** The stats are the point. A document call that doesn't run `pilcrow lint` is just freeform impression — that belongs in `teach`.
+- **Skipping the engine pass.** The stats are the point. A document call that doesn't run `pilcrow lint` is just freeform impression; that belongs in `teach`.
 - **Over-claiming signatures.** A move that appears in 30% of paragraphs isn't a signature; it's an average tic. Flag at 60%+ consistency.
 - **Pre-classifying AI-tell-overlap moves as Taboos.** They go in Signatures with the overlap noted. The writer decides via `teach`.
 - **Treating Signatures as final.** They're proposed. `teach` is where they get confirmed.

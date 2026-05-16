@@ -1,6 +1,6 @@
 # lead
 
-Sharpen the opening. The first sentence is the only sentence the reader has agreed to read; every following sentence has to earn the next one. If the lede is buried, throat-cleared, or sycophantic, nothing downstream matters — the reader has already left.
+Sharpen the opening. The first sentence is the only sentence the reader has agreed to read; every following sentence has to earn the next one. If the lede is buried, throat-cleared, or sycophantic, nothing downstream matters; the reader has already left.
 
 This command looks only at the first 1–2 paragraphs and proposes three alternative openings the writer can choose between.
 
@@ -8,14 +8,14 @@ This command looks only at the first 1–2 paragraphs and proposes three alterna
 
 William Zinsser, *On Writing Well*, chapter on leads: "The most important sentence in any article is the first one. If it doesn't induce the reader to proceed to the second sentence, your article is dead."
 
-Journalism's lede tradition — name the news first, then the context.
+Journalism's lede tradition: name the news first, then the context.
 
 ## Load before running
 
-- [_readers.md](_readers.md) — different leads work for different audiences. Use the persona from `VOICE.md` `audience` if set.
-- [_genres.md](_genres.md) — a memo lede differs from an essay lede differs from a fiction opening.
+- [_readers.md](_readers.md): different leads work for different audiences. Use the persona from `VOICE.md` `audience` if set.
+- [_genres.md](_genres.md): a memo lede differs from an essay lede differs from a fiction opening.
 
-Universal laws, the proposal ritual, and the editor slop test (in the parent `SKILL.md`) apply by default. The three proposed openings are the canonical example of the proposal ritual — each must survive all four gates.
+Universal laws, the proposal ritual, and the editor slop test (in the parent `SKILL.md`) apply by default. The three proposed openings are the canonical example of the proposal ritual; each must survive all four gates.
 
 ## Procedure
 
@@ -26,13 +26,13 @@ Universal laws, the proposal ritual, and the editor slop test (in the parent `SK
 
 ## What to prioritize
 
-1. `buried-lede` (LLM) — the real news isn't in paragraph 1.
-2. `throat-clearing-openers` — `In today's fast-paced world`, `When it comes to`.
-3. `sycophant-opener` — `Great question`, `Absolutely`.
-4. `meta-discourse` at the opening — `This article will explore`.
-5. `hero-tagline-imperative` at the top — three imperative fragments don't make a lede.
-6. `copula-dodge` in the first sentence — `X serves as a Y` is a tell that the writer didn't commit.
-7. `marketing-template-cadence` (LLM) — imperative-plus-tricolon as opener is the most-flagged opening shape.
+1. `buried-lede` (LLM): the real news isn't in paragraph 1.
+2. `throat-clearing-openers`: `In today's fast-paced world`, `When it comes to`.
+3. `sycophant-opener`: `Great question`, `Absolutely`.
+4. `meta-discourse` at the opening: `This article will explore`.
+5. `hero-tagline-imperative` at the top: three imperative fragments don't make a lede.
+6. `copula-dodge` in the first sentence: `X serves as a Y` is a tell that the writer didn't commit.
+7. `marketing-template-cadence` (LLM): imperative-plus-tricolon as opener is the most-flagged opening shape.
 
 ## AI opener catalog
 
@@ -52,7 +52,7 @@ None carry information. They warm up. Cut them.
 
 Scan the first 3 paragraphs for the sentence with:
 - **The most specific noun.** Names of products, people, places, numbers.
-- **The most surprising verb.** Something happened — not `is`, `represents`, `serves as`, but a verb that moved.
+- **The most surprising verb.** Something happened: not `is`, `represents`, `serves as`, but a verb that moved.
 - **The clearest stake.** Why does this matter? Who acts differently because of it?
 
 That's your lede. Move it to sentence 1.
@@ -104,4 +104,4 @@ Always propose **three** openings. One isn't enough. Four is too many. Three is 
 - **Three identical options.** If they differ only in word order, you've written one. Each must commit to a different angle.
 - **Leaving a buried lede in "stylistic taste-call."** A buried lede is a ship-blocker, not taste.
 
-If all three proposals feel forced and no fact in the piece is interesting enough to lede with, the issue is the piece, not the opening. Flag: "The lede problem is downstream of a substance problem — what's the most surprising thing you actually learned?"
+If all three proposals feel forced and no fact in the piece is interesting enough to lede with, the issue is the piece, not the opening. Flag: "The lede problem is downstream of a substance problem. What's the most surprising thing you actually learned?"

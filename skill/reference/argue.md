@@ -2,23 +2,23 @@
 
 Map the piece's argument structure and stress-test it. Four phases: confirm the thesis with the writer, surface the supports and objections that hang off it, generate the strongest counter, then check whether the piece engages or dodges that counter.
 
-`argue` is for argumentative prose — essays, op-eds, memos, technical posts that take a position. For narrative or descriptive prose, this command doesn't apply.
+`argue` is for argumentative prose: essays, op-eds, memos, technical posts that take a position. For narrative or descriptive prose, this command doesn't apply.
 
 The session is one round-trip per piece. It's slower than the line-level commands; run it once the draft has settled, not every revision.
 
 ## Source
 
-Stephen Toulmin, *The Uses of Argument* — claim / data / warrant / qualifier / rebuttal as the canonical argument shape. Pilcrow simplifies to claim / supports / objections / unstated-premises.
+Stephen Toulmin, *The Uses of Argument*: claim / data / warrant / qualifier / rebuttal as the canonical argument shape. Pilcrow simplifies to claim / supports / objections / unstated-premises.
 
-IBIS (Issue-Based Information System) by Horst Rittel and Conklin's *Dialogue Mapping* — issues, positions, supporting and opposing arguments.
+IBIS (Issue-Based Information System) by Horst Rittel and Conklin's *Dialogue Mapping*: issues, positions, supporting and opposing arguments.
 
-[Argdown](https://argdown.org) by Christian Voigt (MIT) — markdown-like DSL for argument structures with a renderable graph view. `argue` borrows the marker conventions (`+` supports, `-` objections, `?` premises) and offers an opt-in `.argdown` export.
+[Argdown](https://argdown.org) by Christian Voigt (MIT): markdown-like DSL for argument structures with a renderable graph view. `argue` borrows the marker conventions (`+` supports, `-` objections, `?` premises) and offers an opt-in `.argdown` export.
 
 The steelman discipline: paraphrase the opponent's strongest case before responding. Anatol Rapoport's first rule of charitable argument.
 
 ## Load before running
 
-- [_genres.md](_genres.md) — different genres have different stock objections. A hostile-engineer skeptic raises different concerns than a hostile-marketer one.
+- [_genres.md](_genres.md): different genres have different stock objections. A hostile-engineer skeptic raises different concerns than a hostile-marketer one.
 
 Universal laws and the editor slop test (in the parent `SKILL.md`) apply by default.
 
@@ -28,10 +28,10 @@ Universal laws and the editor slop test (in the parent `SKILL.md`) apply by defa
 
 The LLM extracts **2–4 candidate thesis statements** from the prose:
 
-- **A** — the most-likely literal lift (a single sentence from the piece that reads like a thesis).
-- **B** — a paraphrase of what the lede sets up.
-- **C** — a paraphrase of what the close lands on.
-- **D** (optional) — a reframe: "the piece appears to argue X, but actually argues Y."
+- **A**: the most-likely literal lift (a single sentence from the piece that reads like a thesis).
+- **B**: a paraphrase of what the lede sets up.
+- **C**: a paraphrase of what the close lands on.
+- **D** (optional): a reframe: "the piece appears to argue X, but actually argues Y."
 
 Present these to the writer using a single-select question. **Prefer the harness's native question UI** when available:
 
@@ -48,12 +48,12 @@ Given the confirmed thesis, walk the prose and surface what attaches to it.
 
 **Four marker types:**
 
-- `[+]` **Support** — a claim, fact, example, or argument that backs the thesis.
-- `[-]` **Objection** — a counter-claim the piece raises (and presumably refutes or qualifies).
-- `[?]` **Unstated premise** — an assumption the argument *requires* to hold, but the prose doesn't state.
-- `[!]` **Qualifier** — a "but" / "in cases where" / "assuming X" that softens the claim.
+- `[+]` **Support**: a claim, fact, example, or argument that backs the thesis.
+- `[-]` **Objection**: a counter-claim the piece raises (and presumably refutes or qualifies).
+- `[?]` **Unstated premise**: an assumption the argument *requires* to hold, but the prose doesn't state.
+- `[!]` **Qualifier**: a "but" / "in cases where" / "assuming X" that softens the claim.
 
-**Premise discipline.** Only flag premises that are **load-bearing for the central claim** — if the assumption's falsity would collapse the argument, flag it. Don't list every implicit assumption. (Same rule as `verify`'s load-bearing test.)
+**Premise discipline.** Only flag premises that are **load-bearing for the central claim**: if the assumption's falsity would collapse the argument, flag it. Don't list every implicit assumption. (Same rule as `verify`'s load-bearing test.)
 
 **Output: an indented ASCII tree.** Up to three levels deep.
 
@@ -75,18 +75,19 @@ Cite line numbers for every node tied to the prose. Premises that are unstated g
 
 ### Phase 3 — generate the strongest counter (steelman)
 
-Generate exactly **one** counter — the objection a hostile expert would raise first. Not a strawman, not the easiest one to refute, not three medium ones.
+Generate exactly **one** counter: the objection a hostile expert would raise first. Not a strawman, not the easiest one to refute, not three medium ones.
 
 **Discipline for the steelman:**
 
 - Charitable. Phrase the counter as its proponent would.
 - Specific. Tied to the thesis's actual claims, not a generic objection.
-- Genre-aware. Consult `_genres.md`:
-  - **Essay / op-ed:** the strongest contrary view from the discourse.
-  - **Report:** the methodological objection a reviewer would raise.
-  - **Memo:** the cost / timing / opportunity-cost concern.
-  - **Marketing:** the comparative claim from a competitor.
-  - **Explainer / technical:** the operational concern (won't scale, won't work in production, doesn't match what real users do).
+- Genre-aware. Consult `_genres.md` (and the leaf in `genres/<slug>.md`):
+  - **argumentative/** (essay, op-ed, review): the strongest contrary view from the discourse.
+  - **reportorial/** (news, feature, postmortem, status-update, changelog): the methodological or interpretive objection a peer reviewer would raise.
+  - **correspondence/** (memo, email, message): the cost / timing / opportunity-cost concern.
+  - **marketing/** (landing, product-copy, sales-email, press-release, about-page): the comparative claim from a competitor or the skeptical-user "why this and not the obvious alternative".
+  - **documentation/** + **overview/** + **informational/** (tutorial, how-to, reference-docs, explanation, readme, explainer, faq): the operational concern (won't scale, won't work in production, doesn't match what real users do).
+  - **microcopy/**, **social/**, **personal/**, **presentations/**, **narrative/**: command applies less directly; consider the leaf's own Demands before generating a steelman.
 
 Output:
 
@@ -100,9 +101,9 @@ For each support and each premise from Phase 2, ask: does the steelman undermine
 
 **Three verdicts:**
 
-- `engaged` — the piece raises this counter (or one substantively equivalent) and addresses it.
-- `acknowledged-but-dodged` — the piece mentions the counter but waves it away rather than answering.
-- `missing` — the counter isn't raised at all.
+- `engaged`: the piece raises this counter (or one substantively equivalent) and addresses it.
+- `acknowledged-but-dodged`: the piece mentions the counter but waves it away rather than answering.
+- `missing`: the counter isn't raised at all.
 
 Output as a two-column view (or a labeled list, if the harness doesn't render columns well):
 
@@ -169,7 +170,7 @@ The writer can paste the file into [argdown.org](https://argdown.org)'s online s
 2. <if any premise is unstated and the reader would not assume it, propose adding it>
 ```
 
-Do not propose rewrites for individual sentences — that's `polish` or `clarify`. `argue` proposes structural moves: address the counter, surface the premise, drop the claim.
+Do not propose rewrites for individual sentences; that's `polish` or `clarify`. `argue` proposes structural moves: address the counter, surface the premise, drop the claim.
 
 ## When `argue` does not apply
 
@@ -180,9 +181,9 @@ Do not propose rewrites for individual sentences — that's `polish` or `clarify
 ## Anti-patterns
 
 - **Inferring the thesis silently.** Phase 1's multi-choice gate is non-negotiable. Without it, the rest of the command is built on a guess.
-- **Generating a weak steelman.** A counter the writer can dismiss in one sentence is not a steelman; it's a strawman. If you can't generate a strong one, flag: "I can't find a strong counter to this thesis — the piece may be unfalsifiable, or I'm missing genre context."
+- **Generating a weak steelman.** A counter the writer can dismiss in one sentence is not a steelman; it's a strawman. If you can't generate a strong one, flag: "I can't find a strong counter to this thesis; the piece may be unfalsifiable, or I'm missing genre context."
 - **Three medium counters instead of one strong one.** The steelman discipline is *the strongest*, singular. Three counters dilute the test.
 - **Flagging every implicit assumption.** Only load-bearing ones. A trivially-implied assumption ("the reader knows what a database is") is not load-bearing.
 - **Treating rhetorical claims as supports.** "AI is changing everything" is the thesis, not a support for itself.
 - **Running `argue` on every revision.** Once per draft. The command is slow and the answer doesn't move paragraph-by-paragraph.
-- **Editing the file.** `argue` proposes structural moves — "address the counter in section X" — never line-level rewrites.
+- **Editing the file.** `argue` proposes structural moves ("address the counter in section X"), never line-level rewrites.

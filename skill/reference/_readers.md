@@ -38,7 +38,7 @@ Each persona names what they bring to the page, what trips them up, and what mak
 
 **Brings:** Curiosity, no obligation, half-attention. Reading on a couch.
 
-**Trusts:** Voice — does this writer sound like a person, or like a content engine? A clear angle. A specific moment that grounds the piece.
+**Trusts:** Voice. Does this writer sound like a person, or like a content engine? A clear angle. A specific moment that grounds the piece.
 
 **Quits on:** Generic openings, listicle disguise, faux-precision headlines, prose that could have been written by anyone.
 
@@ -82,7 +82,7 @@ Each persona names what they bring to the page, what trips them up, and what mak
 - `lead` uses personas to evaluate the opening: would the skeptical engineer click away here? Would the executive stop reading? The proposed alternative openings are tailored to who's actually reading.
 - `polish` uses personas to rank ship-blockers vs. taste-calls: anything that would lose the named audience is a ship-blocker.
 
-If `VOICE.md` has no `audience` field, default to the skeptical engineer — most pilcrow users write for technical readers.
+If `VOICE.md` has no `audience` field, default to the skeptical engineer; most pilcrow users write for technical readers.
 
 ---
 

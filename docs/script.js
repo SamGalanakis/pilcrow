@@ -62,42 +62,58 @@
   }
 })();
 
-// Catalog filter: hide rule rows + groups + sections that don't match the query.
+// Catalog filter: hide units (rule rows or genre leaves) + groups + sections that don't match.
 (function () {
   const input = document.getElementById('cat-filter-input');
   if (!input) return;
   const count = document.getElementById('cat-filter-count');
   const empty = document.getElementById('cat-empty');
-  const rows = Array.from(document.querySelectorAll('.rules-table tbody tr'));
+
+  // Two unit types share the filter: .rules-table tbody tr (catalog page) and .genre-leaf (genres page).
+  const leafUnits = Array.from(document.querySelectorAll('.genre-leaf'));
+  const rowUnits = Array.from(document.querySelectorAll('.rules-table tbody tr'));
+  const units = leafUnits.length > 0 ? leafUnits : rowUnits;
+  const unitNoun = leafUnits.length > 0 ? 'genres' : 'rules';
+
   const groups = Array.from(document.querySelectorAll('.cat-group'));
   const sections = Array.from(document.querySelectorAll('.cat-section'));
+  const families = Array.from(document.querySelectorAll('.genre-family'));
 
-  const total = rows.length;
+  const total = units.length;
   const haystacks = new WeakMap();
-  for (const row of rows) {
-    haystacks.set(row, row.textContent.toLowerCase().replace(/\s+/g, ' '));
+  for (const u of units) {
+    haystacks.set(u, u.textContent.toLowerCase().replace(/\s+/g, ' '));
   }
 
   const renderCount = (shown) => {
     if (!count) return;
-    count.textContent = shown === total ? `${total} rules` : `${shown} of ${total}`;
+    count.textContent = shown === total ? `${total} ${unitNoun}` : `${shown} of ${total}`;
   };
 
   const apply = (q) => {
     const needle = q.trim().toLowerCase();
     let shown = 0;
-    for (const row of rows) {
-      const match = !needle || haystacks.get(row).includes(needle);
-      row.classList.toggle('is-hidden', !match);
+    for (const u of units) {
+      const match = !needle || haystacks.get(u).includes(needle);
+      u.classList.toggle('is-hidden', !match);
       if (match) shown++;
     }
     for (const group of groups) {
       const any = group.querySelector('.rules-table tbody tr:not(.is-hidden)');
       group.classList.toggle('is-hidden', !any);
     }
+    // Hide an entire family if none of its leaves match.
+    for (const fam of families) {
+      const any = fam.querySelector('.genre-leaf:not(.is-hidden)');
+      fam.classList.toggle('is-hidden', !any);
+    }
     for (const section of sections) {
-      const any = section.querySelector('.cat-group:not(.is-hidden)');
-      section.classList.toggle('is-hidden', !any);
+      const hasGroup = section.querySelector('.cat-group:not(.is-hidden)');
+      const hasLeaf = section.querySelector('.genre-leaf:not(.is-hidden)');
+      // Always show the "how-it-works" / non-listing sections; only hide listing sections.
+      const isListing = section.classList.contains('cat-group') || section.querySelector('.cat-group, .genre-leaf');
+      if (!isListing) continue;
+      section.classList.toggle('is-hidden', !(hasGroup || hasLeaf));
     }
     if (empty) empty.hidden = shown !== 0;
     renderCount(shown);

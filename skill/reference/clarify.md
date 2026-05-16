@@ -1,21 +1,21 @@
 # clarify
 
-Make the reader's job easier. Clarify is the empathy pass: at each sentence, what does the reader have to hold in working memory, and is the cost paid back? If a sentence forces the reader to track three abstract subjects, two embedded clauses, and a referent that lives two paragraphs back, it has failed — no matter how technically correct.
+Make the reader's job easier. Clarify is the empathy pass: at each sentence, what does the reader have to hold in working memory, and is the cost paid back? If a sentence forces the reader to track three abstract subjects, two embedded clauses, and a referent that lives two paragraphs back, it has failed, no matter how technically correct.
 
 This command is for prose that is *accurate* but *opaque*. Tighten cuts; clarify connects.
 
 ## Source
 
-Steven Pinker, *The Sense of Style* — the **curse of knowledge**: experts forget that readers don't share their context. Concrete examples and clear referents are the antidote.
+Steven Pinker, *The Sense of Style*. The **curse of knowledge**: experts forget that readers don't share their context. Concrete examples and clear referents are the antidote.
 
-George Orwell, *Politics and the English Language* — "Never use a long word where a short one will do." Concrete over abstract, plain over fancy.
+George Orwell, *Politics and the English Language*. "Never use a long word where a short one will do." Concrete over abstract, plain over fancy.
 
-Joseph Williams' Coherence chapter in *Style* — readers expect old information at the start of a sentence and new information at the end.
+Joseph Williams' Coherence chapter in *Style*. Readers expect old information at the start of a sentence and new information at the end.
 
 ## Load before running
 
-- [_readers.md](_readers.md) — clarity is *for* someone. Use the persona in `VOICE.md` `audience` if set, else default to the skeptical engineer.
-- [_genres.md](_genres.md) — explainers need definitions on first use; memos can assume context; fiction sets its own rules.
+- [_readers.md](_readers.md): clarity is *for* someone. Use the persona in `VOICE.md` `audience` if set, else default to the skeptical engineer.
+- [_genres.md](_genres.md): explainers need definitions on first use; memos can assume context; fiction sets its own rules.
 
 Universal laws, the proposal ritual, and the editor slop test (in the parent `SKILL.md`) apply by default. Per-passage rewrites run through the proposal ritual.
 
@@ -33,14 +33,14 @@ Universal laws, the proposal ritual, and the editor slop test (in the parent `SK
 ## What to prioritize
 
 Rank order:
-1. `sentence-too-long` — 40+ words is usually too much working memory.
-2. `noun-stacking` — `production-ready scalable cloud-native infrastructure platform` forces a reread.
-3. `nominalization-density` — opacity from chains (different focus than tighten's structural fix).
-4. `pronoun-it-vague` — what does this `it` refer to?
-5. `weasel-hedges` — vague attribution is hard to evaluate.
-6. `abstract-without-concrete` (LLM) — three paragraphs of theory without an example.
-7. `transition-coherence` (LLM) — paragraphs that don't link to the previous one.
-8. `distinctive-vs-generic` (LLM) — anyone-could-have-written-this prose is also nobody-can-act-on-this prose.
+1. `sentence-too-long`: 40+ words is usually too much working memory.
+2. `noun-stacking`: `production-ready scalable cloud-native infrastructure platform` forces a reread.
+3. `nominalization-density`: opacity from chains (different focus than tighten's structural fix).
+4. `pronoun-it-vague`: what does this `it` refer to?
+5. `weasel-hedges`: vague attribution is hard to evaluate.
+6. `abstract-without-concrete` (LLM): three paragraphs of theory without an example.
+7. `transition-coherence` (LLM): paragraphs that don't link to the previous one.
+8. `distinctive-vs-generic` (LLM): anyone-could-have-written-this prose is also nobody-can-act-on-this prose.
 
 ## The mental-model diagnostic
 
@@ -69,7 +69,7 @@ Then propose the rewrite.
 
 | Abstract chain | Grounded |
 |---|---|
-| Effective leadership requires alignment of expectations across stakeholders. | The product manager and the tech lead must agree what "done" means — and write it down. |
+| Effective leadership requires alignment of expectations across stakeholders. | The product manager and the tech lead must agree what "done" means, and write it down. |
 | Our platform delivers transformative outcomes for enterprise clients. | Salesforce uses us; their support volume fell 40% in the first quarter. |
 
 If you can't supply a concrete example, the abstract claim is a *suspect claim*. Flag as `claim-without-support` rather than rewriting.

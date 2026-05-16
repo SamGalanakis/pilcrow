@@ -2,7 +2,7 @@
 
 Refine `VOICE.md` through a short interview. The typical flow: `document` drafts the file from the writer's corpus and leaves Open questions; `teach` answers them and locks the inferred Signatures and Taboos as the writer's call. For new projects with no corpus to scan, `teach` builds the file from scratch.
 
-`teach` runs whenever the writer's voice or method shifts — after a new body of work, a deliberate register change, or a `document` re-run.
+`teach` runs whenever the writer's voice or method shifts: after a new body of work, a deliberate register change, or a `document` re-run.
 
 ## Source
 
@@ -10,8 +10,8 @@ Impeccable's `teach` reference, adapted to prose. Interview style draws from jou
 
 ## Load before running
 
-- [_readers.md](_readers.md) — the audience field maps to a reader persona; offer the persona menu as a starting point.
-- [_genres.md](_genres.md) — the genre field constrains downstream command behavior; show the writer the genre options before asking.
+- [_readers.md](_readers.md): the audience field maps to a reader persona; offer the persona menu as a starting point.
+- [_genres.md](_genres.md): the genre field constrains downstream command behavior; show the writer the genre options before asking.
 
 ## Decision tree
 
@@ -24,7 +24,7 @@ node {{scripts_path}}/load-context.mjs
 Then branch:
 
 - **VOICE.md exists with Open questions** (the typical case after `document`). Run **refine mode**: answer the Open questions, confirm or reject inferred Signatures, edit Taboos.
-- **VOICE.md exists without Open questions** (already refined; the writer's voice shifted). Ask: "VOICE.md is already locked. Update which field — genre, audience, stance, method, Signatures, Taboos, exceptions?" Re-interview only the named fields.
+- **VOICE.md exists without Open questions** (already refined; the writer's voice shifted). Ask: "VOICE.md is already locked. Update which field: genre, audience, stance, method, Signatures, Taboos, exceptions?" Re-interview only the named fields.
 - **VOICE.md doesn't exist.** Run **fresh mode**: full interview from scratch.
 
 ## Refine mode (typical)
@@ -45,18 +45,18 @@ If different, ask them to be specific. Capture as one or two sentences.
 
 **Open question: method.**
 > "Stats can't see how you draft. Pick one:
-> - **outliner** — outline first, then fill in
-> - **discovery** — start writing and see what comes out
-> - **iterative** — paragraph by paragraph, polishing as you go
-> - **model-drafter** — let the model draft, then rewrite it yourself
+> - **outliner**: outline first, then fill in
+> - **discovery**: start writing and see what comes out
+> - **iterative**: paragraph by paragraph, polishing as you go
+> - **model-drafter**: let the model draft, then rewrite it yourself
 >
-> Or skip if it depends on the piece — `craft` will ask per-session."
+> Or skip if it depends on the piece; `craft` will ask per-session."
 
 ### Step 2 — confirm Signatures, edit Taboos
 
 For each proposed Signature in the drafted VOICE.md:
 
-> "Signature: `<phrase | cadence | move>` — appears N times across M files. Keep as your voice, move to Taboos, or drop entirely?"
+> "Signature: `<phrase | cadence | move>`, appears N times across M files. Keep as your voice, move to Taboos, or drop entirely?"
 
 Walk through one at a time. For overlap-flagged moves (those that match the AI-tell catalog), surface the overlap and let the writer decide.
 
@@ -75,28 +75,28 @@ Replace the draft with a locked version: no Open questions section, Signatures a
 
 The writer has no existing prose to scan. Run six interview rounds, one question at a time.
 
-**Round 1 — genre.**
-> "What kind of piece is this — essay, explainer, report, marketing, memo, or fiction? Or something else — name it."
+**Round 1: genre.**
+> "What kind of piece is this? Common slugs: `essay`, `op-ed`, `review`, `tutorial`, `how-to`, `reference-docs`, `explanation`, `readme`, `explainer`, `news`, `feature`, `postmortem`, `status-update`, `changelog`, `memo`, `email`, `landing`, `product-copy`, `press-release`, `about-page`, `error-message`, `ui-label`, `cv`, `cover-letter`, `bio`, `social-post`, `deck`, `fiction`, `memoir`. See `skill/reference/_genres.md` for the full tree and what each leaf demands."
 
-**Round 2 — audience.**
-> "Who's reading this? Be specific — not 'developers' but 'the kind of engineer who's already in a Slack thread about it.' Or pick a persona: skeptical engineer, busy executive, casual blog reader, fellow expert, undergraduate."
+**Round 2: audience.**
+> "Who's reading this? Be specific. Not 'developers' but 'the kind of engineer who's already in a Slack thread about it.' Or pick a persona: skeptical engineer, busy executive, casual blog reader, fellow expert, undergraduate."
 
-**Round 3 — stance.**
-> "Your move with this reader — make a claim, explain something, persuade them, or narrate? Pick one as the primary."
+**Round 3: stance.**
+> "Your move with this reader: make a claim, explain something, persuade them, or narrate? Pick one as the primary."
 
-**Round 4 — method.**
+**Round 4: method.**
 > "How do you draft? Pick the closest:
-> - **outliner** — outline first, then fill in
-> - **discovery** — start writing and see what comes out
-> - **iterative** — paragraph by paragraph, polishing as you go
-> - **model-drafter** — let the model draft, then rewrite it yourself"
+> - **outliner**: outline first, then fill in
+> - **discovery**: start writing and see what comes out
+> - **iterative**: paragraph by paragraph, polishing as you go
+> - **model-drafter**: let the model draft, then rewrite it yourself"
 
-**Round 5 — voice sample.**
+**Round 5: voice sample.**
 > "Paste one paragraph you're proud of from something you've published."
 
-Use the paragraph to infer register. Comment back: "I'm seeing X, Y, Z — does that match?"
+Use the paragraph to infer register. Comment back: "I'm seeing X, Y, Z. Does that match?"
 
-**Round 6 — Signatures, Taboos, exceptions.**
+**Round 6: Signatures, Taboos, exceptions.**
 Three short follow-ups, one at a time:
 
 > "What's a habit of yours someone could recognize?"
@@ -110,7 +110,7 @@ Both refine mode and fresh mode produce the same shape:
 ```markdown
 ---
 name: VOICE
-genre: <essay | explainer | report | marketing | memo | fiction | custom>
+genre: <slug from skill/reference/_genres.md tree — e.g., essay, tutorial, readme, postmortem, cv, fiction, landing, error-message>
 audience: <one or two sentences naming the reader concretely>
 stance: <claim | explain | persuade | narrate>
 method: <outliner | discovery | iterative | model-drafter>
@@ -176,6 +176,6 @@ Next: try `/pilcrow polish <draft>` — editor commands will now propose rewrite
 - **Re-interviewing fields the writer didn't change.** If they say "just update register", only ask register questions.
 - **Inferring register without a sample.** In fresh mode, Round 5's paragraph is non-negotiable. In refine mode, the `document` pass already provided the Register draft.
 - **Writing a long VOICE.md.** Over 70 lines is over-spec. The editor commands read this every invocation; keep it tight.
-- **Putting style rules in VOICE.md that already live in the pilcrow catalog.** Don't write "no em-dashes" — that's already a rule. Write *exceptions*: "em-dashes are fine in dialogue."
+- **Putting style rules in VOICE.md that already live in the pilcrow catalog.** Don't write "no em-dashes"; that's already a rule. Write *exceptions*: "em-dashes are fine in dialogue."
 - **Forcing a method choice on someone who genuinely varies.** If the writer says "depends on the piece", note that and skip setting `method:`. `craft` will ask per-session.
 - **Auto-locking inferred Signatures.** Every proposed Signature from `document` needs the writer's confirmation. The writer's "yes/no/move-to-Taboos" call is the lock.

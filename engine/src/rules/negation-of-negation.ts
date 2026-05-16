@@ -8,7 +8,7 @@ export const rule: Rule = {
   name: "Negation of negation",
   severity: "info",
   description:
-    "'Not unimportant', 'not impossible' — double negatives make the reader work to extract a simple positive.",
+    "'Not unimportant', 'not impossible': double negatives make the reader work to extract a simple positive.",
   check(ctx) {
     return findAll(ctx.prose, PATTERN).map((m) =>
       makeFinding(

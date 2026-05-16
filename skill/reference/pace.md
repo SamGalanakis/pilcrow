@@ -1,21 +1,21 @@
 # pace
 
-Restore rhythm. Prose has a beat — sentence length, paragraph weight, the alternation of long-explained-thought and short-punchy-aside. AI-generated prose tends toward uniform sentence length (15–22 words, every sentence) and uniform paragraph weight (3–4 sentences each). The reader stops noticing the prose and starts skimming.
+Restore rhythm. Prose has a beat: sentence length, paragraph weight, the alternation of long-explained-thought and short-punchy-aside. AI-generated prose tends toward uniform sentence length (15–22 words, every sentence) and uniform paragraph weight (3–4 sentences each). The reader stops noticing the prose and starts skimming.
 
 Pace is the command that hears the writing.
 
 ## Source
 
-Stephen King, *On Writing* — short sentences hit; long sentences carry. Mix them.
+Stephen King, *On Writing*. Short sentences hit; long sentences carry. Mix them.
 
-Strunk & White on parallelism — parallel structures are good in moderation; in volume, they're a metronome.
+Strunk & White on parallelism: parallel structures are good in moderation; in volume, they're a metronome.
 
 Gary Provost's much-quoted variation paragraph.
 
 ## Load before running
 
-- [_cadence-theory.md](_cadence-theory.md) — the foundational theory.
-- `VOICE.md` if present — `signatures` may legitimize patterns the rules flag (a writer who's *committed* to long sentences).
+- [_cadence-theory.md](_cadence-theory.md): the foundational theory.
+- `VOICE.md` if present: `signatures` may legitimize patterns the rules flag (a writer who's *committed* to long sentences).
 
 ## Procedure
 
@@ -29,14 +29,14 @@ Gary Provost's much-quoted variation paragraph.
 ## What to prioritize
 
 Rank order:
-1. `sentence-length-monotony` — stdev < 4 across 5+ sentences.
-2. `paragraph-monotony` — three paragraphs of similar word count in a row.
-3. `parallel-triplet-density` — "A, B, and C" as the dominant rhythm.
-4. `em-dash-density` — em-dashes as default pause character.
-5. `anaphora-cadence` — three sentences in a row with same opener word.
-6. `fragment-cadence` — three short single-sentence paragraphs in a row.
-7. `transition-stacking` — three consecutive "Moreover / First / Second" starters.
-8. `hero-tagline-imperative` — also a humanize concern, but here it's the most extreme rhythmic uniformity.
+1. `sentence-length-monotony`: stdev < 4 across 5+ sentences.
+2. `paragraph-monotony`: three paragraphs of similar word count in a row.
+3. `parallel-triplet-density`: "A, B, and C" as the dominant rhythm.
+4. `em-dash-density`: em-dashes as default pause character.
+5. `anaphora-cadence`: three sentences in a row with same opener word.
+6. `fragment-cadence`: three short single-sentence paragraphs in a row.
+7. `transition-stacking`: three consecutive "Moreover / First / Second" starters.
+8. `hero-tagline-imperative`: also a humanize concern, but here it's the most extreme rhythmic uniformity.
 
 ## Cadence diagnostic
 
@@ -68,7 +68,7 @@ P4: 67 words ███████████████████
 Word count is a proxy. The real measure is sound. Run these deterministic checks on the prose body (after `pilcrow lint` strips code blocks):
 
 - **Tongue-twisters.** 3+ consecutive words starting with the same consonant: `big bold brand`, `serious software solutions`. Flag.
-- **Word-boundary stumbles.** Repeated short function words within 3 words of each other: `the the`, `to to`, `is is`, `in in`. These are typos in 80% of cases — flag for the writer.
+- **Word-boundary stumbles.** Repeated short function words within 3 words of each other: `the the`, `to to`, `is is`, `in in`. These are typos in 80% of cases; flag for the writer.
 - **Awkward consonant clusters.** Word ending + word starting with the same hard consonant: `it tests`, `that test`, `fact checked`. Read aloud to confirm.
 - **Unintentional rhyme.** End-of-sentence words that rhyme across adjacent sentences. Flag for the writer to decide whether intentional.
 - **Heavy syllabic stretches.** 3+ consecutive words with 4+ syllables each: `methodological consideration prolonged`, `infrastructure orchestration mechanism`. Suggests the passage needs shorter words.
@@ -86,7 +86,7 @@ These are detected by reading the prose, not by the engine. The output adds an "
 
 ### Split a long sentence
 
-Find a natural pivot — `, and`, `; `, `because`. Replace with a period.
+Find a natural pivot: `, and`, `; `, `because`. Replace with a period.
 
 | Long | Split |
 |---|---|
@@ -150,8 +150,8 @@ Mean: <number>  Stdev: <number>
 
 ## Anti-patterns
 
-- **Imposing variation that wasn't earned.** Some passages are uniform on purpose — a list as prose, a steady walkthrough.
-- **Hitting Provost.** Don't write a paragraph that demonstrates variation by literally varying sentence by sentence — that's its own cliché.
+- **Imposing variation that wasn't earned.** Some passages are uniform on purpose: a list as prose, a steady walkthrough.
+- **Hitting Provost.** Don't write a paragraph that demonstrates variation by literally varying sentence by sentence; that's its own cliché.
 - **Counting words like syllables.** Word count is a proxy. The real measure is how it sounds.
 - **Splitting a sentence whose length was its point.** Long sentences that build to a release shouldn't be cut.
 - **Adding fragments to seem punchy.** Fragments are seasoning, not the meal.

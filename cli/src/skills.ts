@@ -155,7 +155,7 @@ function* walkFiles(root: string, prefix = ""): Generator<{ rel: string; abs: st
 }
 
 // Compute a content hash for a skill directory. If `applySubs` is set, .md
-// files are run through substitution before hashing — this lets the hash of
+// files are run through substitution before hashing, so the hash of
 // the unsubstituted source match the hash of a fresh installed copy.
 function hashSkillDir(dir: string, applySubs: Record<string, string> | null): string {
   if (!existsSync(dir)) return "";
@@ -217,7 +217,7 @@ function parseSkillArgs(args: string[]): SkillArgs {
 
 // Status of one installed skill copy.
 //
-// Edit detection only fires when versions match — a content-hash difference
+// Edit detection only fires when versions match. A content-hash difference
 // across versions is expected (every file's substituted form differs once
 // the version frontmatter changes), and conflating it with local edits
 // would block routine updates. If a user genuinely edited locally AND
@@ -320,7 +320,7 @@ export function cmdInstall(args: string[]): number {
 
     if (st.kind === "modified" && !opts.force) {
       console.log(
-        `skipped        ${provider}/skills/${SKILL_FOLDER}  (v${st.version}) — locally modified, pass --force to overwrite`,
+        `skipped        ${provider}/skills/${SKILL_FOLDER}  (v${st.version}): locally modified, pass --force to overwrite`,
       );
       blocked++;
       continue;
@@ -377,7 +377,7 @@ export function cmdCheck(): number {
   const swept = previewDeprecatedSweep(root);
   if (swept.length > 0) {
     console.log("");
-    console.log("Deprecated installs detected — run `pilcrow skills cleanup`:");
+    console.log("Deprecated installs detected. Run `pilcrow skills cleanup`:");
     for (const path of swept) console.log(`  ${relative(root, path)}`);
   }
   return anyStale ? 0 : 0;
@@ -420,7 +420,7 @@ export function cmdCleanup(): number {
 }
 
 export function cmdSkillsHelp(): number {
-  console.log(`pilcrow skills — manage the skill in your AI harness
+  console.log(`pilcrow skills: manage the skill in your AI harness
 
   pilcrow skills install [--provider=.cursor ...] [--all] [--force]
         Install skill/ into each detected provider directory's skills/

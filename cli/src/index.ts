@@ -111,7 +111,7 @@ function printFindings(filePath: string | null, findings: Finding[]): void {
   console.log(`${label}  ${color(`${findings.length} finding${findings.length === 1 ? "" : "s"}`, BOLD)}`);
   for (const f of findings) {
     const loc = color(`${f.line}:${f.column}`, DIM);
-    console.log(`  ${severityTag(f.severity)} ${loc} ${color(f.ruleId, DIM)} — ${f.message}`);
+    console.log(`  ${severityTag(f.severity)} ${loc} ${color(f.ruleId, DIM)}  ${f.message}`);
     if (f.excerpt) console.log(`    ${color(f.excerpt, DIM)}`);
     if (f.suggestion) console.log(`    ${color("→", "\x1b[32m")} ${f.suggestion}`);
   }
@@ -189,7 +189,8 @@ function cmdCritique(args: ParsedArgs): number {
     return 2;
   }
   const ruleIds = typeof args.flags.rules === "string" ? (args.flags.rules as string).split(",") : undefined;
-  process.stdout.write(buildCritiquePrompt(text, ruleIds) + "\n");
+  const genre = typeof args.flags.genre === "string" ? (args.flags.genre as string) : undefined;
+  process.stdout.write(buildCritiquePrompt(text, ruleIds, genre) + "\n");
   return 0;
 }
 
@@ -218,12 +219,12 @@ function cmdRules(args: ParsedArgs): number {
 }
 
 function cmdHelp(): number {
-  console.log(`pilcrow ¶  — mark up prose before it ships
+  console.log(`pilcrow ¶  mark up prose before it ships
 
 Usage:
   pilcrow audit [paths...] [--ignore-quoted]   Detect findings, human-readable output
   pilcrow lint  [paths...] [--ignore-quoted]   Detect findings, JSON output for LLM consumption
-  pilcrow critique [path]                      Print an LLM-critique prompt for the given file/stdin
+  pilcrow critique [path] [--genre slug]       Print an LLM-critique prompt for the given file/stdin
   pilcrow rules [--json]                       List every rule (deterministic + LLM-judged)
   pilcrow skills <subcommand>                  Install or update the skill in your AI harness
   pilcrow help
@@ -241,7 +242,7 @@ Or per-project without installing:
   npx pilcrow-ink audit drafts/
 
 Reads stdin if no paths are given. File extensions scanned: ${EXTENSIONS.join(", ")}.
-Detection-only — nothing is ever auto-modified. The LLM decides what to change.
+Detection-only; nothing is ever auto-modified. The LLM decides what to change.
 `);
   return 0;
 }

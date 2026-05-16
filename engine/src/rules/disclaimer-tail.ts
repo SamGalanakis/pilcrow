@@ -32,7 +32,7 @@ export const rule: Rule = {
         ctx,
         m.start,
         m.end,
-        `AI disclaimer fossil: "${m.text}". Delete — this is model boilerplate.`,
+        `AI disclaimer fossil: "${m.text}". Delete; this is model boilerplate.`,
       ),
     );
   },

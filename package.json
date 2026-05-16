@@ -39,9 +39,11 @@
     "README.md"
   ],
   "scripts": {
-    "build:engine": "tsc -p engine",
+    "build:genre-rules": "node skill/scripts/build-genre-rules.mjs",
+    "build:engine": "npm run build:genre-rules && tsc -p engine",
     "build:cli": "tsc -p cli",
     "build": "npm run build:engine && npm run build:cli",
+    "build:docs": "node scripts/build-rules-page.mjs && node scripts/build-genres-page.mjs",
     "test": "vitest run",
     "prepack": "npm run build",
     "release": "node scripts/release.mjs"

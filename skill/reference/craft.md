@@ -1,6 +1,6 @@
 # craft
 
-End-to-end essay or post writing with pilcrow at every gate. Four phases — **shape**, **draft**, **critique**, **polish** — each with an explicit confirmation step.
+End-to-end essay or post writing with pilcrow at every gate. Four phases (**shape**, **draft**, **critique**, **polish**), each with an explicit confirmation step.
 
 Different writers draft differently. King writes to discover. Zinsser builds paragraph by paragraph. Some writers outline tightly before a sentence lands. Others let the model produce a first pass and rewrite from there. `craft` runs one of four phase-2 variants based on the writer's method. Phases 1, 3, and 4 are method-agnostic.
 
@@ -8,17 +8,17 @@ Different writers draft differently. King writes to discover. Zinsser builds par
 
 Impeccable's `craft` flow: shape-and-confirm-then-build. Nothing downstream gets produced until the upstream gate has been confirmed by the human.
 
-Stephen King, *On Writing* — discovery: "I don't know what I think until I write it." For some writers, an outline kills the piece.
+Stephen King, *On Writing*, discovery: "I don't know what I think until I write it." For some writers, an outline kills the piece.
 
-William Zinsser, *On Writing Well* — iterative: writing improves by what we keep out. Each paragraph confirmed before the next.
+William Zinsser, *On Writing Well*, iterative: writing improves by what we keep out. Each paragraph confirmed before the next.
 
 The four methods are not a hierarchy. They are kinds of writer.
 
 ## Load before running
 
-- `VOICE.md` if present — load via `scripts/load-context.mjs`. Read `method:` to pick the phase-2 variant. Read `genre`, `audience`, `stance`, `Signatures`, `Taboos` to shape every phase.
-- [_genres.md](_genres.md) — for phase-1 outline conventions.
-- [_readers.md](_readers.md) — for phase-1 audience framing.
+- `VOICE.md` if present: load via `scripts/load-context.mjs`. Read `method:` to pick the phase-2 variant. Read `genre`, `audience`, `stance`, `Signatures`, `Taboos` to shape every phase.
+- [_genres.md](_genres.md): for phase-1 outline conventions.
+- [_readers.md](_readers.md): for phase-1 audience framing.
 
 ## Procedure
 
@@ -29,30 +29,30 @@ The four methods are not a hierarchy. They are kinds of writer.
 Before Phase 1:
 - If VOICE.md exists and has `method:` set, use it. Don't ask.
 - If VOICE.md exists but `method:` is unset, ask once and save the answer back to VOICE.md.
-- If no VOICE.md, ask: "How do you draft this kind of piece — outliner, discovery, iterative, or model-drafter? (Default: outliner.)"
+- If no VOICE.md, ask: "How do you draft this kind of piece: outliner, discovery, iterative, or model-drafter? (Default: outliner.)"
 
 The four methods:
 
-- **outliner** — outline before writing. The default.
-- **discovery** — start writing and see what comes out. No outline.
-- **iterative** — one paragraph at a time, with the writer confirming each before the next.
-- **model-drafter** — model produces a first draft from a brief; the writer rewrites it.
+- **outliner**: outline before writing. The default.
+- **discovery**: start writing and see what comes out. No outline.
+- **iterative**: one paragraph at a time, with the writer confirming each before the next.
+- **model-drafter**: model produces a first draft from a brief; the writer rewrites it.
 
 ### Phase 1 — shape
 
 Run a short discovery interview. **One question at a time.**
 
-**Round 1 — what's the news?**
-> "What's the one most surprising or consequential thing you want a reader to know after reading this? Not the topic — the news."
+**Round 1: what's the news?**
+> "What's the one most surprising or consequential thing you want a reader to know after reading this? Not the topic. The news."
 
-**Round 2 — who's it for?**
+**Round 2: who's it for?**
 > "Who's reading this? Be specific."
 
-**Round 3 — what's the shape?**
+**Round 3: what's the shape?**
 > "Is this an argument (claim + support), a story (something happened), an explainer (how X works), or a reflection (what I think about Y)?"
 
-**Round 4 — anti-targets?**
-> "What would make this piece feel like AI generated it? Anything you specifically don't want — angle, register, structure?"
+**Round 4: anti-targets?**
+> "What would make this piece feel like AI generated it? Anything you specifically don't want, like angle, register, or structure?"
 
 Then emit a **brief**:
 
@@ -67,10 +67,10 @@ Then emit a **brief**:
 
 **Method-specific Phase 1 addition:**
 
-- `outliner` — append a **Proposed outline** (5–7 bullets). Confirm the outline as part of the gate.
-- `discovery` — no outline. Append only **Direction:** "We'll write toward the news and see what the prose discovers."
-- `iterative` — append **Lede + direction**: a one-paragraph proposed opener and a one-sentence direction for what follows.
-- `model-drafter` — append a **Brief-for-draft**: a tighter 8–12-line outline the model will follow in Phase 2.
+- `outliner`: append a **Proposed outline** (5–7 bullets). Confirm the outline as part of the gate.
+- `discovery`: no outline. Append only **Direction:** "We'll write toward the news and see what the prose discovers."
+- `iterative`: append **Lede + direction**: a one-paragraph proposed opener and a one-sentence direction for what follows.
+- `model-drafter`: append a **Brief-for-draft**: a tighter 8–12-line outline the model will follow in Phase 2.
 
 **Gate:** "Does this match the piece you wanted? Y / change X / scrap."
 
@@ -118,7 +118,7 @@ This is the slowest variant. The writer chose it on purpose.
 The model writes a full draft from the Brief-for-draft. The writer's job is to **rewrite** the draft, not accept it.
 
 After the draft, emit it with a header:
-> "Here's the model's draft. Treat it as raw material. The next step is for you to rewrite — what's first?"
+> "Here's the model's draft. Treat it as raw material. The next step is for you to rewrite. What's first?"
 
 **Gate:** the writer pastes or describes their rewrite (whole, or paragraph by paragraph). The flow only advances to Phase 3 once the writer's rewrite is in hand.
 
@@ -147,7 +147,7 @@ Then re-run:
 pilcrow lint /tmp/craft-draft-v2.md --ignore-quoted
 ```
 
-If new findings emerged from the rewrites, run one more pass — cap at two polish passes total. After two, any remaining findings are taste calls or genuine prose limitations; don't grind.
+If new findings emerged from the rewrites, run one more pass. Cap at two polish passes total. After two, any remaining findings are taste calls or genuine prose limitations; don't grind.
 
 Emit the final draft. **Gate:** "This is what I'd ship. Take it, edit it, or start over?"
 
@@ -194,7 +194,7 @@ drafts/<slug>.md
 - **In iterative mode, dumping multiple paragraphs at once.** The gate is per-paragraph. One. Then wait.
 - **In model-drafter mode, treating the model draft as the answer.** The model draft is raw material. The writer must rewrite. Skipping that step defeats the method's purpose.
 - **Drafting longer than the brief implies.** A brief for a 600-word post should not produce a 2,500-word draft.
-- **Grinding through more than two polish passes.** Endless polish is its own AI tell — sentences gain a glossy uniformity.
+- **Grinding through more than two polish passes.** Endless polish is its own AI tell; sentences gain a glossy uniformity.
 - **Ignoring VOICE.md.** The whole point of the file is to make `craft`'s draft sound like the writer.
 - **Auto-writing to disk.** `craft` never writes a file without explicit confirmation.
 - **Saving `method:` to VOICE.md without asking.** If VOICE.md exists but `method:` is unset, ask once and confirm the answer before writing.

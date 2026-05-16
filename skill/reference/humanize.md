@@ -1,17 +1,17 @@
 # humanize
 
-Strip AI tells from prose without sanding off the writer's voice. The goal is not to make every sentence un-AI-like; it's to remove the *signature* — stock cadences, template moves, verbal fossils — while keeping the writer's own quirks (their em-dashes, their rule-of-three habit if they use it consciously, their adjective stacks).
+Strip AI tells from prose without sanding off the writer's voice. The goal is not to make every sentence un-AI-like; it's to remove the *signature* (stock cadences, template moves, verbal fossils) while keeping the writer's own quirks (their em-dashes, their rule-of-three habit if they use it consciously, their adjective stacks).
 
 A human can write `delve into` once. A model writes it three times per page because it's stochastically favored output.
 
 ## Source
 
-Wikipedia, *Signs of AI writing* — the canonical editor-maintained catalog of LLM tells. GPTZero's phrase corpus. Tropes.fyi on rhetorical patterns. Our own AI-fossil rules. All consolidated in [_ai-tell-catalog.md](_ai-tell-catalog.md).
+Wikipedia, *Signs of AI writing*: the canonical editor-maintained catalog of LLM tells. GPTZero's phrase corpus. Tropes.fyi on rhetorical patterns. Our own AI-fossil rules. All consolidated in [_ai-tell-catalog.md](_ai-tell-catalog.md).
 
 ## Load before running
 
-- [_ai-tell-catalog.md](_ai-tell-catalog.md) — primary input. Read this end-to-end.
-- `VOICE.md` if present — its `signatures` and `exceptions` fields name habits to keep.
+- [_ai-tell-catalog.md](_ai-tell-catalog.md): primary input. Read this end-to-end.
+- `VOICE.md` if present. Its `signatures` and `exceptions` fields name habits to keep.
 
 Universal laws, the proposal ritual, and the editor slop test (in the parent `SKILL.md`) apply by default; don't load.
 

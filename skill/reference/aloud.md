@@ -1,6 +1,6 @@
 # aloud
 
-Play the writer's prose back to them via OpenAI TTS in an interactive session. The eye skips; the ear catches. Tongue-twisters, sing-songy parallel triplets, stumbling consonant clusters, paragraphs that drag — `pace`'s aural diagnostic flags candidates from word patterns, but `aloud` is the command where the writer actually hears the prose.
+Play the writer's prose back to them via OpenAI TTS in an interactive session. The eye skips; the ear catches. Tongue-twisters, sing-songy parallel triplets, stumbling consonant clusters, paragraphs that drag: `pace`'s aural diagnostic flags candidates from word patterns, but `aloud` is the command where the writer actually hears the prose.
 
 The session *is* the command. There's no static report.
 
@@ -13,14 +13,14 @@ The OpenAI speech skill ([`github.com/openai/skills`](https://github.com/openai/
 ## Dependencies
 
 - **`OPENAI_API_KEY`** must be set in the environment. The command checks at session start. If missing, point the writer at the speech skill's instructions for setting it; never ask them to paste it.
-- **System audio player** — one of `afplay` (macOS), `mpv`, `mplayer`, `paplay`, `ffplay` (Linux), `start` (Windows). The command detects which is available.
-- **Python 3 + `openai` package** — required by the speech skill's `text_to_speech.py`. Install via `uv pip install openai` (preferred) or `python3 -m pip install openai`.
+- **System audio player**: one of `afplay` (macOS), `mpv`, `mplayer`, `paplay`, `ffplay` (Linux), `start` (Windows). The command detects which is available.
+- **Python 3 + `openai` package**: required by the speech skill's `text_to_speech.py`. Install via `uv pip install openai` (preferred) or `python3 -m pip install openai`.
 
-If anything's missing, the command falls back to emitting file paths the writer can play manually — but warns explicitly that the interactive flow is degraded.
+If anything's missing, the command falls back to emitting file paths the writer can play manually, but warns explicitly that the interactive flow is degraded.
 
 ## Load before running
 
-- [_cadence-theory.md](_cadence-theory.md) — rhythm vocabulary used when discussing flagged paragraphs.
+- [_cadence-theory.md](_cadence-theory.md): rhythm vocabulary used when discussing flagged paragraphs.
 
 Universal laws and the editor slop test (in the parent `SKILL.md`) apply by default.
 
@@ -31,33 +31,33 @@ Universal laws and the editor slop test (in the parent `SKILL.md`) apply by defa
 Run in this order, exit early on the first failure:
 
 1. **API key.** `echo $OPENAI_API_KEY` → empty? Exit with the speech-skill instructions for setting it.
-2. **Player.** `command -v afplay mpv mplayer paplay ffplay 2>/dev/null` — pick the first that resolves. Save as `$PLAYER`.
+2. **Player.** `command -v afplay mpv mplayer paplay ffplay 2>/dev/null`; pick the first that resolves. Save as `$PLAYER`.
 3. **Speech skill.**
    ```bash
    node {{scripts_path}}/resolve-speech.mjs
    ```
    Parse the JSON. Save `scriptPath` (path to `text_to_speech.py`). If `source: "fetched"`, mention that pilcrow pulled it into `/tmp/pilcrow/skills/speech/`.
-4. **Python.** `command -v python3` — required by the speech CLI.
+4. **Python.** `command -v python3`; required by the speech CLI.
 5. **GC sweep.** Delete any `.mp3` in `/tmp/pilcrow/aloud/` older than 14 days (mtime).
 
 ### Step 2 — load voice profile
 
 Run `node {{scripts_path}}/load-context.mjs`. Read VOICE.md fields:
-- `aloud-voice:` — default `cedar`. Allowed: `cedar`, `marin`, plus any others listed by `python3 {scriptPath} list-voices`.
-- `aloud-speed:` — default `1.0`. Range `0.25`–`4.0`.
-- `default-aloud-mode:` — if set, skip the mode question.
+- `aloud-voice:` default `cedar`. Allowed: `cedar`, `marin`, plus any others listed by `python3 {scriptPath} list-voices`.
+- `aloud-speed:` default `1.0`. Range `0.25`–`4.0`.
+- `default-aloud-mode:` if set, skip the mode question.
 
-If the writer's `genre` is set but `aloud-voice` isn't, use `cedar` for essay/report/memo/explainer and `marin` for fiction/marketing as a default. Don't switch voices mid-session.
+If the writer's `genre` is set but `aloud-voice` isn't, default voice based on the genre's `aloud_default` field in `skill/reference/genres/<slug>.md`: `marin` for genres with `aloud_default: true` (script, speaker-notes, meant to be performed) and for narrative/marketing families generally; `cedar` for everything else (argumentative, reportorial, correspondence, documentation, etc.). Don't switch voices mid-session.
 
 ### Step 3 — mode selection
 
 Ask the writer (skip if `default-aloud-mode` is set):
 
 > "How do you want to listen?
-> - **walkthrough** (default) — I play paragraph 1, you say what you noticed; I play paragraph 2; etc.
-> - **full** — I play the whole piece end-to-end, then ask what stuck out.
-> - **targeted** — I play only paragraphs flagged by `pace` (longest, opening, closing, anything with an aural-diagnostic hit).
-> - **compare** — pass two passages (or a draft + a proposed rewrite) and I play them back-to-back."
+> - **walkthrough** (default): I play paragraph 1, you say what you noticed; I play paragraph 2; etc.
+> - **full**: I play the whole piece end-to-end, then ask what stuck out.
+> - **targeted**: I play only paragraphs flagged by `pace` (longest, opening, closing, anything with an aural-diagnostic hit).
+> - **compare**: pass two passages (or a draft + a proposed rewrite) and I play them back-to-back."
 
 ### Step 4 — paragraph segmentation
 
@@ -70,7 +70,7 @@ If a paragraph exceeds 4096 characters (OpenAI TTS limit), split at sentence bou
 For each paragraph the session plays:
 
 1. **Hash.** Compute `sha256` of `<text>|<voice>|<model>|<speed>`. The model identifier is the speech skill's default (`gpt-4o-mini-tts-2025-12-15` at the pinned SHA) unless the writer overrode it.
-2. **Cache check.** If `/tmp/pilcrow/aloud/<hash>.mp3` exists, use it. (Cache hit — no API call.)
+2. **Cache check.** If `/tmp/pilcrow/aloud/<hash>.mp3` exists, use it. (Cache hit; no API call.)
 3. **Generate on miss.** Otherwise:
    ```bash
    python3 {scriptPath} speak \
@@ -80,17 +80,17 @@ For each paragraph the session plays:
      --out "/tmp/pilcrow/aloud/$hash.mp3"
    ```
 4. **Play.** Invoke `$PLAYER /tmp/pilcrow/aloud/<hash>.mp3`. Block until playback finishes. (Each player blocks by default; do not background.)
-5. **Gate.** Wait for the writer's response. Do not pre-fetch the next paragraph's audio — that burns API quota on prose the writer might never reach.
+5. **Gate.** Wait for the writer's response. Do not pre-fetch the next paragraph's audio; that burns API quota on prose the writer might never reach.
 
 ### Step 6 — mode-specific prompts
 
 **walkthrough.** After each paragraph:
-> "Anything jump out — rhythm, a word that tripped, a beat that landed?"
+> "Anything jump out: rhythm, a word that tripped, a beat that landed?"
 
 Capture the writer's verbatim feedback against `pXXX`. Then play the next paragraph.
 
 **full.** Play every paragraph back-to-back, no prompts between. After the last one:
-> "Which paragraphs stuck out? Paragraph numbers are fine — `p003`, `p007`."
+> "Which paragraphs stuck out? Paragraph numbers are fine: `p003`, `p007`."
 
 For each flagged paragraph, replay it (from cache, free) and ask the writer what they heard.
 
@@ -132,7 +132,7 @@ Stored in /tmp/pilcrow/aloud/. 14-day mtime GC ran at session start, removed <K>
 
 | Field | Default | When to override |
 |---|---|---|
-| voice | `cedar` (neutral) | Brighter (`marin`) for fiction or marketing. Don't switch mid-session — cadence comparisons break. |
+| voice | `cedar` (neutral) | Brighter (`marin`) for fiction or marketing. Don't switch mid-session; cadence comparisons break. |
 | speed | `1.0` | Lower (`0.85`) if the writer is auditing pacing in dense technical prose; higher (`1.15`) for full-read mode on long pieces. |
 | model | speech skill's default (`gpt-4o-mini-tts-2025-12-15` at pinned SHA) | Pin to a specific model only if the writer needs reproducible audio across sessions. |
 
@@ -160,13 +160,13 @@ default-aloud-mode: walkthrough
 
 ## Output
 
-The session is the command. The report (Step 8) is the artifact. There's no JSON or finding-shaped output — `aloud` produces commentary, not findings.
+The session is the command. The report (Step 8) is the artifact. There's no JSON or finding-shaped output; `aloud` produces commentary, not findings.
 
 ## Anti-patterns
 
 - **Auto-playing without pauses (in walkthrough or targeted mode).** Defeats the point. The pause is where the writer's ear catches.
 - **Pre-fetching audio for paragraphs the writer hasn't reached.** Burns API quota; defeats cost discipline.
-- **Switching voice mid-session.** Cadence comparisons break — the writer can no longer tell whether the rhythm shifted or the voice did.
+- **Switching voice mid-session.** Cadence comparisons break; the writer can no longer tell whether the rhythm shifted or the voice did.
 - **Skipping the GC sweep.** Disk fills.
 - **Emitting only file paths without playback.** The point of `aloud` is the listening session. File-path output is the *fallback* (no player available), with an explicit warning to the writer.
 - **Treating cache hits as failures.** A cache hit means the writer is replaying. That's a feature.

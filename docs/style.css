@@ -1,4 +1,4 @@
-/* impeccable-writing — docs site
+/* impeccable-writing docs site
    Same family as samgalanakis.com: ET Book, cream paper, sage band, gilt accent.
    Single long document; sticky chapter spine on the left. */
 
@@ -217,7 +217,7 @@ img, svg { display: block; max-width: 100%; }
   max-width: 60ch;
 }
 
-/* ── BOOK LAYOUT — spine + body ──────────────────────────── */
+/* ── BOOK LAYOUT: spine + body ───────────────────────────── */
 
 .book {
   max-width: 1320px;
@@ -233,10 +233,19 @@ img, svg { display: block; max-width: 100%; }
 .spine {
   position: sticky;
   top: 80px;
-  padding: 8px 0 8px 22px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 8px 14px 8px 22px;
   border-left: 1px solid var(--rule);
   font-size: 15px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule) transparent;
 }
+.spine::-webkit-scrollbar { width: 8px; }
+.spine::-webkit-scrollbar-track { background: transparent; }
+.spine::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 4px; }
+.spine::-webkit-scrollbar-thumb:hover { background: var(--ink-4); }
 .spine-label {
   font-variant: small-caps;
   letter-spacing: 0.06em;
@@ -413,7 +422,7 @@ img, svg { display: block; max-width: 100%; }
   color: var(--ink-2);
 }
 
-/* ── SIDENOTES — Tufte-style marginalia ──────────────────── */
+/* ── SIDENOTES: Tufte-style marginalia ───────────────────── */
 
 .chapter, .cat-section { counter-reset: sidenote; position: relative; }
 
@@ -723,6 +732,143 @@ img, svg { display: block; max-width: 100%; }
   color: var(--gilt-deep);
   margin-right: 8px;
 }
+
+/* ── GENRE PAGE ──────────────────────────────────────────── */
+
+.genre-family { margin-bottom: clamp(56px, 8vw, 96px); }
+.genre-leaf {
+  margin: clamp(28px, 4vw, 44px) 0;
+  padding: clamp(20px, 2.5vw, 28px) clamp(20px, 2.5vw, 28px);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: var(--surface);
+}
+.genre-leaf:target {
+  border-color: var(--gilt-deep);
+  box-shadow: 0 0 0 3px oklch(from var(--gilt-deep) l c h / 0.15);
+}
+.genre-leaf.is-hidden { display: none; }
+.genre-leaf-head {
+  display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--rule);
+}
+.genre-leaf-head h4 {
+  margin: 0;
+  font-style: normal;
+  font-weight: 500;
+  font-size: clamp(20px, 1.6vw, 24px);
+  display: flex; align-items: baseline; gap: 8px;
+}
+.genre-parent {
+  font-variant: small-caps;
+  letter-spacing: 0.06em;
+  font-size: 13px;
+  color: var(--ink-4);
+  font-weight: 400;
+}
+.genre-slug {
+  font-size: clamp(20px, 1.6vw, 24px);
+  background: transparent;
+  padding: 0;
+  color: var(--ink);
+}
+.genre-def {
+  font-size: var(--t-body-lg);
+  line-height: 1.55;
+  color: var(--ink);
+  margin: 0 0 18px;
+  max-width: 70ch;
+}
+.genre-sec {
+  margin: 18px 0 0;
+}
+.genre-sec h5 {
+  font-variant: small-caps;
+  letter-spacing: 0.08em;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gilt-deep);
+  margin: 0 0 8px;
+  display: flex; align-items: baseline; gap: 10px;
+}
+.genre-bullets {
+  margin: 0;
+  padding-left: 22px;
+  font-size: var(--t-body);
+  line-height: 1.55;
+  color: var(--ink-2);
+  max-width: 76ch;
+}
+.genre-bullets li { list-style: square; margin: 4px 0; }
+.genre-bullets li::marker { color: var(--ink-4); }
+.genre-bullets code {
+  font-size: 13px;
+  background: var(--bg-alt);
+  padding: 1px 5px;
+  border-radius: 2px;
+}
+
+.genre-llm-sec {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px dashed var(--rule);
+}
+.genre-rule {
+  margin: 14px 0 0;
+  padding: 14px 16px;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: var(--bg-alt);
+}
+.genre-rule header {
+  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.genre-rule header code {
+  font-size: 13px;
+  font-weight: 500;
+  background: transparent;
+  padding: 0;
+  color: var(--ink);
+}
+.genre-rule-name {
+  font-style: italic;
+  color: var(--ink-2);
+  font-size: 14px;
+}
+.genre-rule p {
+  margin: 6px 0 10px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-2);
+  max-width: 72ch;
+}
+.genre-rule-ex {
+  margin: 0;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 6px 14px;
+  font-size: 13px;
+}
+.genre-rule-ex dt {
+  font-variant: small-caps;
+  letter-spacing: 0.06em;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gilt-deep);
+}
+.genre-rule-ex dt.ex-bad { color: oklch(0.55 0.16 28); }
+.genre-rule-ex dd { margin: 0; color: var(--ink-2); line-height: 1.5; }
+.genre-rule-ex code {
+  font-size: 13px;
+  background: transparent;
+  padding: 0;
+}
+.genre-refs { margin-top: 22px; }
+.genre-refs a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--gilt-deep); text-underline-offset: 2px; }
+.genre-refs a:hover { color: var(--gilt-deep); }
 
 /* ── FOOT ────────────────────────────────────────────────── */
 

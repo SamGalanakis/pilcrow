@@ -10,7 +10,7 @@
 //
 // Refuses on a dirty tree (unless --bump), an unpushed HEAD, an existing tag,
 // or a sibling version (SKILL.md, docs/index.html) that drifted from
-// package.json. `npm publish` stays manual — the script just prints the
+// package.json. `npm publish` stays manual; the script just prints the
 // reminder at the end.
 
 import { readFileSync, writeFileSync } from 'node:fs';

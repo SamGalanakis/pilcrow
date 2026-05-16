@@ -91,7 +91,7 @@ const spineFamilyItems = FAMILIES.map(
 const unfamiliar = deterministic.filter((r) => !seen.has(r.id));
 if (unfamiliar.length > 0) {
   throw new Error(
-    `Catalog generator: ${unfamiliar.length} rule(s) not assigned to a family — add to scripts/build-rules-page.mjs: ${unfamiliar.map((r) => r.id).join(", ")}`,
+    `Catalog generator: ${unfamiliar.length} rule(s) not assigned to a family. Add to scripts/build-rules-page.mjs: ${unfamiliar.map((r) => r.id).join(", ")}`,
   );
 }
 
@@ -102,7 +102,7 @@ const html = `<!doctype html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>The catalog — Pilcrow ¶</title>
+  <title>The catalog · Pilcrow ¶</title>
   <meta name="description" content="Every rule the engine watches for: ${deterministic.length} deterministic + ${llmRules.length} LLM-judged. Auto-generated from the source.">
   <script>
     (function(){try{var s=localStorage.getItem('theme');var p=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';var t=(s==='light'||s==='dark')?s:p;document.documentElement.dataset.theme=t;}catch(e){}document.addEventListener('click',function(e){var b=e.target.closest('.theme-toggle');if(!b)return;var c=document.documentElement.dataset.theme;var n=c==='dark'?'light':'dark';document.documentElement.dataset.theme=n;try{localStorage.setItem('theme',n);}catch(e){}});})();
@@ -118,6 +118,7 @@ const html = `<!doctype html>
     <a class="site-nav-home" href="./"><span class="mark">¶</span> Pilcrow</a>
     <nav class="site-nav-links" aria-label="Primary">
       <a href="./">Book</a>
+      <a href="genres.html">Genres</a>
       <a href="https://github.com/SamGalanakis/pilcrow">GitHub</a>
       <button type="button" class="theme-toggle" aria-label="Toggle dark mode">
         <span class="theme-toggle-dark">Dark</span>
@@ -183,6 +184,8 @@ const html = `<!doctype html>
     <div class="site-foot-wrap">
       <nav class="site-foot-links" aria-label="Site links">
         <a href="./">Book</a>
+        <span class="site-foot-sep" aria-hidden="true">·</span>
+        <a href="genres.html">Genres</a>
         <span class="site-foot-sep" aria-hidden="true">·</span>
         <a href="https://github.com/SamGalanakis/pilcrow">GitHub</a>
         <span class="site-foot-sep" aria-hidden="true">·</span>

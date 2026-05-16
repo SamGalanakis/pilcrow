@@ -1,4 +1,5 @@
 import type { Severity } from "./types.js";
+import { genreLlmRules, genreParents } from "./genre-llm-rules.js";
 
 export interface LlmRule {
   id: string;
@@ -26,7 +27,7 @@ export const llmRules: LlmRule[] = [
     name: "Voice consistency",
     severity: "warning",
     description:
-      "Voice/persona drifts between sections — formal opening, conversational middle, technical closing — with no narrative reason.",
+      "Voice/persona drifts between sections (formal opening, conversational middle, technical closing) with no narrative reason.",
     positiveExample:
       "A piece that maintains the same register from start to finish, or shifts register only at clear narrative beats.",
     negativeExample:
@@ -37,7 +38,7 @@ export const llmRules: LlmRule[] = [
     name: "Mixed metaphor",
     severity: "warning",
     description:
-      "Two or more incompatible metaphors used together — picture-bending images that collide rather than reinforce.",
+      "Two or more incompatible metaphors used together: picture-bending images that collide rather than reinforce.",
     positiveExample:
       "The plan was a tightrope: one wrong step and the whole team fell.",
     negativeExample:
@@ -103,7 +104,7 @@ export const llmRules: LlmRule[] = [
     name: "Transition coherence",
     severity: "warning",
     description:
-      "Paragraphs do not logically connect — abrupt topic jumps, missing causal/temporal links, or 'list of points' structure where prose should flow.",
+      "Paragraphs do not logically connect: abrupt topic jumps, missing causal/temporal links, or 'list of points' structure where prose should flow.",
     positiveExample:
       "Each paragraph picks up a thread from the previous one and advances it.",
     negativeExample:
@@ -114,11 +115,11 @@ export const llmRules: LlmRule[] = [
     name: "Register mismatch",
     severity: "info",
     description:
-      "Formal and casual constructions sit side-by-side without intent — signals an untuned voice or AI-generated mash-up.",
+      "Formal and casual constructions sit side-by-side without intent; this signals an untuned voice or AI-generated mash-up.",
     positiveExample:
       "Voice is consistently casual or consistently formal, with deliberate shifts.",
     negativeExample:
-      "'Furthermore, the implementation leverages a robust caching layer (it's basically just Redis, lol).' — two registers smashed together.",
+      "'Furthermore, the implementation leverages a robust caching layer (it's basically just Redis, lol).' Two registers smashed together.",
   },
   {
     id: "excessive-balance",
@@ -136,7 +137,7 @@ export const llmRules: LlmRule[] = [
     name: "Redundant thesis restatement",
     severity: "info",
     description:
-      "The opening and closing restate the same thesis in nearly identical words — a hallmark of AI structure-by-template.",
+      "The opening and closing restate the same thesis in nearly identical words; a hallmark of AI structure-by-template.",
     positiveExample:
       "The opening sets a hook; the closing lands a different beat (a surprise, a stake, a call to action).",
     negativeExample:
@@ -147,9 +148,9 @@ export const llmRules: LlmRule[] = [
     name: "Marketing-template cadence",
     severity: "warning",
     description:
-      "Stock AI hero-line shape: imperative fragment then tricolon expansion (\"Ship X. A Y, a Z, and N things for Q.\"). The template is the tell — content specificity doesn't redeem it.",
+      "Stock AI hero-line shape: imperative fragment then tricolon expansion (\"Ship X. A Y, a Z, and N things for Q.\"). The template is the tell; content specificity doesn't redeem it.",
     positiveExample:
-      "A prose linter. 49 deterministic rules, 19 LLM-judged ones. Detection-only.",
+      "A prose linter. 49 deterministic rules, 21 LLM-judged ones. Detection-only.",
     negativeExample:
       "Mark up prose before it ships. A skill, a CLI, and forty-four rules for catching AI tells and writing-quality issues.",
   },
@@ -162,7 +163,7 @@ export const llmRules: LlmRule[] = [
     positiveExample:
       "Here's what we tried, what worked, and what didn't.",
     negativeExample:
-      "What a fantastic topic — this is going to be such a rich and rewarding exploration of an area that truly matters.",
+      "What a fantastic topic. This is going to be such a rich and rewarding exploration of an area that truly matters.",
   },
   {
     id: "stakes-inflation",
@@ -180,9 +181,9 @@ export const llmRules: LlmRule[] = [
     name: "False reframe",
     severity: "warning",
     description:
-      "The 'It's not X, it's Y' move performed without semantic content — Y is a paraphrase of X, or both are empty. Catches the rhetoric even when antithesis-cadence misses the surface form.",
+      "The 'It's not X, it's Y' move performed without semantic content: Y is a paraphrase of X, or both are empty. Catches the rhetoric even when antithesis-cadence misses the surface form.",
     positiveExample:
-      "Cutting build time from 11 min to 90 sec changed who shipped — the on-call eng now ships during the on-call.",
+      "Cutting build time from 11 min to 90 sec changed who shipped; the on-call eng now ships during the on-call.",
     negativeExample:
       "This isn't just about efficiency. It's about transformation.",
   },
@@ -202,7 +203,7 @@ export const llmRules: LlmRule[] = [
     name: "Listicle in prose disguise",
     severity: "info",
     description:
-      "Structurally a numbered list but flowed into paragraphs — each paragraph one item, all parallel shape, thin connective veneer.",
+      "Structurally a numbered list but flowed into paragraphs: each paragraph one item, all parallel shape, thin connective veneer.",
     positiveExample:
       "Argument paragraphs that build on each other and advance a position.",
     negativeExample:
@@ -228,29 +229,49 @@ export const llmRules: LlmRule[] = [
     positiveExample:
       "Read latency dropped 42% (Grafana dashboard, week of March 12); the cache rewrite shipped April 3.",
     negativeExample:
-      "Read latency dropped 42% after the cache rewrite. (No source, no date — the number carries the paragraph.)",
+      "Read latency dropped 42% after the cache rewrite. (No source, no date; the number carries the paragraph.)",
   },
   {
     id: "feature-tally",
     name: "Feature tally",
     severity: "warning",
     description:
-      "Precise integer counts strung in parallel as rhetoric — 'X widgets plus Y gadgets, plus Z thingamabobs' — used to signal comprehensiveness without conveying what any of those things are or what the reader gains from them. The counts are a stand-in for substance.",
+      "Precise integer counts strung in parallel as rhetoric (`X widgets plus Y gadgets, plus Z thingamabobs`) used to signal comprehensiveness without conveying what any of those things are or what the reader gains from them. The counts are a stand-in for substance.",
     positiveExample:
       "Deterministic checks for the patterns regex can pin down. LLM-judged ones for what regex can't. Lenses anchored in the classical style guides on top.",
     negativeExample:
-      "49 deterministic rules plus 20 LLM-judged ones, plus nine interpretive lenses anchored in classical style guides, plus four project-level commands for voice capture and drafting.",
+      "49 deterministic rules plus 21 LLM-judged ones, plus nine interpretive lenses anchored in classical style guides, plus four project-level commands for voice capture and drafting.",
   },
 ];
 
-export function buildCritiquePrompt(text: string, ruleIds?: string[]): string {
-  const selected = ruleIds
-    ? llmRules.filter((r) => ruleIds.includes(r.id))
+export function resolveGenreRules(genre: string): LlmRule[] {
+  const out: LlmRule[] = [];
+  const seen = new Set<string>();
+  let current: string | null = genre;
+  while (current && !seen.has(current)) {
+    seen.add(current);
+    const rules = genreLlmRules[current];
+    if (rules) out.push(...rules);
+    current = genreParents[current] ?? null;
+  }
+  return out;
+}
+
+export function buildCritiquePrompt(
+  text: string,
+  ruleIds?: string[],
+  genre?: string,
+): string {
+  const baseAndGenre: LlmRule[] = genre
+    ? [...llmRules, ...resolveGenreRules(genre)]
     : llmRules;
+  const selected = ruleIds
+    ? baseAndGenre.filter((r) => ruleIds.includes(r.id))
+    : baseAndGenre;
   const ruleSpec = selected
     .map(
       (r, i) =>
-        `${i + 1}. **${r.id}** (severity: ${r.severity}) — ${r.name}\n   ${r.description}\n   Good: ${r.positiveExample}\n   Bad: ${r.negativeExample}`,
+        `${i + 1}. **${r.id}** (severity: ${r.severity}): ${r.name}\n   ${r.description}\n   Good: ${r.positiveExample}\n   Bad: ${r.negativeExample}`,
     )
     .join("\n\n");
   return [
@@ -277,13 +298,16 @@ export interface LlmFinding {
   message: string;
 }
 
-export function parseLlmFindings(jsonText: string): LlmFinding[] {
+export function parseLlmFindings(jsonText: string, genre?: string): LlmFinding[] {
   const trimmed = jsonText.trim().replace(/^```(?:json)?\s*/i, "").replace(/```\s*$/, "");
   const parsed = JSON.parse(trimmed);
   if (!parsed || !Array.isArray(parsed.findings)) {
     throw new Error("LLM response missing 'findings' array");
   }
-  const validIds = new Set(llmRules.map((r) => r.id));
+  const validIds = new Set([
+    ...llmRules.map((r) => r.id),
+    ...(genre ? resolveGenreRules(genre).map((r) => r.id) : []),
+  ]);
   return parsed.findings
     .filter((f: any) => validIds.has(f?.ruleId))
     .map((f: any) => ({

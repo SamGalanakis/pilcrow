@@ -1,102 +1,195 @@
-# _genres — shared
+# _genres: taxonomy index
 
-Genre conventions. Loaded by `clarify`, `lead`, `document`, and `craft`. Different genres reward different prose; a finding that's a ship-blocker in a report is fine in fiction.
+Genre conventions. Different genres reward different prose; a finding that's a ship-blocker in a report is fine in fiction. Editor commands consult this file to know which findings to promote, demote, or skip.
 
-`VOICE.md`'s `genre` field names which set of conventions apply. If unset, default to **essay** — the most common pilcrow use case.
+`VOICE.md` `genre:` names which leaf applies (e.g., `tutorial`, `readme`, `cv`). If unset, infer from path; see the inference table at the bottom. Leaves inherit from parents; rules cascade.
 
----
+> **Change note.** The genre taxonomy has been rebuilt. If your existing `VOICE.md` references a slug that no longer exists (`report`, the parent-only `marketing`), update it. `explainer` is now narrower (general non-software only); software docs use one of the Diátaxis four: `tutorial`, `how-to`, `reference-docs`, `explanation`.
 
-## essay
+## Tree
 
-Personal-or-argumentative prose. Has a thesis the writer believes. The reader gives the piece 4–12 minutes.
+```
+narrative/
+├── fiction               narrative prose, consistent narrator, voice-driven
+├── memoir                first-person retrospective
+└── script                dramatic dialogue, scene-headed (for performance)
 
-**Demands:** distinctive voice; a real claim, not a survey; a lede that earns the next paragraph; a close that doesn't restate the opening; concrete examples grounding every abstraction.
+argumentative/
+├── essay                 personal/argumentative prose with a thesis
+├── op-ed                 short, current-events hook, single claim
+└── review                verdict-plus-evidence assessment of a work
 
-**Forbids:** sycophant openers, throat-clearing setup, marketing-template cadence, listicle-disguise structure.
+documentation/            Diátaxis four; never mix modes within one page
+├── tutorial              learning-oriented, step-by-step
+├── how-to                task-oriented, assumes competence
+├── reference-docs        information-oriented, facts only, no interpretation
+└── explanation           understanding-oriented, the "why"
 
-**Tolerates:** longer sentences, deliberate fragments, em-dashes as voice, parenthetical asides if intentional, the writer breaking their own rules on purpose.
+overview/                 composite / doorway docs
+├── readme                project README; pitch + quickstart + signposts
+├── project-home          docs-site front page (web README)
+└── one-pager             single-sheet executive summary
 
-**Common AI tells in this genre:** stakes inflation ("this will fundamentally reshape…"), invented-concept labels ("The Engagement Doom Loop"), redundant thesis between opening and close.
+informational/
+├── explainer             general non-software "how X works"
+└── faq                   question-grouped reference
 
----
+reportorial/
+├── news                  external, inverted pyramid
+├── feature               longform narrative journalism
+├── postmortem            incident retrospective, blameless
+├── status-update         internal weekly / standup
+└── changelog             release notes
 
-## explainer
+correspondence/
+├── memo                  RFC / ADR shape; recommendation first
+├── email                 longer-form correspondence
+└── message               Slack / chat short-form
 
-Teaches a concept. Reader is non-expert in this specific topic and wants to leave understanding it.
+marketing/
+├── landing               hero page that sells
+├── product-copy          feature pages, descriptions
+├── sales-email           single-response outreach
+├── press-release         journalist-liftable announcement
+└── about-page            brand-voice About / Mission
 
-**Demands:** definitions on first use of terms; concrete examples after every abstract claim; a clear arc (`here's the puzzle → here's how it works → here's the takeaway`); transitions that connect paragraphs causally.
+microcopy/
+├── ui-label              buttons, form labels, menu items, tooltips
+├── error-message         failure-state UI text
+├── empty-state           zero-data UI text
+└── notification          push, toast, banner
 
-**Forbids:** assuming prior knowledge silently; nominalization chains (zombie nouns); jargon as if it were plain English; sentence-length monotony.
+social/
+├── social-post           single tweet / LI / IG
+└── social-thread         multi-post sequence on one topic
 
-**Tolerates:** numbered lists, headings, deliberate repetition for emphasis.
+personal/
+├── cv                    résumé / CV; achievement-led fragments
+├── cover-letter          single-page application letter
+└── bio                   about-me prose
 
-**Common AI tells:** abstract-without-concrete, noun-stacking, transition-stacking ("Moreover…Furthermore…"), the "imagine for a moment" opener.
+presentations/
+├── deck                  slide-shaped prose
+└── speaker-notes         under-slide prose (aural-shaped)
 
----
+academic                  (stub) papers, theses, lecture notes
+```
 
-## report
+## Cross-genre conventions (parent rules)
 
-Reports an outcome, a postmortem, a status, a finding. Audience is colleagues or stakeholders. The news is the news.
+Rules at parent level apply to every child leaf. Leaves never restate these; they add only what's specific to that leaf.
 
-**Demands:** lede that names the outcome in the first sentence; specific numbers and named people; structure (often headed sections: context / what happened / why / what we changed); honest assessment of stakes.
+### narrative/
+- consistent narrator and POV across the piece
+- scene grounded in sensory specifics (sight, sound, texture, breath)
+- pacing varies with tension; sentence and paragraph length follow the scene's pulse
+- many pilcrow rules fire on intentional craft here (em-dash density, fragments, repetition); `VOICE.md exceptions` should be aggressive
 
-**Forbids:** weasel hedges on facts; buried lede; sycophant tone toward stakeholders; faux-precision headlines; marketing register.
+### argumentative/
+- one thesis the writer believes, named in the first scroll
+- every abstract claim earns a concrete instance somewhere in the piece
+- the strongest counter-position acknowledged before the close
+- close lands somewhere different from the opening; no thesis-restatement
 
-**Tolerates:** tables, bulleted findings (if not bullet-bold-lead), formal register, technical vocabulary.
+### documentation/
+- **never mix Diátaxis modes inside one page** (a tutorial does not become a reference mid-stream)
+- present tense, second person, imperative for actions
+- code and command examples runnable as written; no unannotated placeholders
+- no marketing register ("delight", "seamless", "powerful")
 
-**Common AI tells:** copula-dodge (`X serves as evidence`), passive-voice hiding the agent of a failure, vague attribution (`studies suggest`).
+### overview/
+- one-sentence pitch on the first line; install or try-it within the first scroll
+- code example before philosophy
+- signposts down to deeper docs; don't try to be the deep docs
+- marketing tone is fine *if* earned by specifics; vague enthusiasm is not
 
----
+### informational/
+- definitions on first use of any term the reader doesn't already know
+- examples that anchor abstractions
+- arc: puzzle → mechanism → takeaway (or QA shape for FAQ)
 
-## marketing
+### reportorial/
+- the news is the news; outcome in the first sentence
+- specific numbers, named people, dated events
+- no marketing register; no faux-precision ("approximately 47.3%")
+- honest assessment of stakes
 
-Sells something. Knows it's selling. Reader is skeptical; tolerance is short.
+### correspondence/
+- recommendation, ask, or decision in the first sentence
+- no preamble ("Hope this finds you well", "Wanted to circle back")
+- assume shared context; don't re-explain what the reader already knows
+- dense paragraphs and acronyms are fine
 
-**Demands:** specific benefit; named features; social proof when available; clear call-to-action.
+### marketing/
+- benefit before feature
+- skeptical reader; tolerance is short
+- specific claim beats superlative; named feature beats abstract benefit
+- this is the genre where AI tells cluster densest; every editor reflex applies
 
-**Forbids:** AI marketing rhythm (every form of it — imperative tricolon, bullet-bold-lead, faux-precision, decorative emoji); empty superlatives; stakes inflation.
+### microcopy/
+- one idea, ≤ 8 words where possible
+- voice: helpful, not chirpy
+- action-led; button verbs, error first-clause names the failure
+- never punish the user for what they did; never "Oops!" or "Something went wrong"
 
-**Tolerates:** confident tone, hero-line typography, short paragraphs.
+### social/
+- the first 7 words decide whether the rest is read
+- one idea per post
+- specific beats general; stakes-clear beats stakes-implied
+- no thread-bait ("a 🧵"); no engagement-farming
 
-**Common AI tells:** *all of them*. Marketing is the genre where AI tells cluster densest. The `humanize` command is the most-used command for this genre.
+### personal/
+- terse; every line is auditioned
+- parallel structure within sections (verb tense, capitalization, punctuation)
+- "I" is implicit; rarely written
+- claims are auditable; numbers, scope, dates
 
----
+### presentations/
+- one idea per slide / per beat
+- text is signage, not paragraph
+- presenter is the medium; slide is the scaffolding
 
-## memo
+## Path inference
 
-Internal communication, decision document, RFC, ADR. Audience is colleagues with context. Brevity is virtue.
+If `VOICE.md` `genre:` is unset, infer from filename / directory:
 
-**Demands:** the recommendation in the first sentence; the reasoning that supports it; the cost of the alternatives; clear next-steps.
-
-**Forbids:** preamble; "before we begin"; meta-discourse; over-explaining shared context.
-
-**Tolerates:** acronyms, jargon, dense paragraphs, structured headings.
-
-**Common AI tells:** throat-clearing openers, abstract-without-concrete (memos can't afford this), meta-discourse ("this memo will explore"), false-reframe.
-
----
-
-## fiction
-
-Narrative prose. Different rules entirely. Pilcrow's deterministic catalog often fires on intentional craft.
-
-**Demands:** consistent narrator, scene grounded in sensory specifics, dialogue that distinguishes speakers, pacing that varies by tension.
-
-**Forbids:** the same AI tells (fossil class, sycophant tone, marketing rhythm) — those break narrative voice.
-
-**Tolerates:** repetition for emphasis; deliberate sentence-length monotony in trance passages; em-dashes everywhere if voice; fragments freely; clichés if the narrator is the kind who uses them.
-
-**Common AI tells in fiction:** stilted dialogue (every line is grammatical), copula-dodge in description (`The river served as a boundary`), absence of sensory specifics.
-
-Editor commands run with caution. Many findings are voice; the `VOICE.md` `exceptions` field should be aggressive.
-
----
+| Path pattern | Inferred slug |
+|---|---|
+| `posts/`, `essays/`, `blog/` | `essay` |
+| `op-eds/`, `opinion/` | `op-ed` |
+| `reviews/` | `review` |
+| `docs/tutorials/`, `getting-started/` | `tutorial` |
+| `docs/how-to/`, `guides/` | `how-to` |
+| `docs/reference/`, `api/` | `reference-docs` |
+| `docs/explanation/`, `concepts/` | `explanation` |
+| `README.md`, `readme.md` | `readme` |
+| `docs/index.md` (project home) | `project-home` |
+| `postmortems/`, `incidents/` | `postmortem` |
+| `changelog.md`, `CHANGELOG.md` | `changelog` |
+| `status/`, `weekly/` | `status-update` |
+| `news/` | `news` |
+| `memos/`, `rfcs/`, `adrs/` | `memo` |
+| `marketing/landing/`, root `index.html` | `landing` |
+| `marketing/email/`, sales sequences | `sales-email` |
+| `press/` | `press-release` |
+| `about/`, `about.md` | `about-page` |
+| `microcopy/`, `ui-strings/`, i18n files | `ui-label` |
+| `errors/` | `error-message` |
+| `tweets/`, `social/` | `social-post` |
+| `cv.md`, `resume.md` | `cv` |
+| `cover-letter*` | `cover-letter` |
+| `bio.md`, `about-me.md` | `bio` |
+| `decks/`, `*.slides.md` | `deck` |
+| `fiction/`, `stories/` | `fiction` |
 
 ## How editor commands use this file
 
-- `clarify` reads the relevant genre section before triaging findings. A long sentence in fiction is rarely a clarify finding; in a report, it is.
-- `lead` consults the genre when proposing alternative openings — a memo lede is different from an essay lede.
-- `document` uses these conventions when inferring `genre:` from existing prose.
-- `craft` uses these as the brief context for the LLM during drafting.
+`clarify`, `lead`, `document`, `craft`, `argue`, `verify`, `aloud`, `humanize`, `polish` consult genre. The walk: leaf → parent → universal pilcrow (cadence theory, ai-tell catalog, readers). A finding promoted by the genre's cliché check (see `SKILL.md` "Genre-reflex check") gets surfaced first.
 
-If `VOICE.md` doesn't name a genre, the command infers from filename / directory: `posts/` and `essays/` → essay; `docs/` → explainer; `postmortems/` → report; `marketing/` and root-level landing pages → marketing.
+Per-leaf detail lives in `skill/reference/genres/<slug>.md`. Each leaf carries its own Demands / Forbids / Tolerates / Common AI tells / LLM lint additions. **Universal pilcrow is never restated** in a leaf; if a rule lives in `_ai-tell-catalog.md`, `_cadence-theory.md`, `_readers.md`, or in the parent's "Cross-genre conventions" section above, leaves don't repeat it.
+
+### What every editor command must do
+
+1. **Load the active leaf** at `genres/<slug>.md` so the genre-specific Demands / Forbids / Tolerates / Common AI tells / LLM lint additions flow into the command's reasoning.
+2. **Pass `--genre <slug>`** when shelling out to `pilcrow critique` so the leaf's LLM lint additions merge into the critique prompt alongside the 21 base rules.
+3. **Surface the genre to the writer** if it was *inferred* (not authored in `VOICE.md`): one line, `Treating this as [<slug>], push back if wrong.` Wait for confirmation. The writer is the authority; this hands them the steering wheel before the command spends tokens on the wrong frame. Don't re-prompt within the same file in this session.

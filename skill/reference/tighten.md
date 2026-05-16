@@ -1,16 +1,16 @@
 # tighten
 
-Cut zombie nouns, weak verbs, and expletive subjects until every sentence has a character who does something. Tighten is not about word count for its own sake — short prose can still be flabby. It's about making subjects name *characters* and verbs name *actions*.
+Cut zombie nouns, weak verbs, and expletive subjects until every sentence has a character who does something. Tighten is not about word count for its own sake; short prose can still be flabby. It's about making subjects name *characters* and verbs name *actions*.
 
 ## Source
 
-Joseph M. Williams, *Style: Lessons in Clarity and Grace* — the **character/action principle**: clear sentences put the main character in the subject and the main action in the verb. When subjects are abstract and verbs are some form of *to be*, the real action hides in a noun (the "zombie noun") and the sentence drags.
+Joseph M. Williams, *Style: Lessons in Clarity and Grace*. The **character/action principle**: clear sentences put the main character in the subject and the main action in the verb. When subjects are abstract and verbs are some form of *to be*, the real action hides in a noun (the "zombie noun") and the sentence drags.
 
-Steven Pinker, *The Sense of Style* — names these "zombie nouns" and identifies them as the biggest source of opaque prose in academic and corporate writing.
+Steven Pinker, *The Sense of Style*, names these "zombie nouns" and identifies them as the biggest source of opaque prose in academic and corporate writing.
 
 ## Load before running
 
-- `VOICE.md` if present — `taboos` may include specific verbs to avoid; `signatures` may include long-sentence rhythms to preserve.
+- `VOICE.md` if present: `taboos` may include specific verbs to avoid; `signatures` may include long-sentence rhythms to preserve.
 
 Universal laws, the proposal ritual, and the editor slop test (in the parent `SKILL.md`) apply by default. Per-sentence rewrites run through the proposal ritual.
 
@@ -19,7 +19,7 @@ Universal laws, the proposal ritual, and the editor slop test (in the parent `SK
 For each sentence with a hit:
 
 1. **Find the buried action.** Look for a nominalization (`-tion`, `-ment`, `-ance`, `-ence`, `-ness`, `-ity`) or a weak verb (`is`, `are`, `was`, `were`, `has`, `have`, `makes`, `does`, `provides`, `enables`).
-2. **Name the real character.** Who or what is *doing* the action? May be unnamed in the current sentence — find them in the surrounding sentences, or ask.
+2. **Name the real character.** Who or what is *doing* the action? May be unnamed in the current sentence; find them in the surrounding sentences, or ask.
 3. **Rewrite so the character is the subject and the action is the verb.**
 
 This is mechanical. With practice, the rewrite takes 5–15 seconds per sentence.
@@ -27,14 +27,14 @@ This is mechanical. With practice, the rewrite takes 5–15 seconds per sentence
 ## What to prioritize
 
 Rank order:
-1. `nominalization-density` — the headline rule.
-2. `there-is-there-are` — expletive constructions hide the actor.
-3. `expletives` — `it is the case that`, `it is important to note`, `there exists`.
-4. `passive-voice` — when the agent matters and can be named.
-5. `weasel-hedges` — `it has been suggested`, `experts argue`. Nominalized hedges.
-6. `noun-stacking` — three-plus content words in a row is a nominalization chain.
-7. `sentence-too-long` — long sentences hide weak structure; after tightening, many shrink under the threshold.
-8. `wordy-phrases` — mechanical: `in order to` → `to`, `due to the fact that` → `because`.
+1. `nominalization-density`: the headline rule.
+2. `there-is-there-are`: expletive constructions hide the actor.
+3. `expletives`: `it is the case that`, `it is important to note`, `there exists`.
+4. `passive-voice`: when the agent matters and can be named.
+5. `weasel-hedges`: `it has been suggested`, `experts argue`. Nominalized hedges.
+6. `noun-stacking`: three-plus content words in a row is a nominalization chain.
+7. `sentence-too-long`: long sentences hide weak structure; after tightening, many shrink under the threshold.
+8. `wordy-phrases`: mechanical: `in order to` → `to`, `due to the fact that` → `because`.
 
 `adverb-density` and `boosters` are voice questions, not structure. Skip them.
 
@@ -98,7 +98,7 @@ Real character: **<actor>** *(or "unnamed — ask")*
 (Word count: 23 → 14, -39%)
 ```
 
-Show the word-count delta when meaningful. Group rewrites by paragraph, not by rule — tightening one sentence often reshapes the next.
+Show the word-count delta when meaningful. Group rewrites by paragraph, not by rule; tightening one sentence often reshapes the next.
 
 ## Anti-patterns
 

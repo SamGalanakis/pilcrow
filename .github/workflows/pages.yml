@@ -28,6 +28,7 @@ jobs:
       - run: npm install
       - run: npm run build
       - run: node scripts/build-rules-page.mjs
+      - run: node scripts/build-genres-page.mjs
       - uses: actions/configure-pages@v5
         with:
           enablement: true

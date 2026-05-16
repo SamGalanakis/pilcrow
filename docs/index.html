@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pilcrow ¶ — make your clanker your editor</title>
+  <title>Pilcrow ¶: make your clanker your editor</title>
   <meta name="description" content="Make your clanker your editor. A prose linter plus interpretive lenses anchored in classical style guides. AI-tell detection is one feature among many.">
-  <meta property="og:title" content="Pilcrow ¶ — make your clanker your editor">
+  <meta property="og:title" content="Pilcrow ¶: make your clanker your editor">
   <meta property="og:description" content="Turn the LLM in your harness into the editor it should be.">
   <meta property="og:type" content="website">
   <script>
@@ -22,6 +22,7 @@
     <a class="site-nav-home" href="./"><span class="mark">¶</span> Pilcrow</a>
     <nav class="site-nav-links" aria-label="Primary">
       <a href="rules.html">Catalog</a>
+      <a href="genres.html">Genres</a>
       <a href="https://github.com/SamGalanakis/pilcrow">GitHub</a>
       <button type="button" class="theme-toggle" aria-label="Toggle dark mode">
         <span class="theme-toggle-dark">Dark</span>
@@ -107,15 +108,15 @@ pilcrow skills install</code></pre>
         <p><span class="newthought">Project commands</span> act on the repo, not on a single passage. They capture the writer&rsquo;s voice so editor proposals sound like the writer, and they shape a new piece end to end.<span class="sidenote">Each writes to disk only after explicit confirmation. Single source of truth: <code>VOICE.md</code>.</span></p>
 
         <h3 id="project-document">document</h3>
-        <p>Scan existing prose in the repo. Computes stylometric features (sentence rhythm, em-dash density, vocabulary profile) and surfaces recurring moves (phrases, cadences, structural habits, punctuation tics). Writes a draft <code>VOICE.md</code> with citations and explicit <strong>Open questions</strong> for fields the stats can&rsquo;t answer (audience, stance, method).</p>
+        <p>Scan existing prose. Find recurring moves: phrases, cadences, punctuation tics. Draft <code>VOICE.md</code> with citations, plus <strong>Open questions</strong> for what the stats can&rsquo;t answer: audience, stance, method.</p>
         <pre><code>/pilcrow document</code></pre>
 
         <h3 id="project-teach">teach</h3>
-        <p>Interview the writer to refine an existing <code>VOICE.md</code> (answer the Open questions, confirm or correct inferred Signatures, edit Taboos) or create one from scratch if there&rsquo;s no corpus to scan. Use after <code>document</code> for the typical flow, or standalone for new projects.</p>
+        <p>Interview the writer. Refine an existing <code>VOICE.md</code> by answering Open questions, confirming Signatures, and editing Taboos; or create one from scratch if there&rsquo;s no corpus to scan. Use after <code>document</code> for the typical flow, or standalone for new projects.</p>
         <pre><code>/pilcrow teach</code></pre>
 
         <h3 id="project-craft">craft</h3>
-        <p>Method-aware end-to-end writing. Picks <code>outliner</code>, <code>discovery</code>, <code>iterative</code>, or <code>model-drafter</code> at start (or reads <code>method:</code> from <code>VOICE.md</code>). Four phases (shape, draft, critique, polish), each gated by writer confirmation.</p>
+        <p>Method-aware end-to-end writing. Picks <code>outliner</code>, <code>discovery</code>, <code>iterative</code>, or <code>model-drafter</code> at start, or reads <code>method:</code> from <code>VOICE.md</code>. Then runs four phases: shape, draft, critique, polish. Each phase gates on writer confirmation.</p>
         <pre><code>/pilcrow craft "topic or assignment"</code></pre>
       </section>
 
@@ -123,15 +124,15 @@ pilcrow skills install</code></pre>
         <h2 class="chapter-title">Editor</h2>
         <p><span class="newthought">Editor commands</span> interpret findings through a tradition. Each loads its own playbook from <code>skill/reference/&lt;name&gt;.md</code> with methodology, output shape, and anti-patterns drawn from a named style guide. They&rsquo;re <em>not</em> rule filters; each produces a different kind of report.</p>
         <p>Invoke through the skill: <code>/pilcrow &lt;command&gt; &lt;path&gt;</code>.</p>
-        <p>Or invoke <code>/pilcrow</code> bare and the skill triages for you: it finds the prose in scope, runs <code>lint</code>, identifies the genre, and proposes an ordered sequence of editor commands tuned to the piece.<span class="sidenote">Genre defaults: essay → <code>lead</code>/<code>argue</code>/<code>tighten</code>/<code>polish</code>; postmortem → <code>lead</code>/<code>verify</code>/<code>tighten</code>/<code>polish</code>; marketing → <code>humanize</code>/<code>lead</code>/<code>polish</code>; explainer → <code>clarify</code>/<code>tighten</code>/<code>polish</code>; memo → <code>lead</code>/<code>tighten</code>/<code>verify</code>.</span> The plan gates on writer confirmation; you can reorder, skip, or substitute.</p>
-        <p>Behind every editor command, three meta-disciplines apply by default: an <strong>editor-reflex catalog</strong> that rejects stock LLM rewrite cadences (<em>here's the bottom line</em>, the colon-summary, the imperative tricolon); a <strong>proposal ritual</strong> that forces three candidate rewrites past the reflex/genre/voice gates before any is shipped; and an <strong>editor slop test</strong> applied to the command's own output — if a reader would believe an LLM wrote the critique, the critique is the problem.</p>
+        <p>Or invoke <code>/pilcrow</code> bare and the skill triages for you: it finds the prose in scope, runs <code>lint</code>, identifies the genre, and proposes an ordered sequence of editor commands tuned to the piece.<span class="sidenote">Genre families map to default sequences: <em>argumentative/</em> (essay, op-ed, review) → <code>lead</code>/<code>argue</code>/<code>tighten</code>/<code>polish</code>; <em>reportorial/</em> (postmortem, news, changelog…) → <code>lead</code>/<code>verify</code>/<code>tighten</code>/<code>polish</code>; <em>marketing/</em> → <code>humanize</code>/<code>lead</code>/<code>polish</code>; <em>documentation/</em> (the Diátaxis four) → <code>clarify</code>/<code>tighten</code>/<code>polish</code>; <em>correspondence/</em> (memo, email…) → <code>lead</code>/<code>tighten</code>/<code>verify</code>. Full tree on the <a href="genres.html">Genres page</a>.</span> The plan gates on writer confirmation; you can reorder, skip, or substitute.</p>
+        <p>Three meta-disciplines stand behind every editor command. An <strong>editor-reflex catalog</strong> rejects stock LLM rewrite cadences: <em>here&rsquo;s the bottom line</em>, the colon-summary, the imperative tricolon. A <strong>proposal ritual</strong> forces three candidate rewrites past reflex, genre, and voice gates before any ships. An <strong>editor slop test</strong> applies the same scrutiny to the command&rsquo;s own output. If a reader would believe an LLM wrote the critique, the critique is the problem.</p>
 
         <h3 id="editor-polish">polish</h3>
-        <p>Final pre-ship lens (Strunk &amp; White, Zinsser). Scores the piece on nine dimensions (one per lens, 0–4 each, 0–36 total) with a five-tier verdict from Excellent to Critical. Then triages findings into ship-blockers (P0), worth-fixing (P1–P2), and taste-calls (P3), and names the lowest-scoring dimensions so the writer knows which lens to run next.</p>
+        <p>Final pre-ship lens (Strunk &amp; White, Zinsser). Scores the piece on nine dimensions, one per lens, 0–4 each, 0–36 total. Returns a five-tier verdict from Excellent to Critical, then triages findings into ship-blockers, worth-fixing, and taste-calls. Names the lowest-scoring dimensions so the writer knows which lens to run next.</p>
         <pre><code>/pilcrow polish drafts/post.md</code></pre>
 
         <h3 id="editor-humanize">humanize</h3>
-        <p>Strip AI tells without sanding off voice (Wikipedia <em>Signs of AI writing</em>). Classifies findings by class (vocabulary, cadence, template, fossil) with class-specific rewrite shapes.</p>
+        <p>Strip AI tells without sanding off voice (Wikipedia <em>Signs of AI writing</em>). Classifies findings by class: vocabulary, cadence, template, or fossil. Each class has its own rewrite shape.</p>
         <pre><code>/pilcrow humanize drafts/post.md</code></pre>
 
         <h3 id="editor-tighten">tighten</h3>
@@ -143,7 +144,7 @@ pilcrow skills install</code></pre>
         <pre><code>/pilcrow clarify drafts/post.md</code></pre>
 
         <h3 id="editor-pace">pace</h3>
-        <p>Restore rhythm (King <em>On Writing</em>, Strunk). Sentence-length histogram, paragraph-weight chart, aural diagnostic (tongue-twisters, consonant clusters, unintentional rhyme), split/merge proposals.</p>
+        <p>Restore rhythm (King <em>On Writing</em>, Strunk). Sentence-length histogram, paragraph-weight chart, split/merge proposals. The aural diagnostic listens for tongue-twisters, consonant clusters, and unintentional rhyme.</p>
         <pre><code>/pilcrow pace drafts/post.md</code></pre>
 
         <h3 id="editor-lead">lead</h3>
@@ -151,39 +152,40 @@ pilcrow skills install</code></pre>
         <pre><code>/pilcrow lead drafts/post.md</code></pre>
 
         <h3 id="editor-verify">verify</h3>
-        <p>Surface load-bearing claims (journalism fact-check tradition). Each numeric, dated, comparative, or attributed claim gets a three-question check (citation, specificity, plausibility) and a classification: <code>unsupported</code>, <code>vague</code>, <code>hedged</code>, <code>unchecked</code>.</p>
+        <p>Surface load-bearing claims, the way newsroom fact-checkers do. Each numeric, dated, comparative, or attributed claim faces three questions: citation, specificity, plausibility. It lands in one of four buckets: <code>unsupported</code>, <code>vague</code>, <code>hedged</code>, <code>unchecked</code>.</p>
         <pre><code>/pilcrow verify drafts/post.md</code></pre>
 
         <h3 id="editor-aloud">aloud</h3>
-        <p>Play the prose back via TTS in an interactive session. Four modes: <code>walkthrough</code> (paragraph by paragraph), <code>full</code> (end to end), <code>targeted</code> (only paragraphs <code>pace</code> flagged), <code>compare</code> (two passages back to back). Requires <code>OPENAI_API_KEY</code> and a system audio player.</p>
+        <p>Play the prose back via TTS in an interactive session. Four modes: <code>walkthrough</code> for paragraph-by-paragraph, <code>full</code> for end-to-end, <code>targeted</code> for the paragraphs <code>pace</code> flagged, <code>compare</code> for two passages back to back. Requires <code>OPENAI_API_KEY</code> and a system audio player.</p>
         <pre><code>/pilcrow aloud drafts/post.md</code></pre>
         <p>Audio is content-addressed and cached at <code>/tmp/pilcrow/aloud/&lt;sha256&gt;.mp3</code>; replays across sessions are free.<span class="sidenote">The command detects an installed <a href="https://github.com/openai/skills/tree/main/skills/.curated/speech">OpenAI speech skill</a> in your harness or fetches a pinned snapshot.</span></p>
 
         <h3 id="editor-argue">argue</h3>
-        <p>Map the argument (Toulmin, IBIS, <a href="https://argdown.org">Argdown</a>). Confirms the thesis with a multi-choice gate, surfaces supports and load-bearing premises as an indented tree, generates the strongest counter (genre-aware), and checks coverage: engaged, dodged, or missing.</p>
+        <p>Map the argument (Toulmin, IBIS, <a href="https://argdown.org">Argdown</a>). Confirms the thesis with a multi-choice gate, surfaces supports and load-bearing premises as an indented tree, generates the strongest genre-aware counter, and checks coverage: engaged, dodged, or missing.</p>
         <pre><code>/pilcrow argue drafts/post.md
 /pilcrow argue drafts/post.md --argdown   # also emit a .argdown file</code></pre>
       </section>
 
       <section class="chapter" id="cli">
         <h2 class="chapter-title">CLI</h2>
-        <p><span class="newthought">Five commands</span> run directly against prose. Reads stdin if you don&rsquo;t pass a path. Recurses directories, scanning <code>.md</code>, <code>.mdx</code>, <code>.markdown</code>, <code>.txt</code>, <code>.html</code>, <code>.htm</code>.</p>
+        <p><span class="newthought">Five commands</span> run directly against prose. With no path they read stdin; with a directory they recurse it, scanning <code>.md</code>, <code>.mdx</code>, <code>.markdown</code>, <code>.txt</code>, <code>.html</code>, <code>.htm</code>.</p>
 
         <h3 id="cli-audit">audit</h3>
         <p>Run the rule catalog. Human-readable findings with line, column, excerpt, and an optional rewrite hint.</p>
         <pre><code>pilcrow audit drafts/post.md
 pilcrow audit drafts/ --ignore-quoted
 echo "Let me delve into the rich tapestry…" | pilcrow audit</code></pre>
-        <p>Exits non-zero when an <code>error</code>-severity finding fires.<span class="sidenote"><code>--ignore-quoted</code> skips phrases inside straight or curly double quotes &mdash; useful for prose that quotes AI tells without backticking them.</span></p>
+        <p>Exits non-zero when an <code>error</code>-severity finding fires.<span class="sidenote"><code>--ignore-quoted</code> skips phrases inside straight or curly double quotes; useful for prose that quotes AI tells without backticking them.</span></p>
 
         <h3 id="cli-lint">lint</h3>
         <p>Same scan as <code>audit</code>, JSON output for piping into another tool or back to a model.</p>
         <pre><code>pilcrow lint drafts/post.md | jq '.files[0].findings[] | select(.severity == "error")'</code></pre>
 
         <h3 id="cli-critique">critique</h3>
-        <p>Emit the LLM-critique prompt. Patterns regex can&rsquo;t reliably catch (buried lede, mixed metaphor, missing stakes, unsupported claims) packaged as a single prompt the model evaluates. The model returns JSON findings in the same shape as <code>lint</code>.</p>
+        <p>Emit the LLM-critique prompt. It targets the patterns regex can&rsquo;t reliably catch: buried lede, mixed metaphor, missing stakes, unsupported claims. The model returns JSON findings in the same shape as <code>lint</code>. Pass <code>--genre &lt;slug&gt;</code> to layer the active leaf&rsquo;s rules on top of the base 21. The genre walk climbs the parent chain, so a leaf inherits anything its parent contributes.<span class="sidenote">Browse every genre and its specific rules on the <a href="genres.html">Genres page</a>. Example additions: <code>postmortem-counterfactual</code>, <code>cv-vague-impact</code>, <code>error-message-blame-user</code>.</span></p>
         <pre><code>pilcrow critique drafts/post.md | claude
-pilcrow critique drafts/post.md --rules=buried-lede,unsupported-claim</code></pre>
+pilcrow critique drafts/post.md --rules=buried-lede,unsupported-claim
+pilcrow critique drafts/incident.md --genre postmortem</code></pre>
 
         <h3 id="cli-rules">rules</h3>
         <p>List every rule with id, severity, and one-line description.</p>
@@ -197,7 +199,7 @@ pilcrow rules --json</code></pre>
 pilcrow skills update     # re-sync after `npm update -g pilcrow-ink`
 pilcrow skills check      # show installed version + content-hash status
 pilcrow skills cleanup    # remove installs under deprecated names</code></pre>
-        <p><code>install</code> and <code>update</code> use a content hash, not just the version string, so they detect a copy that&rsquo;s already on the current version but was edited locally.<span class="sidenote">Modified installs are skipped with a notice — pass <code>--force</code> to overwrite. The hash covers every file in the skill, not just <code>SKILL.md</code>, so an edit anywhere in <code>reference/</code> trips it.</span> <code>cleanup</code> removes orphan skill folders left behind when pilcrow renames or merges a sub-skill; it verifies each candidate is pilcrow-owned before deleting, so user-owned skills with a colliding name stay safe.</p>
+        <p><code>install</code> and <code>update</code> use a content hash, not just the version string, so they detect a copy that&rsquo;s already on the current version but was edited locally.<span class="sidenote">Modified installs are skipped with a notice; pass <code>--force</code> to overwrite. The hash covers every file in the skill, not just <code>SKILL.md</code>, so an edit anywhere in <code>reference/</code> trips it.</span> <code>cleanup</code> removes orphan skill folders left behind when pilcrow renames or merges a sub-skill; it verifies each candidate is pilcrow-owned before deleting, so user-owned skills with a colliding name stay safe.</p>
       </section>
 
     </article>
@@ -207,6 +209,8 @@ pilcrow skills cleanup    # remove installs under deprecated names</code></pre>
     <div class="site-foot-wrap">
       <nav class="site-foot-links" aria-label="Site links">
         <a href="rules.html">The catalog</a>
+        <span class="site-foot-sep" aria-hidden="true">·</span>
+        <a href="genres.html">Genres</a>
         <span class="site-foot-sep" aria-hidden="true">·</span>
         <a href="https://github.com/SamGalanakis/pilcrow">GitHub</a>
         <span class="site-foot-sep" aria-hidden="true">·</span>

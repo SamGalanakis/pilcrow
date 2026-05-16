@@ -6,7 +6,7 @@ Rhythm in prose. Loaded by `pace` and `polish`. Anchored in Stephen King's *On W
 
 ## The core observation
 
-Prose has a beat. Sentence-by-sentence length alternation, paragraph weight, the use of fragments and runs, the placement of long sentences against short ones — these are how the prose *sounds* even when read silently. Readers don't notice rhythm consciously; they notice when it's missing.
+Prose has a beat. Sentence-by-sentence length alternation, paragraph weight, the use of fragments and runs, the placement of long sentences against short ones: these are how the prose *sounds* even when read silently. Readers don't notice rhythm consciously; they notice when it's missing.
 
 AI prose tends toward uniform sentence length (mean ~18 words, low variance) and uniform paragraph weight (3–4 sentences each). The result is wallpaper.
 
@@ -14,7 +14,7 @@ AI prose tends toward uniform sentence length (mean ~18 words, low variance) and
 
 > *"This sentence has five words. Here are five more words. Five-word sentences are fine. But several together become monotonous. Listen to what is happening. The writing is getting boring. The sound of it drones. It's like a stuck record. The ear demands some variety."*
 
-The point isn't to write the way Provost does in that demo — the demo itself becomes monotonous in the opposite direction (every sentence short). The point is that *similar-length runs deaden the prose*. Mix.
+The point isn't to write the way Provost does in that demo; the demo itself becomes monotonous in the opposite direction (every sentence short). The point is that *similar-length runs deaden the prose*. Mix.
 
 ---
 
@@ -22,12 +22,12 @@ The point isn't to write the way Provost does in that demo — the demo itself b
 
 | Metric | Healthy | Failure mode |
 |---|---|---|
-| Sentence-length stdev | ≥ 4 across any 5-sentence window | < 4 — monotonous |
-| Longest sentence | At least one ≥ 25 words per page | All sentences 15–22 — flat |
-| Shortest sentence | At least one ≤ 8 words per page | No spikes — droning |
-| Paragraph weight stdev | Healthy variation | Three+ paragraphs within ±15% of mean — wall-of-text |
+| Sentence-length stdev | ≥ 4 across any 5-sentence window | < 4: monotonous |
+| Longest sentence | At least one ≥ 25 words per page | All sentences 15–22: flat |
+| Shortest sentence | At least one ≤ 8 words per page | No spikes: droning |
+| Paragraph weight stdev | Healthy variation | Three+ paragraphs within ±15% of mean: wall-of-text |
 | Fragments | 0–2 per page, deliberate | None (flat) or >5 (marketing punchy) |
-| Parallel triplets | 1–3 per page | >5 — the AI rhythm |
+| Parallel triplets | 1–3 per page | >5: the AI rhythm |
 | Em-dashes | <1.5 / 100 words OR characteristic of writer's voice | Default pause character |
 
 ## King on rhythm
@@ -38,7 +38,7 @@ A short sentence after three long ones lands. A long sentence after three short 
 
 **Convert a long sentence to a punctuation moment** by replacing a `, and` or `; ` with a period. The reader's eye and the reader's ear both pick up the pause.
 
-**Insert a fragment** after a complex passage to seal it. Use sparingly — fragments compound.
+**Insert a fragment** after a complex passage to seal it. Use sparingly; fragments compound.
 
 > The cache rewrite touched 14 services, three regions, and a database the on-call hadn't logged into in a year. It held.
 

@@ -1,21 +1,21 @@
 # polish
 
-Final pre-ship pass. The piece is structurally done; what remains is the line-by-line work of cutting, sharpening, and deciding which findings actually merit a change. Don't ask "is this wrong" — ask "would a reader notice the difference between the current line and the rewrite, and is the difference worth the change?"
+Final pre-ship pass. The piece is structurally done; what remains is the line-by-line work of cutting, sharpening, and deciding which findings actually merit a change. Don't ask "is this wrong"; ask "would a reader notice the difference between the current line and the rewrite, and is the difference worth the change?"
 
 ## Source
 
-Strunk & White, *The Elements of Style* — "Omit needless words. Vigorous writing is concise."
+Strunk & White, *The Elements of Style*: "Omit needless words. Vigorous writing is concise."
 
-Zinsser, *On Writing Well* — "Writing is rewriting." Polish is the explicit rewrite pass, not a copy-edit.
+Zinsser, *On Writing Well*: "Writing is rewriting." Polish is the explicit rewrite pass, not a copy-edit.
 
 Polish is the meta-command. It runs everything and ranks.
 
 ## Load before running
 
-- [_ai-tell-catalog.md](_ai-tell-catalog.md) — for ship-blocker classification.
-- [_readers.md](_readers.md) — to rank findings by reader-impact.
-- [_cadence-theory.md](_cadence-theory.md) — for rhythmic findings.
-- `VOICE.md` if present — to filter findings the writer's exceptions allow.
+- [_ai-tell-catalog.md](_ai-tell-catalog.md): for ship-blocker classification.
+- [_readers.md](_readers.md): to rank findings by reader-impact.
+- [_cadence-theory.md](_cadence-theory.md): for rhythmic findings.
+- `VOICE.md` if present: to filter findings the writer's exceptions allow.
 
 Universal laws, the proposal ritual, and the editor slop test (in the parent `SKILL.md`) apply by default. Ship-blocker rewrites run through the proposal ritual; the slop test gates the final report.
 
@@ -26,7 +26,7 @@ Universal laws, the proposal ritual, and the editor slop test (in the parent `SK
 3. Merge both finding sets, sort by `range.start`, dedupe overlapping ranges.
 4. Triage each finding into one of three buckets (below).
 5. Score the piece on the nine-dimension rubric (below). One total score, one verdict.
-6. Emit one report: scorecard at the top, then triage, then taste-calls. Do NOT propose edits for stylistic taste-calls — surface them and let the writer decide.
+6. Emit one report: scorecard at the top, then triage, then taste-calls. Do NOT propose edits for stylistic taste-calls; surface them and let the writer decide.
 
 ## Scorecard
 
@@ -40,7 +40,7 @@ Nine dimensions, one per command. Each scored 0–4 honestly: a 4 means *genuine
 | **Pace** | pace | Sentence-length variation; aural cleanness | Monotone walls of 18-word sentences, or choppy fragments stacked |
 | **Lede** | lead | First sentence carries the real news | Throat-clearing for several paragraphs before the point |
 | **Verifiability** | verify | Every load-bearing claim cites or is checkable | Unsupported numbers, vague attributions, hedged-into-meaninglessness facts |
-| **Aural quality** | aloud | Reads aloud cleanly — no tongue-twisters, no sing-song | Awkward consonant clusters, unintentional rhymes, parallel-triplet rhythm |
+| **Aural quality** | aloud | Reads aloud cleanly with no tongue-twisters or sing-song | Awkward consonant clusters, unintentional rhymes, parallel-triplet rhythm |
 | **Argument** | argue | Thesis clear; strongest counter engaged | Thesis buried or thesis dodges the obvious counter |
 | **Polish** | polish | No ship-blockers; minimal worth-fixing items | Multiple ship-blockers; voice drift; broken transitions |
 
@@ -143,7 +143,7 @@ Lead with the score and verdict. Then the lowest-scoring dimensions and which co
 - **Proposing rewrites for taste-calls.** Voice is not the command's problem.
 - **Polishing past the lede.** If `buried-lede` fires, fix the lede first; many downstream findings will dissolve.
 - **Cutting sentences the reader is meant to dwell on.** Short, lyrical end-of-paragraph sentences are deliberate slowdowns.
-- **Grinding past two polish passes.** Endless polish creates glossy uniformity — its own AI tell.
+- **Grinding past two polish passes.** Endless polish creates glossy uniformity: its own AI tell.
 - **Inflating the score.** A 4 means genuinely excellent on that dimension. If you're picking 4s out of charity, you're hiding the work the writer still has to do. When in doubt between two scores, pick the lower one.
 - **Treating the score as a verdict on the writer.** It's a verdict on this draft. The command points to the dimensions to work on; the dimensions don't define the writer's ability.
 

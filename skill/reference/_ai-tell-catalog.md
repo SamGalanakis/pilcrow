@@ -28,7 +28,7 @@ Rhythms the model produces when it reaches for stock structure. Fix: break the r
 
 **Hero-tagline imperative.** Three or more short imperative sentences in a row: `Ship faster. Build smarter. Scale forever.` The signature SaaS-marketing rhythm.
 
-**Parallel-triplet density.** `A, B, and C` constructions used as the dominant rhythm — every paragraph has one.
+**Parallel-triplet density.** `A, B, and C` constructions used as the dominant rhythm: every paragraph has one.
 
 **Anaphora.** Three or more consecutive sentences opening with the same content word.
 
@@ -46,11 +46,11 @@ Rhythms the model produces when it reaches for stock structure. Fix: break the r
 
 Whole-passage shapes. Fix: restructure.
 
-**Marketing-template cadence.** Imperative fragment + tricolon expansion: `Mark up prose before it ships. A skill, a CLI, and forty-four rules for catching AI tells.` Cannot be rescued by content specificity — the template is the tell.
+**Marketing-template cadence.** Imperative fragment + tricolon expansion: `Mark up prose before it ships. A skill, a CLI, and forty-four rules for catching AI tells.` Cannot be rescued by content specificity; the template is the tell.
 
 **Bullet bold-label.** Bullet lists where most items lead with `**Bold:**` followed by an explanation. AI-assistant markdown signature.
 
-**Listicle in prose.** Five paragraphs each starting "The first / second / third thing is…" — a numbered list flowed into prose without the numbers.
+**Listicle in prose.** Five paragraphs each starting "The first / second / third thing is…": a numbered list flowed into prose without the numbers.
 
 **Colon headline.** Most headings shaped `Topic: Descriptor`. `Caching: A Modern Approach` repeated as the doc's section style.
 
@@ -66,7 +66,7 @@ Whole-passage shapes. Fix: restructure.
 
 ## Class 4 — fossil (always delete)
 
-Verbatim output that should never appear in publishable prose. No rewrite — delete.
+Verbatim output that should never appear in publishable prose. No rewrite. Delete.
 
 **Disclaimer fossils.** `As an AI language model`, `I cannot provide`, `I do not have personal experience`, `my training data`, `my knowledge cutoff`.
 
