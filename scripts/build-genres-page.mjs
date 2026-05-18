@@ -269,6 +269,23 @@ const html = `<!doctype html>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Genres · Pilcrow ¶</title>
   <meta name="description" content="The pilcrow genre taxonomy. ${totalLeaves} leaves across ${FAMILIES.length - 1} families plus one stub. Each leaf adds its own Demands, Forbids, Tolerates, AI tells, and LLM lint targets that enrich the base catalog when that genre is active.">
+  <meta name="theme-color" content="#f7f5ef" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1e1a13" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Pilcrow">
+  <meta property="og:url" content="https://pilcrow.ink/genres.html">
+  <meta property="og:title" content="Genres · Pilcrow ¶">
+  <meta property="og:description" content="${totalLeaves} leaves across ${FAMILIES.length - 1} families. Each leaf adds Demands, Forbids, Tolerates, AI tells, and LLM lint targets that enrich the base catalog.">
+  <meta property="og:image" content="https://pilcrow.ink/og.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Pilcrow ¶ — Make your clanker your editor.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Genres · Pilcrow ¶">
+  <meta name="twitter:description" content="${totalLeaves} leaves across ${FAMILIES.length - 1} families. Each adds Demands, Forbids, Tolerates, AI tells, and LLM lint targets.">
+  <meta name="twitter:image" content="https://pilcrow.ink/og.png">
+  <meta name="twitter:image:alt" content="Pilcrow ¶ — Make your clanker your editor.">
   <script>
     (function(){try{var s=localStorage.getItem('theme');var p=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';var t=(s==='light'||s==='dark')?s:p;document.documentElement.dataset.theme=t;}catch(e){}document.addEventListener('click',function(e){var b=e.target.closest('.theme-toggle');if(!b)return;var c=document.documentElement.dataset.theme;var n=c==='dark'?'light':'dark';document.documentElement.dataset.theme=n;try{localStorage.setItem('theme',n);}catch(e){}});})();
   </script>
