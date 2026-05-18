@@ -1,10 +1,20 @@
 #!/usr/bin/env python3
-"""Render the social-card OG image for pilcrow.ink.
+"""Render the social-preview images for pilcrow.ink.
 
-1200x630 PNG. Cream paper, gilt pilcrow glyph, italic title, italic
-tagline, sage band at the foot. Same family as the site cover.
+Two assets:
 
-Output: docs/og.png
+  docs/og.png       1200x630, the hero card for Open Graph consumers
+                    (Facebook, LinkedIn, Slack, Discord, iMessage, etc).
+                    Inline italic '¶ Pilcrow', italic tagline beneath,
+                    sage band at the foot.
+
+  docs/og-square.png  600x600, the thumbnail asset for Twitter / X's
+                      `summary` (small) card. Just the gilt ¶ glyph
+                      centered on cream paper; text comes from
+                      twitter:title / twitter:description.
+
+Both share the site's family: ET Book italic, cream paper, gilt accent,
+sage band.
 """
 
 from pathlib import Path
@@ -13,7 +23,8 @@ from PIL import Image, ImageDraw, ImageFont
 ROOT = Path(__file__).resolve().parent.parent
 FONT_ITALIC = ROOT / "docs/fonts/et-book-display-italic-old-style-figures.ttf"
 FONT_ROMAN = ROOT / "docs/fonts/et-book-roman-old-style-figures.ttf"
-OUT = ROOT / "docs/og.png"
+OUT_LARGE = ROOT / "docs/og.png"
+OUT_SQUARE = ROOT / "docs/og-square.png"
 
 W, H = 1200, 630
 
@@ -44,44 +55,60 @@ def draw_centered(draw: ImageDraw.ImageDraw, text: str, y: int, f: ImageFont.Fre
     return draw.textbbox((x, y), text, font=f)
 
 
-def main() -> None:
+def render_large() -> None:
+    """1200x630 hero card for Open Graph consumers."""
     img = Image.new("RGB", (W, H), BG)
     draw = ImageDraw.Draw(img)
 
-    # Match the site cover: ¶ inline with the wordmark on the same baseline,
-    # both italic, ¶ in gilt and the title in ink. Centered as a group.
-    title_font = font(FONT_ITALIC, 168)
-    tagline_font = font(FONT_ITALIC, 60)
+    title_font = font(FONT_ITALIC, 128)
+    tagline_font = font(FONT_ITALIC, 46)
 
     glyph = "¶"
     title = "Pilcrow"
-    gap = 36  # gutter between ¶ and title (≈ 0.2em of the title size)
+    gap = 28  # gutter between ¶ and title (≈ 0.2em of the title size)
 
     glyph_w = draw.textlength(glyph, font=title_font)
     title_w = draw.textlength(title, font=title_font)
     total_w = glyph_w + gap + title_w
     x_start = (W - total_w) / 2
 
-    # Anchor 'ls' = left edge, baseline — gives us clean baseline alignment
-    # between the two strings without juggling ascent metrics manually.
-    baseline_y = 330
+    baseline_y = 290
     draw.text((x_start, baseline_y), glyph, font=title_font, fill=GILT_DEEP, anchor="ls")
     draw.text((x_start + glyph_w + gap, baseline_y), title, font=title_font, fill=INK, anchor="ls")
 
-    # Tagline below, with enough gutter that the ¶'s italic descender does
-    # not crash into the cap-line of the tagline.
-    tagline_baseline = baseline_y + 130
+    tagline_baseline = baseline_y + 110
     tagline = "Make your clanker your editor."
     tagline_w = draw.textlength(tagline, font=tagline_font)
     draw.text(((W - tagline_w) / 2, tagline_baseline), tagline, font=tagline_font, fill=INK_2, anchor="ls")
 
-    # Sage foot band — narrow, just enough to ground the composition.
     band_h = 14
     draw.rectangle([(0, H - band_h), (W, H)], fill=SAGE)
 
-    img.save(OUT, "PNG", optimize=True)
-    print(f"wrote {OUT.relative_to(ROOT)}  ({OUT.stat().st_size // 1024} KB)")
+    img.save(OUT_LARGE, "PNG", optimize=True)
+    print(f"wrote {OUT_LARGE.relative_to(ROOT)}  ({OUT_LARGE.stat().st_size // 1024} KB)")
+
+
+def render_square() -> None:
+    """600x600 thumbnail asset for Twitter's `summary` small card.
+
+    Just the ¶ glyph centered on cream paper. At the ~125px thumb size
+    X renders, text would be illegible — the wordmark + tagline come
+    from twitter:title / twitter:description in the meta tags.
+    """
+    S = 600
+    img = Image.new("RGB", (S, S), BG)
+    draw = ImageDraw.Draw(img)
+
+    glyph_font = font(FONT_ITALIC, 380)
+    draw.text((S / 2, S / 2 + 30), "¶", font=glyph_font, fill=GILT_DEEP, anchor="mm")
+
+    band_h = 8
+    draw.rectangle([(0, S - band_h), (S, S)], fill=SAGE)
+
+    img.save(OUT_SQUARE, "PNG", optimize=True)
+    print(f"wrote {OUT_SQUARE.relative_to(ROOT)}  ({OUT_SQUARE.stat().st_size // 1024} KB)")
 
 
 if __name__ == "__main__":
-    main()
+    render_large()
+    render_square()

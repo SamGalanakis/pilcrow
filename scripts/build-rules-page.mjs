@@ -116,11 +116,11 @@ const html = `<!doctype html>
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Pilcrow ¶ — Make your clanker your editor.">
-  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="The catalog · Pilcrow ¶">
   <meta name="twitter:description" content="Every rule the engine watches for: ${deterministic.length} deterministic + ${llmRules.length} LLM-judged.">
-  <meta name="twitter:image" content="https://pilcrow.ink/og.png">
-  <meta name="twitter:image:alt" content="Pilcrow ¶ — Make your clanker your editor.">
+  <meta name="twitter:image" content="https://pilcrow.ink/og-square.png">
+  <meta name="twitter:image:alt" content="Pilcrow ¶">
   <script>
     (function(){try{var s=localStorage.getItem('theme');var p=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';var t=(s==='light'||s==='dark')?s:p;document.documentElement.dataset.theme=t;}catch(e){}document.addEventListener('click',function(e){var b=e.target.closest('.theme-toggle');if(!b)return;var c=document.documentElement.dataset.theme;var n=c==='dark'?'light':'dark';document.documentElement.dataset.theme=n;try{localStorage.setItem('theme',n);}catch(e){}});})();
   </script>
