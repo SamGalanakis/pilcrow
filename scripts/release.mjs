@@ -137,13 +137,20 @@ function verifySiblings(version) {
 // The skill ships verbatim to skills.sh / the Claude plugin marketplace, so the
 // committed tree must carry no unresolved {{...}} template tokens, and the
 // SKILL.md argument-hint must list exactly the command-metadata.json commands.
+// Code spans are masked first (mirroring the engine and the placeholder-leak
+// rule), so docs that *document* a `{{token}}` in backticks are fine.
+function stripCode(md) {
+  return md
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/`[^`\n]*`/g, '');
+}
 function verifySkillServable() {
   const offenders = [];
   const walk = (dir) => {
     for (const entry of readdirSync(dir, { withFileTypes: true })) {
       const abs = path.join(dir, entry.name);
       if (entry.isDirectory()) walk(abs);
-      else if (entry.name.toLowerCase().endsWith('.md') && readFileSync(abs, 'utf8').includes('{{')) {
+      else if (entry.name.toLowerCase().endsWith('.md') && stripCode(readFileSync(abs, 'utf8')).includes('{{')) {
         offenders.push(path.relative(repoRoot, abs));
       }
     }
