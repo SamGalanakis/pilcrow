@@ -11,14 +11,21 @@
     {
       "name": "pilcrow",
       "description": "Prose linter and editor skill. /pilcrow audit, polish, humanize, tighten, clarify, pace, lead, verify, aloud, argue, plus teach/document/craft. AI-tell detection is one feature among many.",
-      "version": "0.16.0",
+      "version": "0.17.0",
       "author": {
         "name": "Samuel Galanakis"
       },
       "source": ".",
       "category": "writing",
       "homepage": "https://pilcrow.ink",
-      "tags": ["writing", "prose", "lint", "editor", "ai-slop", "skills"]
+      "tags": [
+        "writing",
+        "prose",
+        "lint",
+        "editor",
+        "ai-slop",
+        "skills"
+      ]
     }
   ]
 }
