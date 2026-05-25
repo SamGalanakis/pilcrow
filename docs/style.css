@@ -40,6 +40,9 @@ html {
 :root {
   color-scheme: light;
 
+  --ico-sun: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='4.5' fill='black'/%3E%3Cpath d='M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8l1.8-1.8M18 6l1.8-1.8' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  --ico-moon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z' fill='black'/%3E%3C/svg%3E");
+
   --bg:        light-dark(oklch(0.97 0.008 95),  oklch(0.16 0.012 75));
   --bg-alt:    light-dark(oklch(0.94 0.012 95),  oklch(0.21 0.014 75));
   --surface:   light-dark(oklch(0.99 0.005 95),  oklch(0.13 0.010 75));
@@ -138,7 +141,7 @@ img, svg { display: block; max-width: 100%; }
 }
 .site-nav-links {
   margin-left: auto;
-  display: flex; gap: 24px;
+  display: flex; align-items: center; gap: 24px;
   font-size: 15px;
   font-weight: 500;
 }
@@ -150,15 +153,11 @@ img, svg { display: block; max-width: 100%; }
 .site-nav-links a:hover { color: var(--ink); }
 
 .theme-toggle {
-  font-style: italic;
-  font-variant: small-caps;
-  font-size: 14px;
-  letter-spacing: 0.04em;
-  color: var(--ink-2);
+  color: var(--ink-3);
   padding: 3px 10px;
   border-radius: 2px;
   display: inline-flex;
-  align-items: baseline;
+  align-items: center;
   gap: 6px;
   transition: color var(--dur-quick), background-color var(--dur-quick);
 }
@@ -166,16 +165,28 @@ img, svg { display: block; max-width: 100%; }
   color: var(--gilt-deep);
   background-color: var(--bg-alt);
 }
+/* Sun/moon drawn as CSS masks (currentColor fill), so they never depend on a
+   font carrying U+2600/U+263E — which it doesn't, hence the old tofu box. */
 .theme-toggle .glyph {
-  font-style: normal;
-  font-size: 13px;
-  color: var(--gilt-deep);
-  transform: translateY(0.5px);
+  width: 0.95em;
+  height: 0.95em;
+  align-self: center;
+  background-color: var(--gilt-deep);
+  -webkit-mask: center / contain no-repeat;
+  mask: center / contain no-repeat;
 }
-.theme-toggle-dark { display: inline-flex; align-items: baseline; gap: 6px; }
+.theme-toggle-dark .glyph {
+  -webkit-mask-image: var(--ico-moon);
+  mask-image: var(--ico-moon);
+}
+.theme-toggle-light .glyph {
+  -webkit-mask-image: var(--ico-sun);
+  mask-image: var(--ico-sun);
+}
+.theme-toggle-dark { display: inline-flex; align-items: center; gap: 6px; }
 .theme-toggle-light { display: none; }
 [data-theme="dark"] .theme-toggle-dark { display: none; }
-[data-theme="dark"] .theme-toggle-light { display: inline-flex; align-items: baseline; gap: 6px; }
+[data-theme="dark"] .theme-toggle-light { display: inline-flex; align-items: center; gap: 6px; }
 
 /* ── COVER ───────────────────────────────────────────────── */
 
@@ -950,18 +961,29 @@ img, svg { display: block; max-width: 100%; }
     grid-template-columns: minmax(0, 66ch);
     justify-content: center;
   }
+  /* Narrow: the spine becomes a slim "Contents: a · b · c" bar at the top
+     instead of a full-height card. Sub-items are dropped here — each section
+     heading is reachable, and the body carries the deeper structure. */
   .spine {
     position: relative;
     top: 0;
-    margin: 0 0 clamp(32px, 4vw, 48px);
-    padding: 16px 18px;
+    max-height: none;
+    overflow: visible;
+    margin: 0 0 clamp(28px, 4vw, 44px);
+    padding: 11px 16px;
     border-left: none;
     border: 1px solid var(--rule);
     border-radius: 3px;
     background: var(--surface);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 18px;
   }
-  .spine-tree { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px 24px; }
-  .spine-sub { margin: 4px 0 0; padding-left: 10px; }
+  .spine-label { margin: 0 4px 0 0; }
+  .spine-tree { display: flex; flex-flow: row wrap; align-items: baseline; gap: 4px 18px; }
+  .spine-item { font-size: 15px; }
+  .spine-sub { display: none; }
 }
 
 @media (max-width: 600px) {
