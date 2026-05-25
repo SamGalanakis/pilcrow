@@ -1,7 +1,7 @@
 ---
 name: pilcrow
 description: Make your clanker your editor. A prose linter, a set of editor commands anchored in classical style guides (Strunk, Williams, Zinsser, Pinker, Orwell, King), and project commands for voice capture and drafting. Use when reviewing, polishing, drafting, or auditing markdown, HTML, or plain-text prose. AI-tell detection is one feature among many.
-version: 0.17.0
+version: 0.17.1
 user-invocable: true
 argument-hint: "[audit|lint|critique|rules|skills|polish|humanize|tighten|clarify|pace|lead|verify|aloud|argue|teach|document|craft] [paths...]"
 allowed-tools:
