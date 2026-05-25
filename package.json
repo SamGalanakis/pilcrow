@@ -44,6 +44,7 @@
     "build:cli": "tsc -p cli",
     "build": "npm run build:engine && npm run build:cli",
     "build:docs": "node scripts/build-rules-page.mjs && node scripts/build-genres-page.mjs",
+    "build:cowork": "node scripts/build-cowork-zip.mjs",
     "test": "vitest run",
     "prepack": "npm run build",
     "release": "node scripts/release.mjs"

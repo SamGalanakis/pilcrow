@@ -114,6 +114,7 @@
         <pre><code>cd your-project
 pilcrow skills install</code></pre>
         <p>Auto-detects <code>.claude</code>, <code>.cursor</code>, <code>.gemini</code>, <code>.agents</code>, <code>.opencode</code>, <code>.kiro</code>, <code>.pi</code>, <code>.qoder</code>, <code>.trae</code>, <code>.github</code>. Pass <code>--all</code> for every supported provider, or <code>--provider=.cursor</code> for one specifically.</p>
+        <p><span class="newthought">Claude Cowork</span> installs from a zip, not from npm. Every <a href="https://github.com/SamGalanakis/pilcrow/releases/latest">release</a> ships a <code>pilcrow-cowork.zip</code>; download it, then in Cowork choose Customize, Plugins, Install, and upload it.<span class="sidenote">The zip bundles the compiled CLI, which has no npm dependencies, so the deterministic linter runs inside Cowork&rsquo;s sandbox on <code>node</code> alone. Invoke with <code>/pilcrow audit</code>, <code>/pilcrow polish</code>, and the rest.</span></p>
       </section>
 
       <section class="chapter" id="project">

@@ -41,6 +41,12 @@ pilcrow skills cleanup            # remove pilcrow installs under deprecated nam
 
 `install` and `update` use a content hash, not just the version string, so they detect a copy that's already on the current version but was edited locally. Modified installs are skipped with a notice; pass `--force` to overwrite. `cleanup` removes orphan skill folders left behind when pilcrow renames a sub-skill (verifies each is pilcrow-owned before deleting).
 
+### Claude Cowork
+
+Cowork installs plugins from a zip, not from npm. Every [release](https://github.com/SamGalanakis/pilcrow/releases/latest) ships a `pilcrow-cowork.zip` asset. Download it, then in Cowork: Customize : Plugins : Install : upload the zip. Invoke with `/pilcrow audit`, `/pilcrow polish`, and the rest.
+
+The zip bundles the compiled CLI (it has no npm dependencies), so the 49-rule deterministic linter runs inside Cowork's sandbox; only `node` need be present. To build the zip yourself: `npm run build:cowork` writes it to `dist/pilcrow-cowork.zip`.
+
 ## CLI
 
 Five engine commands:
