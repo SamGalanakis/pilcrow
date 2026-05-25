@@ -1,0 +1,24 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "pilcrow",
+  "metadata": {
+    "description": "Make your clanker your editor: a prose linter and editor commands anchored in classical style guides."
+  },
+  "owner": {
+    "name": "Samuel Galanakis"
+  },
+  "plugins": [
+    {
+      "name": "pilcrow",
+      "description": "Prose linter and editor skill. /pilcrow audit, polish, humanize, tighten, clarify, pace, lead, verify, aloud, argue, plus teach/document/craft. AI-tell detection is one feature among many.",
+      "version": "0.16.0",
+      "author": {
+        "name": "Samuel Galanakis"
+      },
+      "source": ".",
+      "category": "writing",
+      "homepage": "https://pilcrow.ink",
+      "tags": ["writing", "prose", "lint", "editor", "ai-slop", "skills"]
+    }
+  ]
+}

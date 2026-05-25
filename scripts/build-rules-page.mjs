@@ -12,7 +12,7 @@ const OUT = join(ROOT, "docs", "rules.html");
 
 const FAMILIES = [
   { label: "AI phrasebank", ids: ["ai-tell-phrasebank", "overused-words", "antithesis-cadence", "throat-clearing-openers", "cliche-closers", "meta-discourse", "copula-dodge"] },
-  { label: "AI fossils", ids: ["signoff-chatbot", "sycophant-opener", "disclaimer-tail", "citation-artifact"] },
+  { label: "AI fossils", ids: ["signoff-chatbot", "sycophant-opener", "disclaimer-tail", "citation-artifact", "placeholder-leak"] },
   { label: "Phrase", ids: ["corporate-cliche", "cliche-list", "wordy-phrases", "redundant-pairs", "weasel-hedges", "vague-quantifiers"] },
   { label: "Density", ids: ["em-dash-density", "adverb-density", "nominalization-density", "boosters", "passive-voice", "pronoun-density-low", "parenthetical-aside-density", "inline-bold-emphasis"] },
   { label: "Cadence", ids: ["sentence-length-monotony", "sentence-too-long", "paragraph-monotony", "parallel-triplet-density", "transition-stacking", "repeated-words-window", "noun-stacking", "anaphora-cadence", "fragment-cadence", "hero-tagline-imperative", "from-x-to-y", "present-participle-tail"] },

@@ -34,7 +34,7 @@ Run in this order, exit early on the first failure:
 2. **Player.** `command -v afplay mpv mplayer paplay ffplay 2>/dev/null`; pick the first that resolves. Save as `$PLAYER`.
 3. **Speech skill.**
    ```bash
-   node {{scripts_path}}/resolve-speech.mjs
+   node scripts/resolve-speech.mjs
    ```
    Parse the JSON. Save `scriptPath` (path to `text_to_speech.py`). If `source: "fetched"`, mention that pilcrow pulled it into `/tmp/pilcrow/skills/speech/`.
 4. **Python.** `command -v python3`; required by the speech CLI.
@@ -42,7 +42,7 @@ Run in this order, exit early on the first failure:
 
 ### Step 2 — load voice profile
 
-Run `node {{scripts_path}}/load-context.mjs`. Read VOICE.md fields:
+Run `node scripts/load-context.mjs`. Read VOICE.md fields:
 - `aloud-voice:` default `cedar`. Allowed: `cedar`, `marin`, plus any others listed by `python3 {scriptPath} list-voices`.
 - `aloud-speed:` default `1.0`. Range `0.25`–`4.0`.
 - `default-aloud-mode:` if set, skip the mode question.

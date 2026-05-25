@@ -10,7 +10,7 @@ Inspired by [impeccable.style](https://impeccable.style/): same idea, applied to
 
 Every editor command applies three meta-disciplines: a reflex-rewrite catalog, a proposal ritual that surfaces and rejects LLM defaults, and a slop self-test on the editor's own output.
 
-The full rule catalog lists 49 deterministic and 21 LLM-judged base rules at [pilcrow.ink/rules.html](https://pilcrow.ink/rules.html). Per-genre extras add 76 more LLM rules across 39 leaves at [pilcrow.ink/genres.html](https://pilcrow.ink/genres.html).
+The full rule catalog lists 50 deterministic and 22 LLM-judged base rules at [pilcrow.ink/rules.html](https://pilcrow.ink/rules.html). Per-genre extras add 76 more LLM rules across 39 leaves at [pilcrow.ink/genres.html](https://pilcrow.ink/genres.html).
 
 ## Install
 
@@ -41,11 +41,28 @@ pilcrow skills cleanup            # remove pilcrow installs under deprecated nam
 
 `install` and `update` use a content hash, not just the version string, so they detect a copy that's already on the current version but was edited locally. Modified installs are skipped with a notice; pass `--force` to overwrite. `cleanup` removes orphan skill folders left behind when pilcrow renames a sub-skill (verifies each is pilcrow-owned before deleting).
 
+### Without the npm package
+
+The skill is committed at `skills/pilcrow/`, so you can pull it straight from GitHub without installing `pilcrow-ink` first:
+
+```
+npx skills add SamGalanakis/pilcrow          # via skills.sh (skills.sh/SamGalanakis/pilcrow)
+```
+
+Or add it as a Claude Code plugin marketplace:
+
+```
+/plugin marketplace add SamGalanakis/pilcrow
+/plugin install pilcrow@pilcrow
+```
+
+Both routes copy the skill as-is. The deterministic linter still needs the `pilcrow` binary on PATH (`npm i -g pilcrow-ink` or `npx pilcrow-ink`); without it the interpretive lenses fall back to manual reads. The Cowork zip below bundles the binary.
+
 ### Claude Cowork
 
 Cowork installs plugins from a zip, not from npm. Every [release](https://github.com/SamGalanakis/pilcrow/releases/latest) ships a `pilcrow-cowork.zip` asset. Download it, then in Cowork: Customize : Plugins : Install : upload the zip. Invoke with `/pilcrow audit`, `/pilcrow polish`, and the rest.
 
-The zip bundles the compiled CLI (it has no npm dependencies), so the 49-rule deterministic linter runs inside Cowork's sandbox; only `node` need be present. To build the zip yourself: `npm run build:cowork` writes it to `dist/pilcrow-cowork.zip`.
+The zip bundles the compiled CLI (it has no npm dependencies), so the 50-rule deterministic linter runs inside Cowork's sandbox; only `node` need be present. To build the zip yourself: `npm run build:cowork` writes it to `dist/pilcrow-cowork.zip`.
 
 ## CLI
 
@@ -79,7 +96,7 @@ Editor commands sit on top of the engine. Each loads its own reference file with
 | `aloud` | aural reading tradition | Play the prose back via OpenAI TTS in an interactive session; gates on writer response |
 | `argue` | Toulmin / IBIS / Argdown | Map the argument structure; surface supports, objections, and load-bearing unstated premises; generate the strongest counter and check coverage |
 
-An editor command is not a rule filter. Each defines its own procedure, rubric, and output. See `skill/reference/<command>.md` for the playbooks.
+An editor command is not a rule filter. Each defines its own procedure, rubric, and output. See `skills/pilcrow/reference/<command>.md` for the playbooks.
 
 ## Project commands
 
@@ -102,7 +119,7 @@ Each writes to disk only after explicit confirmation. Once `VOICE.md` exists, ev
 
 `craft` reads `method:` and runs one of four phase-2 variants: outline-first for outliners, free first pass for discovery, paragraph-gated for iterative, rewrite-the-model for model-drafter.
 
-Each genre leaf adds 1–2 LLM lint targets specific to that genre (e.g., `postmortem-counterfactual` flags `should have` / `could have` framing; `cv-vague-impact` flags `drove growth` without a number; `error-message-blame-user` flags `You entered an invalid X`). Pass `--genre <slug>` to `critique` and the prompt merges the base 21 rules with the active leaf's additions, walking the parent chain.
+Each genre leaf adds 1–2 LLM lint targets specific to that genre (e.g., `postmortem-counterfactual` flags `should have` / `could have` framing; `cv-vague-impact` flags `drove growth` without a number; `error-message-blame-user` flags `You entered an invalid X`). Pass `--genre <slug>` to `critique` and the prompt merges the base 22 rules with the active leaf's additions, walking the parent chain.
 
 ## Cross-cutting references
 
@@ -123,8 +140,8 @@ Universal writing laws, the editor reflex catalog, the proposal ritual, and the 
 Turn `/pilcrow polish` into `/polish` (and back) for commands you repeat on every piece:
 
 ```
-node skill/scripts/pin.mjs pin polish
-node skill/scripts/pin.mjs unpin polish
+node skills/pilcrow/scripts/pin.mjs pin polish
+node skills/pilcrow/scripts/pin.mjs unpin polish
 ```
 
 The script writes a redirect skill into every harness directory where pilcrow is installed. Pinned shortcuts carry a marker comment, so `unpin` only deletes shortcuts it created, never user-owned skills with the same name.
@@ -147,12 +164,12 @@ Audio is cached in `/tmp/pilcrow/aloud/<sha256>.mp3`. Replays across sessions ar
 
 ## Rules
 
-**49 deterministic** (regex + fuzzy stem matching, no LLM):
+**50 deterministic** (regex + fuzzy stem matching, no LLM):
 
 | Group | Rules |
 |---|---|
 | AI phrasebank | `ai-tell-phrasebank`, `overused-words`, `antithesis-cadence`, `throat-clearing-openers`, `cliche-closers`, `meta-discourse`, `copula-dodge` |
-| AI fossils | `signoff-chatbot`, `sycophant-opener`, `disclaimer-tail`, `citation-artifact` |
+| AI fossils | `signoff-chatbot`, `sycophant-opener`, `disclaimer-tail`, `citation-artifact`, `placeholder-leak` |
 | Phrase | `corporate-cliche`, `cliche-list`, `wordy-phrases`, `redundant-pairs`, `weasel-hedges`, `vague-quantifiers` |
 | Density | `em-dash-density`, `adverb-density`, `nominalization-density`, `boosters`, `passive-voice`, `pronoun-density-low`, `parenthetical-aside-density`, `inline-bold-emphasis` |
 | Cadence | `sentence-length-monotony`, `sentence-too-long`, `paragraph-monotony`, `parallel-triplet-density`, `transition-stacking`, `repeated-words-window`, `noun-stacking`, `anaphora-cadence`, `fragment-cadence`, `hero-tagline-imperative`, `from-x-to-y`, `present-participle-tail` |
@@ -160,8 +177,8 @@ Audio is cached in `/tmp/pilcrow/aloud/<sha256>.mp3`. Replays across sessions ar
 | Weak constructions | `there-is-there-are`, `expletives`, `negation-of-negation`, `pronoun-it-vague` |
 | Markdown shape | `bullet-bold-lead`, `title-case-headers`, `colon-headline`, `decorative-emoji`, `false-precision-headline` |
 
-**21 LLM-judged base rules** (surfaced as a prompt the model evaluates):
-`buried-lede`, `voice-consistency`, `mixed-metaphor`, `claim-without-support`, `missing-stakes`, `distinctive-vs-generic`, `abstract-without-concrete`, `showing-vs-telling`, `transition-coherence`, `register-mismatch`, `excessive-balance`, `redundant-thesis`, `marketing-template-cadence`, `sycophantic-tone`, `stakes-inflation`, `false-reframe`, `invented-concept-label`, `listicle-disguise`, `one-point-dilution`, `unsupported-claim`, `feature-tally`.
+**22 LLM-judged base rules** (surfaced as a prompt the model evaluates):
+`buried-lede`, `voice-consistency`, `mixed-metaphor`, `claim-without-support`, `missing-stakes`, `distinctive-vs-generic`, `abstract-without-concrete`, `showing-vs-telling`, `transition-coherence`, `register-mismatch`, `excessive-balance`, `redundant-thesis`, `marketing-template-cadence`, `sycophantic-tone`, `stakes-inflation`, `false-reframe`, `invented-concept-label`, `listicle-disguise`, `one-point-dilution`, `unsupported-claim`, `feature-tally`, `instruction-as-copy`.
 
 **76 genre-specific LLM rules** across 39 leaves, merged into the prompt when `critique --genre <slug>` is set. Browse the full taxonomy at [pilcrow.ink/genres.html](https://pilcrow.ink/genres.html).
 
@@ -174,10 +191,10 @@ Phrase rules tokenize and stem before comparing, so `delve` / `delves` / `delvin
 ## Layout
 
 ```
-engine/   the rules engine: 49 deterministic + 21 LLM base rules + per-genre extras (generated)
-cli/      the pilcrow binary and the skills subcommand
-skill/    the SKILL.md that pilcrow skills install copies into provider dirs
-docs/     the GitHub Pages site
+engine/         the rules engine: 50 deterministic + 22 LLM base rules + per-genre extras (generated)
+cli/            the pilcrow binary and the skills subcommand
+skills/pilcrow/ the skill, shipped verbatim — what skills.sh, the plugin, and `pilcrow skills install` all copy
+docs/           the GitHub Pages site
 ```
 
 ## Develop
@@ -199,7 +216,7 @@ npm run release -- --bump patch              # bump + tag + GitHub release
 npm publish                                  # separate, manual
 ```
 
-The script bumps `package.json`, syncs `skill/SKILL.md` and `docs/index.html`, commits, pushes, tags `v<version>`, and creates a GitHub release with auto-extracted commit notes. The Pages workflow redeploys `pilcrow.ink` from the bump commit. `npm publish` stays manual so npm credentials never leave your machine.
+The script bumps `package.json`, syncs `skills/pilcrow/SKILL.md` and `docs/index.html`, commits, pushes, tags `v<version>`, and creates a GitHub release with auto-extracted commit notes. The Pages workflow redeploys `pilcrow.ink` from the bump commit. `npm publish` stays manual so npm credentials never leave your machine.
 
 Use `--bump major|minor|patch` to bump in one step, or omit `--bump` if you already edited the version yourself.
 

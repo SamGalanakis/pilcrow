@@ -70,8 +70,8 @@ describe("audit", () => {
 });
 
 describe("rule registry", () => {
-  it("has 49 deterministic rules", () => {
-    expect(listRules()).toHaveLength(49);
+  it("has 50 deterministic rules", () => {
+    expect(listRules()).toHaveLength(50);
   });
 
   it("every rule has unique id", () => {
@@ -101,8 +101,8 @@ describe("fuzzy matching", () => {
 });
 
 describe("LLM-rule catalog", () => {
-  it("has 21 rules", () => {
-    expect(llmRules.length).toBe(21);
+  it("has 22 rules", () => {
+    expect(llmRules.length).toBe(22);
   });
 
   it("includes unsupported-claim", () => {

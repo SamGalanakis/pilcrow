@@ -9,11 +9,12 @@
 //                                       # version strings, commit, then release
 //
 // Refuses on a dirty tree (unless --bump), an unpushed HEAD, an existing tag,
-// or a sibling version (SKILL.md, docs/index.html) that drifted from
-// package.json. `npm publish` stays manual; the script just prints the
+// a sibling version (SKILL.md, docs/index.html) that drifted from package.json,
+// or a skill tree that still carries {{...}} template tokens or an out-of-sync
+// argument-hint. `npm publish` stays manual; the script just prints the
 // reminder at the end.
 
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -29,8 +30,12 @@ if (bump && !['patch', 'minor', 'major'].includes(bump)) {
 }
 
 const PKG_PATH = path.join(repoRoot, 'package.json');
-const SKILL_PATH = path.join(repoRoot, 'skill/SKILL.md');
+const SKILL_DIR = path.join(repoRoot, 'skills/pilcrow');
+const SKILL_PATH = path.join(SKILL_DIR, 'SKILL.md');
+const META_PATH = path.join(SKILL_DIR, 'scripts/command-metadata.json');
 const DOCS_PATH = path.join(repoRoot, 'docs/index.html');
+const PLUGIN_PATH = path.join(repoRoot, '.claude-plugin/plugin.json');
+const MARKETPLACE_PATH = path.join(repoRoot, '.claude-plugin/marketplace.json');
 
 function fail(msg) {
   console.error(`✗ ${msg}`);
@@ -76,7 +81,7 @@ function syncSiblings(version) {
   const skillNew = skill.replace(/^version:.*$/m, `version: ${version}`);
   if (skillNew !== skill) {
     writeFileSync(SKILL_PATH, skillNew);
-    changes.push('skill/SKILL.md');
+    changes.push('skills/pilcrow/SKILL.md');
   }
 
   const docs = readFileSync(DOCS_PATH, 'utf8');
@@ -86,15 +91,29 @@ function syncSiblings(version) {
     writeFileSync(DOCS_PATH, docsNew);
     changes.push('docs/index.html');
   }
+
+  // Plugin manifests carry their own `version` strings.
+  const plugin = JSON.parse(readFileSync(PLUGIN_PATH, 'utf8'));
+  if (plugin.version !== version) {
+    plugin.version = version;
+    writeFileSync(PLUGIN_PATH, JSON.stringify(plugin, null, 2) + '\n');
+    changes.push('.claude-plugin/plugin.json');
+  }
+  const marketplace = JSON.parse(readFileSync(MARKETPLACE_PATH, 'utf8'));
+  if (marketplace.plugins?.[0] && marketplace.plugins[0].version !== version) {
+    marketplace.plugins[0].version = version;
+    writeFileSync(MARKETPLACE_PATH, JSON.stringify(marketplace, null, 2) + '\n');
+    changes.push('.claude-plugin/marketplace.json');
+  }
   return changes;
 }
 
 function verifySiblings(version) {
   const skill = readFileSync(SKILL_PATH, 'utf8');
   const skillMatch = skill.match(/^version:\s*(\S+)$/m);
-  if (!skillMatch) fail('skill/SKILL.md has no version: frontmatter field');
+  if (!skillMatch) fail('skills/pilcrow/SKILL.md has no version: frontmatter field');
   if (skillMatch[1] !== version) {
-    fail(`skill/SKILL.md version "${skillMatch[1]}" disagrees with package.json "${version}". Re-run with --bump or sync manually.`);
+    fail(`skills/pilcrow/SKILL.md version "${skillMatch[1]}" disagrees with package.json "${version}". Re-run with --bump or sync manually.`);
   }
 
   const docs = readFileSync(DOCS_PATH, 'utf8');
@@ -103,6 +122,44 @@ function verifySiblings(version) {
   const wrong = docsRefs.filter((r) => r !== `v${shortVersion}`);
   if (wrong.length) {
     fail(`docs/index.html has stale version strings ${[...new Set(wrong)].join(', ')}; expected v${shortVersion}.`);
+  }
+
+  const pluginVer = JSON.parse(readFileSync(PLUGIN_PATH, 'utf8')).version;
+  if (pluginVer !== version) {
+    fail(`.claude-plugin/plugin.json version "${pluginVer}" disagrees with package.json "${version}". Re-run with --bump or sync manually.`);
+  }
+  const marketplaceVer = JSON.parse(readFileSync(MARKETPLACE_PATH, 'utf8')).plugins?.[0]?.version;
+  if (marketplaceVer !== version) {
+    fail(`.claude-plugin/marketplace.json plugin version "${marketplaceVer}" disagrees with package.json "${version}". Re-run with --bump or sync manually.`);
+  }
+}
+
+// The skill ships verbatim to skills.sh / the Claude plugin marketplace, so the
+// committed tree must carry no unresolved {{...}} template tokens, and the
+// SKILL.md argument-hint must list exactly the command-metadata.json commands.
+function verifySkillServable() {
+  const offenders = [];
+  const walk = (dir) => {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const abs = path.join(dir, entry.name);
+      if (entry.isDirectory()) walk(abs);
+      else if (entry.name.toLowerCase().endsWith('.md') && readFileSync(abs, 'utf8').includes('{{')) {
+        offenders.push(path.relative(repoRoot, abs));
+      }
+    }
+  };
+  walk(SKILL_DIR);
+  if (offenders.length) {
+    fail(`skills/pilcrow still has unresolved {{...}} template tokens in:\n  ${offenders.join('\n  ')}`);
+  }
+
+  const commands = Object.keys(JSON.parse(readFileSync(META_PATH, 'utf8')));
+  const skill = readFileSync(SKILL_PATH, 'utf8');
+  const hintMatch = skill.match(/^argument-hint:\s*"\[([^\]]*)\]/m);
+  if (!hintMatch) fail('skills/pilcrow/SKILL.md has no parseable argument-hint');
+  const expected = commands.join('|');
+  if (!hintMatch[1].includes(expected)) {
+    fail(`SKILL.md argument-hint is out of sync with command-metadata.json.\n  expected to contain: ${expected}\n  found:               ${hintMatch[1]}`);
   }
 }
 
@@ -125,11 +182,11 @@ if (bump) {
     const changed = syncSiblings(next);
     ok(`updated package.json + ${changed.join(', ') || '(no siblings)'}`);
   } else {
-    ok('would update package.json + skill/SKILL.md, docs/index.html');
+    ok('would update package.json + skills/pilcrow/SKILL.md, docs/index.html');
   }
 
   step('Committing the bump');
-  runMutating('git add package.json skill/SKILL.md docs/index.html');
+  runMutating('git add package.json skills/pilcrow/SKILL.md docs/index.html .claude-plugin/plugin.json .claude-plugin/marketplace.json');
   runMutating(`git commit -m "Release v${next}"`);
   step('Pushing to origin');
   runMutating('git push');
@@ -144,8 +201,12 @@ step(`Releasing ${pkg.name} ${version}`);
 if (!justBumped) {
   step('Verifying sibling versions match');
   verifySiblings(version);
-  ok('skill/SKILL.md and docs/index.html match');
+  ok('skills/pilcrow/SKILL.md and docs/index.html match');
 }
+
+step('Verifying skill is servable (no template tokens, hint in sync)');
+verifySkillServable();
+ok('skills/pilcrow ships verbatim');
 
 step('Checking working tree is clean');
 const status = run('git status --porcelain');

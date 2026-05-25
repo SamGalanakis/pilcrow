@@ -15,7 +15,7 @@
 // so the skill's existing `Bash(pilcrow *)` calls run the real 49-rule linter
 // offline instead of falling back to a manual read.
 
-import { readFileSync, writeFileSync, rmSync, mkdirSync, cpSync, chmodSync, existsSync, readdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, rmSync, mkdirSync, cpSync, chmodSync, existsSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -59,30 +59,9 @@ const jsOnly = (src) => !src.endsWith('.d.ts') && !src.endsWith('.js.map');
 cpSync(path.join(repoRoot, 'cli/dist'), path.join(pluginDir, 'cli/dist'), { recursive: true, filter: jsOnly });
 cpSync(path.join(repoRoot, 'engine/dist'), path.join(pluginDir, 'engine/dist'), { recursive: true, filter: jsOnly });
 
-// The skill, with the same token substitution `pilcrow skills install` applies:
-// raw SKILL.md carries {{command_prefix}}, {{scripts_path}}, {{command_hint}}
-// placeholders that must be resolved before a harness (here, Cowork) reads it.
-// Mirror cli/src/skills.ts — .md files only.
-const meta = JSON.parse(readFileSync(path.join(repoRoot, 'skill/scripts/command-metadata.json'), 'utf8'));
-const subs = {
-  '{{command_hint}}': Object.keys(meta).join('|'),
-  '{{command_prefix}}': '/',
-  '{{scripts_path}}': 'scripts',
-};
-const substitute = (text) =>
-  Object.entries(subs).reduce((out, [token, value]) => out.split(token).join(value), text);
-
-function copySkill(src, dest) {
-  mkdirSync(dest, { recursive: true });
-  for (const entry of readdirSync(src, { withFileTypes: true })) {
-    const s = path.join(src, entry.name);
-    const d = path.join(dest, entry.name);
-    if (entry.isDirectory()) copySkill(s, d);
-    else if (entry.name.toLowerCase().endsWith('.md')) writeFileSync(d, substitute(readFileSync(s, 'utf8')));
-    else writeFileSync(d, readFileSync(s));
-  }
-}
-copySkill(path.join(repoRoot, 'skill'), path.join(pluginDir, 'skills/pilcrow'));
+// The skill ships verbatim — no install-time substitution. The committed
+// skills/pilcrow tree is the exact form every harness (here, Cowork) reads.
+cpSync(path.join(repoRoot, 'skills/pilcrow'), path.join(pluginDir, 'skills/pilcrow'), { recursive: true });
 
 // 3. bin/pilcrow wrapper — runs the bundled CLI with whatever node Cowork provides.
 const wrapper = `#!/usr/bin/env sh

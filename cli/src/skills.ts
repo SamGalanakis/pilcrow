@@ -6,7 +6,6 @@ import {
   readFileSync,
   readdirSync,
   rmSync,
-  statSync,
   unlinkSync,
   writeFileSync,
 } from "node:fs";
@@ -15,7 +14,7 @@ import { fileURLToPath } from "node:url";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const PKG_ROOT = resolve(HERE, "../..");
-const SKILL_SRC = join(PKG_ROOT, "skill");
+const SKILL_SRC = join(PKG_ROOT, "skills", "pilcrow");
 const PKG_JSON = join(PKG_ROOT, "package.json");
 
 const PROVIDER_DIRS = [
@@ -33,8 +32,6 @@ const PROVIDER_DIRS = [
 
 const SKILL_FOLDER = "pilcrow";
 
-const SUBSTITUTABLE_EXTENSIONS = new Set([".md"]);
-
 // Sub-skill names pilcrow installed in the past but no longer ships.
 // Add an entry here when renaming or merging a sub-skill or pinned shortcut.
 // Each entry is the FOLDER NAME under `.<provider>/skills/`. The sweep verifies
@@ -45,49 +42,6 @@ const DEPRECATED_SUB_SKILLS: string[] = [
   // "humanize-old",       // renamed to humanize in vX.Y
   // "extract",            // folded into /pilcrow extract in vX.Y
 ];
-
-interface CommandMetaEntry {
-  description: string;
-  argumentHint: string;
-  category: string;
-}
-
-function loadCommandMetadata(): Record<string, CommandMetaEntry> | null {
-  const metaPath = join(SKILL_SRC, "scripts", "command-metadata.json");
-  if (!existsSync(metaPath)) return null;
-  try {
-    return JSON.parse(readFileSync(metaPath, "utf8"));
-  } catch {
-    return null;
-  }
-}
-
-function buildCommandHint(meta: Record<string, CommandMetaEntry> | null): string {
-  if (!meta) return "audit|polish|humanize|tighten|clarify|pace|lead|teach|document|extract|craft";
-  return Object.keys(meta).join("|");
-}
-
-function buildSubstitutions(): Record<string, string> {
-  const meta = loadCommandMetadata();
-  return {
-    "{{command_hint}}": buildCommandHint(meta),
-    "{{command_prefix}}": "/",
-    "{{scripts_path}}": "scripts",
-  };
-}
-
-function applySubstitutions(content: string, subs: Record<string, string>): string {
-  let out = content;
-  for (const [token, value] of Object.entries(subs)) {
-    out = out.split(token).join(value);
-  }
-  return out;
-}
-
-function fileExtension(name: string): string {
-  const i = name.lastIndexOf(".");
-  return i >= 0 ? name.slice(i).toLowerCase() : "";
-}
 
 function findProjectRoot(): string {
   let dir = process.cwd();
@@ -104,20 +58,15 @@ function findExistingProviders(root: string): string[] {
   return PROVIDER_DIRS.filter((d) => existsSync(join(root, d)));
 }
 
-function copyDir(src: string, dest: string, subs: Record<string, string>): void {
+function copyDir(src: string, dest: string): void {
   mkdirSync(dest, { recursive: true });
   for (const entry of readdirSync(src, { withFileTypes: true })) {
     const s = join(src, entry.name);
     const d = join(dest, entry.name);
     if (entry.isDirectory()) {
-      copyDir(s, d, subs);
+      copyDir(s, d);
     } else if (entry.isFile()) {
-      if (SUBSTITUTABLE_EXTENSIONS.has(fileExtension(entry.name))) {
-        const text = readFileSync(s, "utf8");
-        writeFileSync(d, applySubstitutions(text, subs));
-      } else {
-        writeFileSync(d, readFileSync(s));
-      }
+      writeFileSync(d, readFileSync(s));
     }
   }
 }
@@ -154,21 +103,16 @@ function* walkFiles(root: string, prefix = ""): Generator<{ rel: string; abs: st
   }
 }
 
-// Compute a content hash for a skill directory. If `applySubs` is set, .md
-// files are run through substitution before hashing, so the hash of
-// the unsubstituted source match the hash of a fresh installed copy.
-function hashSkillDir(dir: string, applySubs: Record<string, string> | null): string {
+// Compute a content hash for a skill directory. The source skill is shipped
+// verbatim (no install-time substitution), so a fresh install is a byte-for-byte
+// copy and its hash matches the source's.
+function hashSkillDir(dir: string): string {
   if (!existsSync(dir)) return "";
   const overall = createHash("sha256");
   for (const { rel, abs } of walkFiles(dir)) {
-    const raw = readFileSync(abs);
-    const content =
-      applySubs && SUBSTITUTABLE_EXTENSIONS.has(fileExtension(rel))
-        ? Buffer.from(applySubstitutions(raw.toString("utf8"), applySubs), "utf8")
-        : raw;
     overall.update(rel);
     overall.update("\0");
-    overall.update(content);
+    overall.update(readFileSync(abs));
     overall.update("\0");
   }
   return overall.digest("hex").slice(0, 12);
@@ -218,8 +162,8 @@ function parseSkillArgs(args: string[]): SkillArgs {
 // Status of one installed skill copy.
 //
 // Edit detection only fires when versions match. A content-hash difference
-// across versions is expected (every file's substituted form differs once
-// the version frontmatter changes), and conflating it with local edits
+// across versions is expected (the version frontmatter changes every bump),
+// and conflating it with local edits
 // would block routine updates. If a user genuinely edited locally AND
 // then a version bump shipped, the edits get overwritten on update; this
 // is a deliberate trade for keeping `skills update --all` non-interactive
@@ -238,7 +182,7 @@ function skillStatus(
   if (!existsSync(join(installPath, "SKILL.md"))) return { kind: "missing" };
   const ver = installedVersion(installPath) ?? "?";
   if (ver !== pkgVer) return { kind: "outdated", version: ver };
-  const installedHash = hashSkillDir(installPath, null);
+  const installedHash = hashSkillDir(installPath);
   if (installedHash !== srcHash) return { kind: "modified", version: ver };
   return { kind: "clean", version: ver };
 }
@@ -296,8 +240,7 @@ export function cmdInstall(args: string[]): number {
   ensureSkillSrc();
   const root = findProjectRoot();
   const opts = parseSkillArgs(args);
-  const subs = buildSubstitutions();
-  const srcHash = hashSkillDir(SKILL_SRC, subs);
+  const srcHash = hashSkillDir(SKILL_SRC);
   const pkgVer = pkgVersion();
 
   let targets: string[] = opts.providers ?? findExistingProviders(root);
@@ -327,7 +270,7 @@ export function cmdInstall(args: string[]): number {
     }
 
     if (existsSync(dest)) rmSync(dest, { recursive: true, force: true });
-    copyDir(SKILL_SRC, dest, subs);
+    copyDir(SKILL_SRC, dest);
     console.log(`installed →    ${provider}/skills/${SKILL_FOLDER}  (v${pkgVer})`);
   }
 
@@ -355,8 +298,7 @@ export function cmdUpdate(args: string[]): number {
 
 export function cmdCheck(): number {
   const root = findProjectRoot();
-  const subs = buildSubstitutions();
-  const srcHash = hashSkillDir(SKILL_SRC, subs);
+  const srcHash = hashSkillDir(SKILL_SRC);
   const pkgVer = pkgVersion();
   const installed = findExistingProviders(root).filter((d) =>
     existsSync(join(root, d, "skills", SKILL_FOLDER, "SKILL.md")),
@@ -423,7 +365,7 @@ export function cmdSkillsHelp(): number {
   console.log(`pilcrow skills: manage the skill in your AI harness
 
   pilcrow skills install [--provider=.cursor ...] [--all] [--force]
-        Install skill/ into each detected provider directory's skills/
+        Install skills/pilcrow into each detected provider directory's skills/
         --provider=.NAME    install only into this provider (repeatable)
         --all               install into every supported provider
         --force, -f         overwrite even if the installed copy was edited locally

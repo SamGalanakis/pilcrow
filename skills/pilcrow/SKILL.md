@@ -3,7 +3,7 @@ name: pilcrow
 description: Make your clanker your editor. A prose linter, a set of editor commands anchored in classical style guides (Strunk, Williams, Zinsser, Pinker, Orwell, King), and project commands for voice capture and drafting. Use when reviewing, polishing, drafting, or auditing markdown, HTML, or plain-text prose. AI-tell detection is one feature among many.
 version: 0.16.0
 user-invocable: true
-argument-hint: "[{{command_hint}}] [paths...]"
+argument-hint: "[audit|lint|critique|rules|skills|polish|humanize|tighten|clarify|pace|lead|verify|aloud|argue|teach|document|craft] [paths...]"
 allowed-tools:
   - Bash(pilcrow *)
   - Bash(npx pilcrow-ink *)
@@ -39,7 +39,7 @@ Before any editor or project command runs:
 Every editor or project command begins by loading shared context:
 
 ```bash
-node {{scripts_path}}/load-context.mjs
+node scripts/load-context.mjs
 ```
 
 The script returns JSON with `VOICE.md` (the writer's voice profile) if it exists at the project root, in `.pilcrow/`, or in `docs/`. Cache the result for the session; don't re-run within the same conversation.
@@ -54,7 +54,7 @@ Not every command needs a voice profile. The split:
 | **Voice-neutral** | `audit`, `lint`, `critique`, `rules`, `skills`, `verify`, `argue`, `pace`, `lead`, `aloud` | Run as normal. Voice isn't load-bearing for these. |
 | **Voice-producing** | `teach`, `document` | These create or refine `VOICE.md`. Don't suggest themselves. |
 
-If a voice-aware command runs without `VOICE.md`, the nudge is single-line, once per session: "Running without VOICE.md; proposals will use nearby-paragraph fallback. `{{command_prefix}}pilcrow teach` to set up a voice profile." Don't repeat.
+If a voice-aware command runs without `VOICE.md`, the nudge is single-line, once per session: "Running without VOICE.md; proposals will use nearby-paragraph fallback. `/pilcrow teach` to set up a voice profile." Don't repeat.
 
 ## Absolute writing bans
 
@@ -156,11 +156,11 @@ If the test fails, the fix is the same as for the prose: cut the hedges, take a 
 
 ## Routing rules
 
-Process the argument string `$ARG` (everything after `{{command_prefix}}pilcrow`) like this:
+Process the argument string `$ARG` (everything after `/pilcrow`) like this:
 
 1. **`$ARG` is empty (bare invocation)**: enter triage mode. Don't render the menu; don't shell out to `pilcrow` yet. Instead:
    - **Find the prose.** In priority order: a file the user has open or has read recently in the conversation, prose pasted directly into the conversation, a path or URL the user has named. If you can't identify a target with reasonable confidence, ask "what should I take a look at?". If the user has no target in mind, fall through to the `help` path below.
-   - **Take stock.** Load shared context via `node {{scripts_path}}/load-context.mjs` (apply `VOICE.md` if present). Run `pilcrow lint <target>` for a deterministic baseline. Read enough of the prose to also notice things lint can't see: a buried lede, a flat opener, an argument with no counter, the wrong genre register, no stakes in the middle.
+   - **Take stock.** Load shared context via `node scripts/load-context.mjs` (apply `VOICE.md` if present). Run `pilcrow lint <target>` for a deterministic baseline. Read enough of the prose to also notice things lint can't see: a buried lede, a flat opener, an argument with no counter, the wrong genre register, no stakes in the middle.
    - **Identify the genre.** Use `VOICE.md` `genre` if present, else infer from filename/path; see the full inference table in `reference/_genres.md`. Common patterns: `posts/`/`essays/` → essay, `docs/tutorials/` → tutorial, `docs/reference/` → reference-docs, `docs/how-to/` → how-to, `docs/explanation/` → explanation, `README.md` → readme, `postmortems/` → postmortem, `changelog.md` → changelog, `memos/`/`rfcs/` → memo, `marketing/landing/` → landing, `press/` → press-release, `about*.md` → about-page, `errors/` → error-message, `cv.md`/`resume.md` → cv, `tweets/`/`social/` → social-post, `decks/` → deck, `fiction/`/`stories/` → fiction. Genre is the strongest signal for which commands to suggest.
    - **Propose an ordered plan.** Pick 2–4 commands from the table below, in the order they should run. Give one line of rationale per step, anchored in what you actually noticed, not generic advice. Example: "`lead` → the hero is scope-before-claim and the real thesis is in paragraph 3; `tighten` → middle is heavy with copula-dodge and zombie nouns; `polish` → triage what remains."
 
@@ -188,12 +188,12 @@ Process the argument string `$ARG` (everything after `{{command_prefix}}pilcrow`
    - If nothing follows AND no recent prose is in conversation, ask "what should I `<subcommand>`?". Do not shell out with no input.
    - If nothing follows BUT recent prose is in the conversation, pipe that text via `printf '%s' "..." | pilcrow <subcommand>` and report findings.
 4. **First word is an editor or project command** (`polish`, `humanize`, `tighten`, `clarify`, `pace`, `lead`, `verify`, `aloud`, `argue`, `teach`, `document`, `craft`):
-   - Load shared context via `node {{scripts_path}}/load-context.mjs` (skip if already cached this session).
+   - Load shared context via `node scripts/load-context.mjs` (skip if already cached this session).
    - Load `reference/<command>.md` from this skill's directory.
    - Also load any cross-cutting reference files that command's playbook names (`reference/_*.md`).
    - **Identify the active genre and surface it.** Read `VOICE.md` `genre:` if present; otherwise infer from filename/path via the table in `reference/_genres.md`. If the genre was *inferred* (not authored in `VOICE.md`), tell the writer one line before proceeding (e.g., `Treating this as [<slug>], push back if wrong.`) and wait for confirmation. If they correct, use the corrected slug for everything downstream. Don't re-prompt within the same file in this session, and don't surface for `VOICE.md`-authoritative genres.
    - **Load the genre leaf.** Read `reference/genres/<slug>.md` for genre-specific Demands / Forbids / Tolerates / Common AI tells / LLM lint additions. These flow into the command's reasoning; proposal-ritual gates, finding triage, rewrite voice.
-   - **Pass `--genre <slug>` to `critique`.** When shelling out to `pilcrow critique <target>`, pass `--genre <slug>` so genre-specific LLM rules merge into the prompt alongside the 21 base rules.
+   - **Pass `--genre <slug>` to `critique`.** When shelling out to `pilcrow critique <target>`, pass `--genre <slug>` so genre-specific LLM rules merge into the prompt alongside the 22 base rules.
    - Follow the playbook end-to-end. Each command defines its own procedure, rubric, and output shape.
    - Editor commands use `pilcrow lint <target>` and `pilcrow critique <target> --genre <slug>` for input; the command interprets the findings through the loaded references.
    - Project commands (teach, document, craft) also read or write project files (`VOICE.md`, `drafts/`). Follow the reference file's explicit gating; never write to disk without confirmation.
@@ -211,9 +211,9 @@ Subcommands map 1:1 to the CLI binary. Pass flags through verbatim (`--ignore-qu
 
 | Command | What it does | Common flags |
 |---|---|---|
-| `audit [paths...]` | Run the 49-rule deterministic catalog, human-readable | `--ignore-quoted` |
+| `audit [paths...]` | Run the 50-rule deterministic catalog, human-readable | `--ignore-quoted` |
 | `lint [paths...]` | Same scan, JSON output for piping | `--ignore-quoted` |
-| `critique [path]` | Print an LLM-critique prompt for the 21 base rules regex can't catch; merges genre-specific rules when `--genre` is passed | `--rules=id,id`, `--genre=<slug>` |
+| `critique [path]` | Print an LLM-critique prompt for the 22 base rules regex can't catch; merges genre-specific rules when `--genre` is passed | `--rules=id,id`, `--genre=<slug>` |
 | `rules` | List every rule with id, severity, description | `--json` |
 | `skills <install\|update\|check>` | Install or refresh the skill in `.claude/`, `.cursor/`, etc. | `--all`, `--provider=.x` |
 
@@ -241,11 +241,11 @@ Subcommands map 1:1 to the CLI binary. Pass flags through verbatim (`--ignore-qu
 
 ## Pin / unpin
 
-Turn `{{command_prefix}}pilcrow polish` into `{{command_prefix}}polish` (and back). Useful for commands the writer repeats on every piece.
+Turn `/pilcrow polish` into `/polish` (and back). Useful for commands the writer repeats on every piece.
 
 ```bash
-node {{scripts_path}}/pin.mjs pin polish
-node {{scripts_path}}/pin.mjs unpin polish
+node scripts/pin.mjs pin polish
+node scripts/pin.mjs unpin polish
 ```
 
 The script writes a redirect skill into every harness directory where `pilcrow` is installed. Run `unpin` to remove. Pinned skills carry a marker comment, so `unpin` only deletes shortcuts it created; never user-owned skills with the same name.
@@ -268,7 +268,7 @@ Universal writing laws and the editor reflexes / proposal ritual / slop test are
 `aloud` depends on the [OpenAI speech skill](https://github.com/openai/skills/tree/main/skills/.curated/speech) (Apache 2.0) for TTS. The helper script resolves it for you:
 
 ```bash
-node {{scripts_path}}/resolve-speech.mjs
+node scripts/resolve-speech.mjs
 ```
 
 It checks `.claude/skills/speech/`, `.cursor/skills/speech/`, etc. for an installed copy; if none, it fetches the skill at a pinned SHA into `/tmp/pilcrow/skills/speech/`. Either path returns the directory where `scripts/text_to_speech.py` lives.

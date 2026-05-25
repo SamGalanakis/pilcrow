@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Build docs/genres.html from skill/reference/genres/*.md.
+// Build docs/genres.html from skills/pilcrow/reference/genres/*.md.
 // Run after npm run build (or alongside build-rules-page.mjs) so docs stay in sync.
 
 import { readFileSync, readdirSync, writeFileSync } from "node:fs";
@@ -7,10 +7,10 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
-const GENRES_DIR = join(ROOT, "skill/reference/genres");
+const GENRES_DIR = join(ROOT, "skills/pilcrow/reference/genres");
 const OUT = join(ROOT, "docs/genres.html");
 
-// Family display order; matches the tree in skill/reference/_genres.md.
+// Family display order; matches the tree in skills/pilcrow/reference/_genres.md.
 // Each family lists its leaves explicitly so we surface order errors loudly.
 const FAMILIES = [
   { slug: "narrative",      title: "narrative/",       leaves: ["fiction", "memoir", "script"],
@@ -339,7 +339,7 @@ const html = `<!doctype html>
       <section class="chapter cat-section" id="how-it-works">
         <p class="cat-eyebrow">How this page works</p>
         <h2 class="cat-section-title">One leaf per genre. Each leaf is small on purpose.</h2>
-        <p class="cat-blurb">A leaf only carries what is <em>specific to that genre</em>. Universal rules (cadence theory, AI fossils, reader personas) live in the <a href="rules.html">catalog</a> and apply everywhere. Parent rules (e.g., everything <code>marketing/</code> shares) live in <a href="https://github.com/SamGalanakis/pilcrow/blob/main/skill/reference/_genres.md"><code>skill/reference/_genres.md</code></a>. At critique time, <code>pilcrow critique --genre &lt;slug&gt;</code> merges the base 21 LLM rules with the active leaf&rsquo;s additions, walking the parent chain.</p>
+        <p class="cat-blurb">A leaf only carries what is <em>specific to that genre</em>. Universal rules (cadence theory, AI fossils, reader personas) live in the <a href="rules.html">catalog</a> and apply everywhere. Parent rules (e.g., everything <code>marketing/</code> shares) live in <a href="https://github.com/SamGalanakis/pilcrow/blob/main/skills/pilcrow/reference/_genres.md"><code>skills/pilcrow/reference/_genres.md</code></a>. At critique time, <code>pilcrow critique --genre &lt;slug&gt;</code> merges the base 21 LLM rules with the active leaf&rsquo;s additions, walking the parent chain.</p>
       </section>
 ${familyHtml}
     </article>

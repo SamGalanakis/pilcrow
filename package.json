@@ -34,12 +34,12 @@
   "files": [
     "cli/dist",
     "engine/dist",
-    "skill",
+    "skills/pilcrow",
     "LICENSE",
     "README.md"
   ],
   "scripts": {
-    "build:genre-rules": "node skill/scripts/build-genre-rules.mjs",
+    "build:genre-rules": "node skills/pilcrow/scripts/build-genre-rules.mjs",
     "build:engine": "npm run build:genre-rules && tsc -p engine",
     "build:cli": "tsc -p cli",
     "build": "npm run build:engine && npm run build:cli",

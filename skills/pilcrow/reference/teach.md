@@ -18,7 +18,7 @@ Impeccable's `teach` reference, adapted to prose. Interview style draws from jou
 Load context first:
 
 ```bash
-node {{scripts_path}}/load-context.mjs
+node scripts/load-context.mjs
 ```
 
 Then branch:

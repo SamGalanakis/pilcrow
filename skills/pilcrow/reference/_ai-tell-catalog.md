@@ -1,6 +1,6 @@
 # _ai-tell-catalog — shared
 
-Exhaustive catalog of AI tells in prose. Loaded by `humanize` and `polish`. Drawn from Wikipedia *Signs of AI writing*, GPTZero's phrase corpus, our own 49+19 rule catalog, and contemporary write-ups on AI slop.
+Exhaustive catalog of AI tells in prose. Loaded by `humanize` and `polish`. Drawn from Wikipedia *Signs of AI writing*, GPTZero's phrase corpus, our own 50+22 rule catalog, and contemporary write-ups on AI slop.
 
 Organize tells by **class**, not by severity. Class determines the rewrite shape.
 
@@ -80,9 +80,19 @@ Verbatim output that should never appear in publishable prose. No rewrite. Delet
 
 ---
 
+## Class 5 — leaks (verify intent before cutting)
+
+Not always-delete. These fire on tokens and phrasing that are *defects when the artifact is the finished product*, but *correct when the artifact is a template, a code or usage example, a spec, or documentation about these very patterns*. Always check what the file is for before removing — the deterministic `placeholder-leak` rule deliberately scans prose only (code fences and inline code are masked), but judgment is still required.
+
+**Placeholder leaks** (deterministic `placeholder-leak`, severity warning). Authoring fill-ins left in finished prose: `{{template_token}}`, `[YOUR NAME]`, `[INSERT DATE]`, `<your company here>`, `TODO:` / `FIXME:` / `TKTK`, lorem ipsum. Fill in or delete — *unless* the file is genuinely a template or an example demonstrating the token.
+
+**Instruction-as-copy** (LLM `instruction-as-copy`, severity warning). The brief leaked into the slot where the content belongs: a development instruction, design constraint, or dev note rendered as user-facing copy. The text *describes what should be there instead of being it*. A heading that reads "Display the user's name prominently", a paragraph "This section should explain the benefits", a button "Primary CTA here", an empty state "Fallback when no data is available", a success message echoing a dev note ("No sudo needed"). Tells: the imperative/spec register (`should`, `must`, `ensure`, `display X`, `add Y here`, `fallback when`, `validate that`) standing in for real copy. Rewrite into the product's own voice. Legitimate only when the document is genuinely *about* requirements (a spec, a ticket, this catalog). Coined after [openai/codex#17224](https://github.com/openai/codex/issues/17224): process-language replacing product-language.
+
+---
+
 ## How editor commands use this catalog
 
-- `humanize` reads this file end-to-end. Its job is classifying every finding into one of the four classes, then proposing rewrites accordingly: vocabulary → swap, cadence → break the run, template → restructure, fossil → delete.
+- `humanize` reads this file end-to-end. Its job is classifying every finding into one of the five classes, then proposing rewrites accordingly: vocabulary → swap, cadence → break the run, template → restructure, fossil → delete, leak → verify the file's purpose, then fill in / rewrite into the product's voice (never blind-delete a placeholder in a template or example).
 - `polish` reads it to populate the **Ship-blockers** bucket. Class 4 (fossils) is always a ship-blocker. Class 3 (template) in the opener or closer is a ship-blocker. Classes 1–2 in moderation are worth-fixing.
 - Other editor commands (`tighten`, `clarify`, `pace`, `lead`) reference it only when a finding overlaps. Most don't need it.
 
@@ -98,3 +108,4 @@ These are baselines; actual severity in any piece is contextual.
 | 2. Cadence | `warning` (the rule itself fires on density) | `warning` |
 | 3. Template | `warning`, `error` if the template *is* the opener or closer | `warning` |
 | 4. Fossil | `error` always | `error` |
+| 5. Leak | `warning` — verify file purpose first; `error` if clearly finished user-facing copy | `info` |

@@ -14,7 +14,7 @@ Specifically, the following structural patterns are adapted from impeccable:
 - **`scripts/pin.mjs`** — pin/unpin shortcut mechanism that writes lightweight redirect skill files into each detected harness directory, with a marker comment so `unpin` only deletes shortcuts it created.
 - **`scripts/command-metadata.json`** — single-source-of-truth command list with `description`, `argumentHint`, and `category` per command. Used to drive the `{{command_hint}}` template substitution during `pilcrow skills install`.
 
-The substance of pilcrow's commands — the 49 deterministic rules, the 21 LLM-judged base rules, the 76 genre-specific LLM rules across 39 leaves, the six interpretive lenses (`polish`, `humanize`, `tighten`, `clarify`, `pace`, `lead`), and the four project commands (`teach`, `document`, `extract`, `craft`) — is original to pilcrow and anchored in classical style guides (Strunk & White, Zinsser, Williams, Pinker, Orwell, King) and, for the genre taxonomy, in named craft sources cited per leaf (Diátaxis for documentation modes, Allspaw/Hochstein/Cook for postmortems, McKee/Le Guin/Saunders for narrative, McKenzie/Larson for personal, Tufte/Duarte for presentations — see each leaf's References section in `skill/reference/genres/`).
+The substance of pilcrow's commands — the 50 deterministic rules, the 22 LLM-judged base rules, the 76 genre-specific LLM rules across 39 leaves, the six interpretive lenses (`polish`, `humanize`, `tighten`, `clarify`, `pace`, `lead`), and the four project commands (`teach`, `document`, `extract`, `craft`) — is original to pilcrow and anchored in classical style guides (Strunk & White, Zinsser, Williams, Pinker, Orwell, King) and, for the genre taxonomy, in named craft sources cited per leaf (Diátaxis for documentation modes, Allspaw/Hochstein/Cook for postmortems, McKee/Le Guin/Saunders for narrative, McKenzie/Larson for personal, Tufte/Duarte for presentations — see each leaf's References section in `skills/pilcrow/reference/genres/`).
 
 ## Argdown (referenced by `argue`)
 
@@ -28,7 +28,7 @@ The `aloud` lens depends on the [OpenAI speech skill](https://github.com/openai/
 - Pinned SHA: `c25113bf4c64c8dba6bfe61acf06051d79aa43f6` (recorded 2026-05-12)
 - License: Apache License 2.0
 
-The pinned SHA is bumped deliberately in `skill/scripts/resolve-speech.mjs` and re-recorded here on each bump.
+The pinned SHA is bumped deliberately in `skills/pilcrow/scripts/resolve-speech.mjs` and re-recorded here on each bump.
 
 ## Style-guide anchors
 

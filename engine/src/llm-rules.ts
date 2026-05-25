@@ -150,7 +150,7 @@ export const llmRules: LlmRule[] = [
     description:
       "Stock AI hero-line shape: imperative fragment then tricolon expansion (\"Ship X. A Y, a Z, and N things for Q.\"). The template is the tell; content specificity doesn't redeem it.",
     positiveExample:
-      "A prose linter. 49 deterministic rules, 21 LLM-judged ones. Detection-only.",
+      "A prose linter. 50 deterministic rules, 22 LLM-judged ones. Detection-only.",
     negativeExample:
       "Mark up prose before it ships. A skill, a CLI, and forty-four rules for catching AI tells and writing-quality issues.",
   },
@@ -240,7 +240,18 @@ export const llmRules: LlmRule[] = [
     positiveExample:
       "Deterministic checks for the patterns regex can pin down. LLM-judged ones for what regex can't. Lenses anchored in the classical style guides on top.",
     negativeExample:
-      "49 deterministic rules plus 21 LLM-judged ones, plus nine interpretive lenses anchored in classical style guides, plus four project-level commands for voice capture and drafting.",
+      "50 deterministic rules plus 22 LLM-judged ones, plus nine interpretive lenses anchored in classical style guides, plus four project-level commands for voice capture and drafting.",
+  },
+  {
+    id: "instruction-as-copy",
+    name: "Instruction-as-copy",
+    severity: "warning",
+    description:
+      "Development instructions, design constraints, or dev notes have leaked into the artifact as if they were its content: process-language where product-language belongs. The text describes what should be there instead of being it. Watch for the spec/imperative register surfacing in a content slot — a heading that reads 'Display the user's name prominently', a paragraph that reads 'This section should explain the benefits', a button labelled 'Primary CTA here', an empty state that reads 'Fallback when no data is available', a success message echoing a dev note ('No sudo needed'). Tells: 'should'/'must'/'ensure'/'make sure', 'display X'/'show Y'/'add Z here', 'fallback when', 'validate that', '[TODO/placeholder for]', or any acceptance-criterion phrasing standing in for the real copy. Legitimate when the document is genuinely about requirements (a spec, a ticket, this very rule). The semantic counterpart to placeholder-leak, which catches the literal tokens; this catches instruction prose that reads like finished copy but is really the brief left in place.",
+    positiveExample:
+      "Welcome back, Sarah. Your three projects are up to date. (Real copy — the actual name and state, in the user's register.)",
+    negativeExample:
+      "<h1>Display the logged-in user's name prominently</h1><p>This section should reassure the user and list their projects. Fallback to a generic greeting when the name is unavailable.</p>",
   },
 ];
 

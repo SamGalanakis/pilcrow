@@ -30,6 +30,7 @@ import { rule as paragraphMonotony } from "./paragraph-monotony.js";
 import { rule as parallelTripletDensity } from "./parallel-triplet-density.js";
 import { rule as parentheticalAsideDensity } from "./parenthetical-aside-density.js";
 import { rule as passiveVoice } from "./passive-voice.js";
+import { rule as placeholderLeak } from "./placeholder-leak.js";
 import { rule as presentParticipleTail } from "./present-participle-tail.js";
 import { rule as pronounDensityLow } from "./pronoun-density-low.js";
 import { rule as pronounItVague } from "./pronoun-it-vague.js";
@@ -64,6 +65,7 @@ export const rules: Rule[] = [
   sycophantOpener,
   disclaimerTail,
   citationArtifact,
+  placeholderLeak,
   emDashDensity,
   adverbDensity,
   nominalizationDensity,
