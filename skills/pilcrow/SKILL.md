@@ -158,8 +158,21 @@ If the test fails, the fix is the same as for the prose: cut the hedges, take a 
 
 Process the argument string `$ARG` (everything after `/pilcrow`) like this:
 
-1. **`$ARG` is empty (bare invocation)**: enter triage mode. Don't render the menu; don't shell out to `pilcrow` yet. Instead:
-   - **Find the prose.** In priority order: a file the user has open or has read recently in the conversation, prose pasted directly into the conversation, a path or URL the user has named. If you can't identify a target with reasonable confidence, ask "what should I take a look at?". If the user has no target in mind, fall through to the `help` path below.
+### Resolving the target
+
+Several rules below turn a fuzzy reference into concrete prose to act on. Resolve in this order; first match wins:
+
+1. **An explicit path, glob, or directory** in `$ARG` that exists on disk. A directory or glob resolves to the *set* of prose files under it (`.md`, `.mdx`, `.markdown`, `.txt`, `.html`, `.htm`); scan or triage the set, reading a representative file closely.
+2. **A file the user opened, read, or edited recently** in this conversation.
+3. **A referential noun phrase** that names a document rather than quoting one: `the docs` → `docs/`, `the readme` → `README.md`, `the landing page` → the marketing/landing source, `this file`/`that post` → the file most recently in focus. If several files match, list them and ask which.
+4. **Nothing resolves with reasonable confidence** → ask "what should I look at?". Never fall back to linting the reference phrase itself.
+
+**Prose heuristic.** Treat `$ARG` as *literal prose to lint* only when it actually looks like prose: it contains a sentence-ending mark with text after it, or a line break, or more than ~12 words, or it is wrapped in quotes. A one- to four-word phrase with no punctuation is a *reference* to resolve (step 3), never prose to pipe.
+
+### Rules
+
+1. **`$ARG` is empty (bare `/pilcrow`)**: enter triage mode. This is also the shared **triage procedure** that rule 5 reuses when `$ARG` is a bare target reference (`the docs`, `this file`) rather than a command. Don't render the menu; don't shell out to `pilcrow` yet. Instead:
+   - **Resolve the target** via [Resolving the target](#resolving-the-target) above. If nothing resolves and the user has no target in mind, fall through to the `help` path below.
    - **Take stock.** Load shared context via `node scripts/load-context.mjs` (apply `VOICE.md` if present). Run `pilcrow lint <target>` for a deterministic baseline. Read enough of the prose to also notice things lint can't see: a buried lede, a flat opener, an argument with no counter, the wrong genre register, no stakes in the middle.
    - **Identify the genre.** Use `VOICE.md` `genre` if present, else infer from filename/path; see the full inference table in `reference/_genres.md`. Common patterns: `posts/`/`essays/` → essay, `docs/tutorials/` → tutorial, `docs/reference/` → reference-docs, `docs/how-to/` → how-to, `docs/explanation/` → explanation, `README.md` → readme, `postmortems/` → postmortem, `changelog.md` → changelog, `memos/`/`rfcs/` → memo, `marketing/landing/` → landing, `press/` → press-release, `about*.md` → about-page, `errors/` → error-message, `cv.md`/`resume.md` → cv, `tweets/`/`social/` → social-post, `decks/` → deck, `fiction/`/`stories/` → fiction. Genre is the strongest signal for which commands to suggest.
    - **Propose an ordered plan.** Pick 2–4 commands from the table below, in the order they should run. Give one line of rationale per step, anchored in what you actually noticed, not generic advice. Example: "`lead` → the hero is scope-before-claim and the real thesis is in paragraph 3; `tighten` → middle is heavy with copula-dodge and zombie nouns; `polish` → triage what remains."
@@ -184,9 +197,9 @@ Process the argument string `$ARG` (everything after `/pilcrow`) like this:
 
 2. **First word is `help`, `?`, `-h`, or `--help`**: render the command table below and ask which subcommand the user wants. Don't run anything.
 3. **First word is a CLI subcommand** (`audit`, `lint`, `critique`, `rules`, `skills`):
-   - If a target/path follows, shell out: `pilcrow <subcommand> <rest>` via Bash.
-   - If nothing follows AND no recent prose is in conversation, ask "what should I `<subcommand>`?". Do not shell out with no input.
-   - If nothing follows BUT recent prose is in the conversation, pipe that text via `printf '%s' "..." | pilcrow <subcommand>` and report findings.
+   - If a path/glob/dir follows, shell out: `pilcrow <subcommand> <rest>` via Bash.
+   - If `<rest>` is a fuzzy reference (`the docs`, `this file`), resolve it via [Resolving the target](#resolving-the-target) and run the subcommand on the resolved path(s).
+   - If nothing follows, resolve the most-recently-discussed target the same way and run on it. Only if none resolves AND prose was pasted into the conversation, pipe that prose via `printf '%s' "..." | pilcrow <subcommand>`; otherwise ask "what should I `<subcommand>`?". Never shell out with no input.
 4. **First word is an editor or project command** (`polish`, `humanize`, `tighten`, `clarify`, `pace`, `lead`, `verify`, `aloud`, `argue`, `teach`, `document`, `craft`):
    - Load shared context via `node scripts/load-context.mjs` (skip if already cached this session).
    - Load `reference/<command>.md` from this skill's directory.
@@ -198,9 +211,11 @@ Process the argument string `$ARG` (everything after `/pilcrow`) like this:
    - Editor commands use `pilcrow lint <target>` and `pilcrow critique <target> --genre <slug>` for input; the command interprets the findings through the loaded references.
    - Project commands (teach, document, craft) also read or write project files (`VOICE.md`, `drafts/`). Follow the reference file's explicit gating; never write to disk without confirmation.
    - Do not produce raw audit output for an editor command; that's what `audit` is for. An editor command that returns the same shape as `audit` has failed.
-5. **First word doesn't match anything**: disambiguate by content:
-   - If `$ARG` resolves to an existing path on disk: treat as a path and run `pilcrow audit $ARG`.
-   - Otherwise: treat the entire `$ARG` as prose and pipe it: `printf '%s' "$ARG" | pilcrow audit`.
+5. **First word matches no command**: resolve by intent; first match wins:
+   - **a.** `$ARG` is an explicit path, glob, or directory on disk → that's the target. A single file with no other intent: `pilcrow audit $ARG`. A directory, glob, or a "review/look at" intent: enter triage mode (rule 1) on the set.
+   - **b.** `$ARG` is a referential target phrase (a short noun phrase, a bare filename, `the docs`, `this file`, `my X`) → resolve via [Resolving the target](#resolving-the-target) and enter triage mode (rule 1) on it. Do not pipe a reference as prose.
+   - **c.** `$ARG` passes the prose heuristic → pipe it: `printf '%s' "$ARG" | pilcrow audit`.
+   - **d.** Can't tell → ask "a file to look at, or text to lint?". Don't guess.
 6. **Typos**: if the first word looks like a misspelled command (≤2 char edit distance), confirm before running.
 
 Subcommands map 1:1 to the CLI binary. Pass flags through verbatim (`--ignore-quoted`, `--json`, `--rules=id,id`, `--all`, `--provider=.x`).
