@@ -1,7 +1,7 @@
 ---
 name: pilcrow
 description: Make your clanker your editor. A prose linter, a set of editor commands anchored in classical style guides (Strunk, Williams, Zinsser, Pinker, Orwell, King), and project commands for voice capture and drafting. Use when reviewing, polishing, drafting, or auditing markdown, HTML, or plain-text prose. AI-tell detection is one feature among many.
-version: 0.17.1
+version: 0.17.2
 user-invocable: true
 argument-hint: "[audit|lint|critique|rules|skills|polish|humanize|tighten|clarify|pace|lead|verify|aloud|argue|teach|document|craft] [paths...]"
 allowed-tools:
@@ -30,6 +30,7 @@ Turn the LLM in your harness into the editor it should be. Deterministic checks 
 
 Before any editor or project command runs:
 
+0. Make sure the pilcrow CLI is available. The commands run the `pilcrow` binary. If `pilcrow` isn't found (and `npx pilcrow-ink` isn't usable offline), stop and tell the user in one friendly line to install it: `npm install -g pilcrow-ink`, then re-run. Never fabricate lint, critique, or check output.
 1. Load project context, including `VOICE.md` if present.
 2. Apply absolute writing bans (below) regardless of command.
 3. Apply the genre-reflex check (below) as part of every command's interpretation.
