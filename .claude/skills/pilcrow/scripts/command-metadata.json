@@ -1,0 +1,21 @@
+{
+  "audit":    { "description": "Run the deterministic catalog (49 rules), human-readable findings.",                                                                "argumentHint": "[paths...] [--ignore-quoted]", "category": "utility" },
+  "lint":     { "description": "Same scan as audit, JSON output for piping to another tool or back to the model.",                                                  "argumentHint": "[paths...] [--ignore-quoted]", "category": "utility" },
+  "critique": { "description": "Print an LLM-critique prompt for the 20 higher-level rules regex can't catch.",                                                     "argumentHint": "[path]",                       "category": "utility" },
+  "rules":    { "description": "List every rule with id, severity, description. --json for machine output.",                                                        "argumentHint": "[--json]",                     "category": "utility" },
+  "skills":   { "description": "Install or refresh the pilcrow skill in your AI harness directories.",                                                              "argumentHint": "<install|update|check> [--all] [--provider=.x]", "category": "utility" },
+
+  "polish":   { "description": "Final pre-ship lens. Scores the piece on nine dimensions (0–4 each, 0–36 total) plus a verdict, then triages findings into ship-blockers (P0), worth-fixing (P1–P2), and taste-calls (P3).", "argumentHint": "[paths...]", "category": "editor" },
+  "humanize": { "description": "Strip AI tells from prose while preserving voice. Classifies findings into vocabulary, cadence, template, fossil.",                 "argumentHint": "[paths...]", "category": "editor" },
+  "tighten":  { "description": "Cut zombie nouns and weak verbs. Per-sentence rewrites that surface the buried action, anchored in Williams' Style.",               "argumentHint": "[paths...]", "category": "editor" },
+  "clarify":  { "description": "Reduce the reader's working-memory load. Per-passage rewrites with mental-model commentary, anchored in Pinker and Orwell.",        "argumentHint": "[paths...]", "category": "editor" },
+  "pace":     { "description": "Restore sentence-length and paragraph rhythm. Emits a cadence histogram, an aural diagnostic, and split/merge proposals.",          "argumentHint": "[paths...]", "category": "editor" },
+  "lead":     { "description": "Sharpen the opening. Finds the buried lede and proposes three alternative first sentences with different angles.",                  "argumentHint": "[paths...]", "category": "editor" },
+  "verify":   { "description": "Surface load-bearing claims and check whether each carries a citation, a specific number, or a checkable date. Classifies findings as unsupported / vague / hedged / unchecked.", "argumentHint": "[paths...]", "category": "editor" },
+  "aloud":    { "description": "Play the prose back via OpenAI TTS in an interactive session. Modes: walkthrough, full, targeted, compare. Requires OPENAI_API_KEY.",                                                "argumentHint": "[paths...] [--mode=walkthrough|full|targeted|compare]", "category": "editor" },
+  "argue":    { "description": "Map the piece's argument structure and stress-test it. Four phases: confirm the thesis (multi-choice), map supports/objections/premises, generate the strongest counter, check coverage.", "argumentHint": "[paths...] [--argdown]", "category": "editor" },
+
+  "teach":    { "description": "Interview the writer to create or refine VOICE.md (genre, audience, stance, method, signatures, taboos). Confirm open questions left by document; lock recurring moves as signatures or taboos.", "argumentHint": "", "category": "project" },
+  "document": { "description": "Scan the writer's existing prose. Compute stylometric features and surface recurring moves (phrases, cadences, structural habits, punctuation tics). Writes a draft VOICE.md with citations and open questions for the writer to refine via teach.", "argumentHint": "", "category": "project" },
+  "craft":    { "description": "Method-aware end-to-end essay writing. Picks outliner / discovery / iterative / model-drafter at start; runs the matching flow with critique and polish gates.", "argumentHint": "[topic]", "category": "project" }
+}
